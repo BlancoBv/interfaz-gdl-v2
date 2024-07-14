@@ -56,6 +56,7 @@ const Index: FC = () => {
             type="password"
             className="grow"
             name="password"
+            placeholder="Contraseña"
             value={body.hasOwnProperty("password") ? body["password"] : ""}
             onChange={handle}
           />
