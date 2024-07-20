@@ -1,7 +1,13 @@
 import { FC, FormEvent, SyntheticEvent, useState } from "react";
+import Axios from "../../assets/Axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Index: FC = () => {
   const [body, setBody] = useState<{ user?: string; password?: string }>({});
+  const [isPending, setIsPending] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const handle = (e: FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -9,8 +15,16 @@ const Index: FC = () => {
     setBody((prev) => ({ ...prev, [name]: value }));
   };
 
-  const login = (e: SyntheticEvent) => {
+  const login = async (e: SyntheticEvent) => {
     e.preventDefault();
+
+    try {
+      const res = await Axios.post("auth/login", body);
+      console.log(res);
+      localStorage.setItem("credentials", JSON.stringify(res.data));
+      navigate("/app");
+      toast.success("Autenticado correctamente");
+    } catch (error) {}
   };
   return (
     <div
@@ -62,7 +76,11 @@ const Index: FC = () => {
           />
         </label>
         <button type="submit" className="btn btn-primary">
-          Iniciar sesión
+          {isPending ? (
+            <span className="loading loading-bars loading-md" />
+          ) : (
+            "Iniciar sesión"
+          )}
         </button>
       </form>
     </div>

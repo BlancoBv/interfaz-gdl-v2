@@ -1,9 +1,12 @@
-import Index from "../src/routes/Index";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Routes from "../src/routes/Index";
 
 function App() {
   return (
     <>
-      <Index />
+      <ToastContainer autoClose={800} closeButton />
+      <Routes />
     </>
   );
 }

@@ -1,5 +1,9 @@
 import { FC } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import Login from "../pages/login/Index";
 import Layout from "../layout/Layout";
 
@@ -8,6 +12,13 @@ const Index: FC = () => {
     {
       path: "/",
       element: <Login />,
+      loader: () => {
+        const userData = localStorage.getItem("credentials");
+        if (userData) {
+          return redirect("/app");
+        }
+        return null;
+      },
     },
     {
       path: "/app",
