@@ -4,16 +4,20 @@ import SectionCard from "./components/SectionCard";
 const Index: FC = () => {
   const items: { icon: string; name: string; to: string }[] = [
     { icon: "gas-pump", name: "Despacho", to: "despacho" },
-    { icon: "thumbs-down", name: "Salidas no conformes", to: "/despacho" },
-    { icon: "screwdriver-wrench", name: "Mantenimiento", to: "/despacho" },
-    { icon: "box", name: "Almacen", to: "/despacho" },
-    { icon: "people-group", name: "Recursos humanos", to: "/despacho" },
-    { icon: "rectangle-list", name: "Administrativo", to: "/despacho" },
-    { icon: "clipboard-check", name: "Liquidación", to: "/despacho" },
-    { icon: "shop", name: "Tienda", to: "/despacho" },
-    { icon: "shield", name: "Seguridad", to: "/despacho" },
-    { icon: "money-check-dollar", name: "Pagarés", to: "/despacho" },
-    { icon: "file", name: "Documentos SGC don lalo", to: "/despacho" },
+    {
+      icon: "thumbs-down",
+      name: "Salidas no conformes",
+      to: "salidas-no-conformes",
+    },
+    { icon: "screwdriver-wrench", name: "Mantenimiento", to: "mantenimiento" },
+    /*   { icon: "box", name: "Almacen", to: "/almacen" }, */
+    { icon: "people-group", name: "Recursos humanos", to: "recursos-humanos" },
+    { icon: "rectangle-list", name: "Administrativo", to: "administrativo" },
+    { icon: "clipboard-check", name: "Liquidación", to: "liquidacion" },
+    { icon: "shop", name: "Tienda", to: "tienda" },
+    /* { icon: "shield", name: "Seguridad", to: "/despacho" }, */
+    { icon: "money-check-dollar", name: "Pagarés", to: "pagares" },
+    /*  { icon: "file", name: "Documentos SGC don lalo", to: "/despacho" }, */
   ];
   return (
     <div className="w-full h-full flex justify-evenly flex-wrap">

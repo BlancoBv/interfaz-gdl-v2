@@ -8,6 +8,7 @@ import Login from "../pages/login/Index";
 import Layout from "../layout/Layout";
 import App from "../pages/main-page/Index";
 import Despacho from "../pages/despacho/Index";
+import BoletasDesp from "../pages/despacho/boletas/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -30,7 +31,11 @@ const Index: FC = () => {
           index: true,
           element: <App />,
         },
-        { path: "despacho", element: <Despacho /> },
+        {
+          path: "despacho",
+          element: <Despacho />,
+          children: [{ path: "boletas", element: <BoletasDesp /> }],
+        },
       ],
     },
   ]);
