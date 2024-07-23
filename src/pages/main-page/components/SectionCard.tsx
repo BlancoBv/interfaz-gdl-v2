@@ -1,5 +1,3 @@
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
 import Icon from "../../../components/Icon";
