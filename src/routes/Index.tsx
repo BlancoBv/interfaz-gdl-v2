@@ -33,8 +33,10 @@ const Index: FC = () => {
         },
         {
           path: "despacho",
-          element: <Despacho />,
-          children: [{ path: "boletas", element: <BoletasDesp /> }],
+          children: [
+            { index: true, element: <Despacho /> },
+            { path: "boletas", element: <BoletasDesp /> },
+          ],
         },
       ],
     },

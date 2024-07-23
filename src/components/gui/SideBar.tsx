@@ -174,7 +174,7 @@ const SideBar: FC = () => {
         </li> */}
         {navElements.map((item) => (
           <li key={`parent ${item.name}`}>
-            <details>
+            <details open>
               <summary>
                 <Icon icon={item.icon} />
                 {item.name}

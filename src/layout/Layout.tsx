@@ -6,7 +6,7 @@ import SideBar from "../components/gui/SideBar";
 const Layout: FC = () => {
   return (
     <div className="w-screen h-screen ">
-      <div className="drawer lg:drawer-open sm:h-full sm:w-full">
+      <div className="drawer lg:drawer-open h-full sm:w-full">
         {/* Trigger barra lateral */}
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         {/* Barra lateral */}
