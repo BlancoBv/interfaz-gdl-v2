@@ -39,15 +39,6 @@ export function useGetData(url: string, autoFetch: boolean = true) {
           setError(false);
         })
         .finally(() => setTrigger(false));
-
-      return () => {
-        controller.abort();
-        setData(null);
-        setError(true);
-        setDataError(null);
-        setIsPending(true);
-        setTrigger(false);
-      };
     }
   }, [url, trigger]);
 

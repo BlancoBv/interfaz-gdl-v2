@@ -8,6 +8,9 @@ import {
 } from "../../../components/forms/Select";
 import moment from "moment";
 import agruparArr from "../../../assets/agruparArr";
+import calcularTotal from "../../../assets/calcularTotal";
+import Decimal from "decimal.js-light";
+import Bar from "../../../components/charts/Bar";
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));
@@ -29,7 +32,7 @@ const Index: FC = () => {
     e.preventDefault();
     trigger();
   };
-
+  console.log({ data, isPending, error });
   return (
     <div className="flex flex-col">
       <CintaOpciones onSubmit={filtrar}>
@@ -62,13 +65,14 @@ const Index: FC = () => {
           Filtrar
         </button>
       </CintaOpciones>
-      {!isPending && !error && <Success data={data?.response} />}
+      {!isPending && <>ola</>}
+      <div>asdasdasdsadasd</div>
     </div>
   );
 };
 
 const Success: FC<{ data: any }> = ({ data }) => {
-  const { empleados, mf, ck, eu, pd, rd, oyl, snc } = data;
+  /* const { empleados, mf, ck, eu, pd, rd, oyl, snc } = data;
 
   const buscarIdEmpleado = [...mf, ...ck, ...eu, ...pd, ...rd, ...oyl, ...snc];
 
@@ -199,8 +203,14 @@ const Success: FC<{ data: any }> = ({ data }) => {
         },
       },
     },
-  };
-  return <div></div>;
+  }; */
+
+  return (
+    <div className="w-screen">
+      dsadasdasdsad
+      <Bar />
+    </div>
+  );
 };
 
 export default Index;

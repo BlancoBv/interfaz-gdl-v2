@@ -1,5 +1,5 @@
 import Decimal from "decimal.js-light";
-import format from "./format";
+import moment from "moment";
 const calcularTotal = (datos: any[], propiedad: string) => {
   if (typeof propiedad === "function") {
     const cantidad =
@@ -38,7 +38,7 @@ export const CalcularMeses = (n) => {
     for (let i = 0; i < n; i++) {
       const fecha = new Date(fechaActual);
       fecha.setMonth(fecha.getMonth() - i);
-      fechasAnteriores.push(format.formatMesAno(fecha));
+      fechasAnteriores.push(moment);
       fechasAnterioresTime.push(fecha.getTime());
     }
   } else {
@@ -48,7 +48,7 @@ export const CalcularMeses = (n) => {
     for (let i = 0; i <= cantidadMeses; i++) {
       const fecha = new Date(fechaActual);
       fecha.setMonth(fecha.getMonth() - i);
-      fechasAnteriores.push(format.formatMesAno(fecha));
+      fechasAnteriores.push(moment(fecha).format("YYY-MM"));
       fechasAnterioresTime.push(fecha.getTime());
     }
   }
