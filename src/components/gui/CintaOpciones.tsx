@@ -6,7 +6,10 @@ const CintaOpciones: FC<{ children?: ReactNode; onSubmit?: any }> = ({
 }) => {
   return (
     <div className="flex flex-col pt-4">
-      <form className="flex gap-4 items-center" onSubmit={onSubmit}>
+      <form
+        className="flex gap-4 items-center flex-wrap justify-center lg:justify-normal lg:flex-nowrap"
+        onSubmit={onSubmit}
+      >
         {children}
       </form>
       <div className="divider" />

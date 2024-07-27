@@ -6,7 +6,10 @@ const calcularTotal = (datos: any[], propiedad: string) => {
       datos.length > 0
         ? datos
             .map(propiedad)
-            .reduce((a, b) => new Decimal(a).add(new Decimal(b).toNumber()), 0)
+            .reduce(
+              (a: any, b: any) => new Decimal(a).add(new Decimal(b).toNumber()),
+              0
+            )
         : 0;
     return Number(cantidad);
   } else {
@@ -14,13 +17,16 @@ const calcularTotal = (datos: any[], propiedad: string) => {
       datos.length > 0
         ? datos
             .map((el) => (propiedad ? el[propiedad] : el))
-            .reduce((a, b) => new Decimal(a).add(new Decimal(b).toNumber(), 0))
+            .reduce(
+              (a: any, b: any) => new Decimal(a).add(new Decimal(b).toNumber()),
+              0
+            )
         : 0;
     return Number(cantidad);
   }
 };
 
-export const calcularPromedio = (datos, propiedad) => {
+export const calcularPromedio = (datos: any, propiedad: string) => {
   const suma = calcularTotal(datos, propiedad);
   const total = datos.length;
   const promedio =
@@ -28,7 +34,7 @@ export const calcularPromedio = (datos, propiedad) => {
   return promedio;
 };
 
-export const CalcularMeses = (n) => {
+export const CalcularMeses = (n: number) => {
   const fechasAnteriores = [];
   const fechasAnterioresTime = [];
   const fechaActual = new Date();

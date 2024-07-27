@@ -11,6 +11,7 @@ import agruparArr from "../../../assets/agruparArr";
 import calcularTotal from "../../../assets/calcularTotal";
 import Decimal from "decimal.js-light";
 import Bar from "../../../components/charts/Bar";
+import { useNavigate } from "react-router-dom";
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));
@@ -19,7 +20,7 @@ const Index: FC = () => {
     year?: string;
     quincena?: string;
   }>({
-    quincena: date.day() > 15 ? "2" : "1",
+    quincena: date.date() > 15 ? "2" : "1",
     year: String(date.year()),
     month: String(date.month()),
   });
@@ -32,7 +33,8 @@ const Index: FC = () => {
     e.preventDefault();
     trigger();
   };
-  console.log({ data, isPending, error });
+  console.log(data, isPending, error);
+
   return (
     <div className="flex flex-col">
       <CintaOpciones onSubmit={filtrar}>
@@ -65,14 +67,21 @@ const Index: FC = () => {
           Filtrar
         </button>
       </CintaOpciones>
-      {!isPending && <>ola</>}
-      <div>asdasdasdsadasd</div>
+      {!isPending && !error && <Success data={data?.response} filtros={body} />}
     </div>
   );
 };
 
-const Success: FC<{ data: any }> = ({ data }) => {
-  /* const { empleados, mf, ck, eu, pd, rd, oyl, snc } = data;
+const Success: FC<{
+  data: any;
+  filtros: {
+    month?: string;
+    year?: string;
+    quincena?: string;
+  };
+}> = ({ data, filtros }) => {
+  const navigate = useNavigate();
+  const { empleados, mf, ck, eu, pd, rd, oyl, snc } = data;
 
   const buscarIdEmpleado = [...mf, ...ck, ...eu, ...pd, ...rd, ...oyl, ...snc];
 
@@ -81,27 +90,27 @@ const Success: FC<{ data: any }> = ({ data }) => {
     (e) => e.idempleado
   );
 
-  console.log(idEmpleados);
-
   const rendimiento = idEmpleados
     .map((id) => {
-      const empleado = empleados.find((emp) => emp.idempleado === Number(id));
+      const empleado = empleados.find(
+        (emp: any) => emp.idempleado === Number(id)
+      );
 
       const calcularMF = () => {
-        const filtrar = mf.filter((el) => el.idempleado === Number(id));
+        const filtrar = mf.filter((el: any) => el.idempleado === Number(id));
         const cantidad = calcularTotal(filtrar, "cantidad");
         return cantidad > 0 ? 0 : 1;
       };
 
       const calcularCk = () => {
-        const filtrar = ck.filter((el) => el.idempleado === Number(id));
+        const filtrar = ck.filter((el: any) => el.idempleado === Number(id));
         const cantidad = filtrar.length;
         return cantidad >= 12 ? 1 : 0;
       };
 
       const calcularEv = () => {
-        const filtrar = eu.filter((el) => el.idempleado === Number(id));
-        const totalBuenas = filtrar.filter((el) => el.cumple).length;
+        const filtrar = eu.filter((el: any) => el.idempleado === Number(id));
+        const totalBuenas = filtrar.filter((el: any) => el.cumple).length;
         const total = filtrar.length;
         const promedio =
           total > 0 ? new Decimal(totalBuenas).div(total).toNumber() : 0;
@@ -109,8 +118,8 @@ const Success: FC<{ data: any }> = ({ data }) => {
       };
 
       const calcularPd = () => {
-        const filtrar = pd.filter((el) => el.idempleado === Number(id));
-        const totalBuenas = filtrar.filter((el) => el.evaluacion).length;
+        const filtrar = pd.filter((el: any) => el.idempleado === Number(id));
+        const totalBuenas = filtrar.filter((el: any) => el.evaluacion).length;
         const total = filtrar.length;
         const promedio =
           total > 0 ? new Decimal(totalBuenas).div(total).toNumber() : 0;
@@ -118,8 +127,8 @@ const Success: FC<{ data: any }> = ({ data }) => {
       };
 
       const calcularRd = () => {
-        const filtrar = rd.filter((el) => el.idempleado === Number(id));
-        const totalBuenas = filtrar.filter((el) => el.evaluacion).length;
+        const filtrar = rd.filter((el: any) => el.idempleado === Number(id));
+        const totalBuenas = filtrar.filter((el: any) => el.evaluacion).length;
         const total = filtrar.length;
         const promedio =
           total > 0 ? new Decimal(totalBuenas).div(total).toNumber() : 0;
@@ -127,8 +136,8 @@ const Success: FC<{ data: any }> = ({ data }) => {
       };
 
       const calcularOyL = () => {
-        const filtrar = oyl.filter((el) => el.idempleado === Number(id));
-        const totalBuenas = filtrar.filter((el) => el.cumple).length;
+        const filtrar = oyl.filter((el: any) => el.idempleado === Number(id));
+        const totalBuenas = filtrar.filter((el: any) => el.cumple).length;
         const total = filtrar.length;
         const promedio =
           total > 0 ? new Decimal(totalBuenas).div(total).toNumber() : 0;
@@ -136,7 +145,7 @@ const Success: FC<{ data: any }> = ({ data }) => {
       };
 
       const calcularSNC = () => {
-        const filtrar = snc.filter((el) => el.idempleado === Number(id));
+        const filtrar = snc.filter((el: any) => el.idempleado === Number(id));
         return filtrar <= 3 ? 1 : 0;
       };
 
@@ -155,7 +164,7 @@ const Success: FC<{ data: any }> = ({ data }) => {
 
   const dataBar = {
     labels: rendimiento.map((emp) => emp.empleado.nombre.split(" ")[0]),
-    dataset: [
+    datasets: [
       {
         label: "Puntos",
         data: rendimiento.map((emp) => emp.puntosAcumulados),
@@ -163,7 +172,7 @@ const Success: FC<{ data: any }> = ({ data }) => {
         minBarLength: 5,
       },
     ],
-    optionPlugin: {
+    /* optionPlugin: {
       tooltip: {
         usePointStyle: true,
         callbacks: {
@@ -202,13 +211,29 @@ const Success: FC<{ data: any }> = ({ data }) => {
           },
         },
       },
-    },
-  }; */
+    }, */
+  };
+  const detallesBoleta = (dataset: any, element: any) => {
+    const idEmpleado = dataset.empleados[element].empleado.idempleado;
+    console.log(idEmpleado);
+
+    navigate(
+      `${idEmpleado}?year=${filtros.year}&month=${filtros.month}&quincena=${filtros.quincena}`,
+      {
+        state: {
+          idEmpleado,
+        },
+      }
+    );
+  };
 
   return (
-    <div className="w-screen">
-      dsadasdasdsad
-      <Bar />
+    <div>
+      <Bar
+        data={dataBar}
+        title="Boletas de despachadores"
+        onClick={detallesBoleta}
+      />
     </div>
   );
 };

@@ -6,39 +6,30 @@ export function useGetData(url: string, autoFetch: boolean = true) {
     null
   );
   const [error, setError] = useState<boolean>(true);
-  const [dataError, setDataError] = useState<object | null>({});
+  const [dataError, setDataError] = useState<object | null | unknown>({});
   const [isPending, setIsPending] = useState<boolean>(true);
   const [trigger, setTrigger] = useState<boolean>(false);
 
   const consultar = useCallback(
-    async (url: string, signal: AbortSignal) => {
+    async (url: string) => {
+      setIsPending(true);
       try {
-        const res = await Axios.get(url, { signal });
-        return res;
+        const res = await Axios.get(url);
+        setData(res.data);
+        setError(false);
       } catch (error) {
-        throw error;
+        setDataError(error);
+        setError(true);
       }
+      setIsPending(false);
+      setTrigger(false);
     },
     [url]
   );
 
   useEffect(() => {
-    const controller = new AbortController();
     if (autoFetch || trigger) {
-      consultar(url, controller.signal)
-        .then((res) => {
-          setData(res.data);
-          setDataError(null);
-          setIsPending(false);
-          setError(false);
-        })
-        .catch((err) => {
-          setData(null);
-          setDataError(err);
-          setIsPending(false);
-          setError(false);
-        })
-        .finally(() => setTrigger(false));
+      consultar(url);
     }
   }, [url, trigger]);
 

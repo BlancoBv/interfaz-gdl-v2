@@ -21,7 +21,7 @@ export const Select: FC<{
   children,
 }) => {
   return (
-    <label className="form-control w-full max-w-xs">
+    <label className="form-control w-full max-w-40 lg:max-w-xs">
       {label}
       <select
         className="select select-bordered"
@@ -102,7 +102,7 @@ export const SelectMonth: FC<{
     },
   ];
   return (
-    <label className="form-control w-full max-w-xs">
+    <label className="form-control w-full max-w-40 lg:max-w-xs">
       {label}
       <select
         className="select select-bordered"
@@ -140,7 +140,7 @@ export const SelectYear: FC<{
   const [actualValue, setActualValue] = useState<number>(date.year());
 
   return (
-    <label className="form-control w-full max-w-xs">
+    <label className="form-control w-full max-w-40 lg:max-w-xs">
       {label}
       <select
         className="select select-bordered"
