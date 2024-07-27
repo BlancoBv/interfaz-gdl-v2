@@ -55,6 +55,7 @@ const Index: FC = () => {
                     const res = await Axios.get(
                       `/view/boletas?idEmpleado=${params.idDespachador}&year=${year}&month=${month}&quincena=${quincena}`
                     );
+
                     if (!res.data.response.empleado) {
                       throw new Response("Not Found", { status: 404 });
                     }
