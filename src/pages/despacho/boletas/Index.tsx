@@ -1,5 +1,4 @@
-import { FC, SyntheticEvent, useState } from "react";
-import { useGetData } from "../../../hooks/useGetData";
+import { FC, SyntheticEvent, useEffect, useState } from "react";
 import CintaOpciones from "../../../components/gui/CintaOpciones";
 import {
   SelectMonth,
@@ -12,9 +11,13 @@ import calcularTotal from "../../../assets/calcularTotal";
 import Decimal from "decimal.js-light";
 import Bar from "../../../components/charts/Bar";
 import { useNavigate } from "react-router-dom";
+import { useGetData } from "../../../hooks/useGetData";
+import Loader from "../../../components/gui/Loader";
+import NoData from "../../../components/gui/NoData";
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));
+
   const [body, setBody] = useState<{
     month?: string;
     year?: string;
@@ -24,16 +27,26 @@ const Index: FC = () => {
     year: String(date.year()),
     month: String(date.month()),
   });
-  const { data, isPending, error, trigger } = useGetData(
+  const { data, isPending, isFetching, refetch } = useGetData(
     `view/boletas/all?year=${body.year}&month=${body.month}&quincena=${body.quincena}`,
-    false
+    "boletasData"
   );
 
   const filtrar = async (e: SyntheticEvent) => {
     e.preventDefault();
-    trigger();
+    refetch();
+    sessionStorage.setItem("boletasData", JSON.stringify(body));
   };
-  console.log(data, isPending, error);
+
+  useEffect(() => {
+    const item = sessionStorage.getItem("boletasData");
+    if (item) {
+      const parsed = JSON.parse(item);
+      setBody((prev) => (prev = parsed));
+    }
+  }, []); //obtiene el valor guardado en la sesion para el filtro
+
+  console.log(data);
 
   return (
     <div className="flex flex-col">
@@ -67,7 +80,11 @@ const Index: FC = () => {
           Filtrar
         </button>
       </CintaOpciones>
-      {!isPending && !error && <Success data={data?.response} filtros={body} />}
+      {!isPending && !isFetching && data.response.ck.length > 0 && (
+        <Success data={data.response} filtros={body} />
+      )}
+      {!isPending && !isFetching && data.response.ck.length === 0 && <NoData />}
+      <Loader isFetching={isFetching} isPending={isPending} />
     </div>
   );
 };

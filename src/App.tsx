@@ -5,6 +5,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import Chart from "chart.js/auto";
 import chartDataLabels from "chartjs-plugin-datalabels";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 Chart;
 Chart.register(chartDataLabels);
@@ -25,11 +26,16 @@ Chart.defaults.set("plugins.datalabels", {
   },
 });
 library.add(fas);
+
+const queryClient = new QueryClient();
+
 function App() {
   return (
     <>
-      <ToastContainer autoClose={800} closeButton />
-      <Routes />
+      <QueryClientProvider client={queryClient}>
+        <ToastContainer autoClose={800} closeButton />
+        <Routes />
+      </QueryClientProvider>
     </>
   );
 }
