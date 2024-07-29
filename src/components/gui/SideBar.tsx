@@ -34,7 +34,7 @@ const SideBar: FC = () => {
           name: "Monto faltante",
           icon: "money-bills",
           collapse: [
-            { to: "despacho/monto-faltante/capturar", name: "Capturar" },
+            //{ to: "despacho/monto-faltante/capturar", name: "Capturar" },
             { to: "despacho/monto-faltante/reporte", name: "Reporte" },
             {
               to: "despacho/monto-faltante/reporte/empleado",

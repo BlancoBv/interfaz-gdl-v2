@@ -10,6 +10,7 @@ import App from "../pages/main-page/Index";
 import Despacho from "../pages/despacho/Index";
 import BoletasDesp from "../pages/despacho/boletas/Index";
 import BoletasDespxEmp from "../pages/despacho/boletas/idDespachador/Index";
+import ReporteMF from "../pages/despacho/monto-faltante/reporte/Index";
 import Axios from "../assets/Axios";
 
 const Index: FC = () => {
@@ -36,6 +37,7 @@ const Index: FC = () => {
         },
         {
           path: "despacho",
+
           children: [
             { index: true, element: <Despacho /> },
             {
@@ -65,6 +67,10 @@ const Index: FC = () => {
                   },
                 },
               ],
+            },
+            {
+              path: "monto-faltante",
+              children: [{ path: "reporte", element: <ReporteMF /> }],
             },
           ],
         },

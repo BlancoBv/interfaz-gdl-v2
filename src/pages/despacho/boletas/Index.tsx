@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetData } from "../../../hooks/useGetData";
 import Loader from "../../../components/gui/Loader";
 import NoData from "../../../components/gui/NoData";
+import SectionTitle from "../../../components/gui/SectionTitle";
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));
@@ -45,6 +46,10 @@ const Index: FC = () => {
 
   return (
     <div className="flex flex-col">
+      <SectionTitle
+        titulo="Resumen de boletas de despachador"
+        subtitulo="Despacho"
+      />
       <CintaOpciones onSubmit={filtrar}>
         <Select
           name="quincena"

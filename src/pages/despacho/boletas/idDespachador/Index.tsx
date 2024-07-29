@@ -12,7 +12,7 @@ const Index: FC = () => {
 
   return (
     <div className="flex flex-col">
-      <SectionTitle titulo="Boleta de despachador" />
+      <SectionTitle titulo="Boleta de despachador" subtitulo="Despacho" />
       <div className="stats stats-vertical lg:stats-horizontal shadow mb-4">
         <div className="stat">
           <div className="stat-figure text-secondary">
