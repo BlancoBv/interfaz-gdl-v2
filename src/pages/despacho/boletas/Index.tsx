@@ -17,16 +17,21 @@ import NoData from "../../../components/gui/NoData";
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));
+  const item = sessionStorage.getItem("boletasData");
+  const parsed = item
+    ? JSON.parse(item)
+    : {
+        quincena: date.date() > 15 ? "2" : "1",
+        year: String(date.year()),
+        month: String(date.month()),
+      }; //obtiene el valor guardado en la sesion para el filtro
 
   const [body, setBody] = useState<{
     month?: string;
     year?: string;
     quincena?: string;
-  }>({
-    quincena: date.date() > 15 ? "2" : "1",
-    year: String(date.year()),
-    month: String(date.month()),
-  });
+  }>(parsed);
+
   const { data, isPending, isFetching, refetch } = useGetData(
     `view/boletas/all?year=${body.year}&month=${body.month}&quincena=${body.quincena}`,
     "boletasData"
@@ -37,16 +42,6 @@ const Index: FC = () => {
     refetch();
     sessionStorage.setItem("boletasData", JSON.stringify(body));
   };
-
-  useEffect(() => {
-    const item = sessionStorage.getItem("boletasData");
-    if (item) {
-      const parsed = JSON.parse(item);
-      setBody((prev) => (prev = parsed));
-    }
-  }, []); //obtiene el valor guardado en la sesion para el filtro
-
-  console.log(data);
 
   return (
     <div className="flex flex-col">

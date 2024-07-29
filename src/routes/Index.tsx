@@ -27,7 +27,7 @@ const Index: FC = () => {
     },
     {
       path: "/app",
-      errorElement: <>Error 404</>,
+      //errorElement: <>Error 404</>,
       element: <Layout />,
       children: [
         {
@@ -46,8 +46,6 @@ const Index: FC = () => {
                   path: ":idDespachador",
                   element: <BoletasDespxEmp />,
                   loader: async ({ params, request }) => {
-                    console.log(params);
-
                     const url = new URL(request.url);
                     const { month, year, quincena } = Object.fromEntries(
                       url.searchParams
@@ -60,7 +58,10 @@ const Index: FC = () => {
                       throw new Response("Not Found", { status: 404 });
                     }
                     console.log(res.data.response.empleado);
-                    return res.data;
+                    return {
+                      data: res.data.response,
+                      filtros: { month, year, quincena },
+                    };
                   },
                 },
               ],
