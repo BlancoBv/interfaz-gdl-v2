@@ -20,7 +20,7 @@ const Index: FC = () => {
     /*  { icon: "file", name: "Documentos SGC don lalo", to: "/despacho" }, */
   ];
   return (
-    <div className="w-full h-full grid grid-cols-1 place-items-center sm:grid-cols-3 gap-4">
+    <div className="w-full h-full grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-3 gap-4">
       {items.map((el) => (
         <SectionCard icon={el.icon} name={el.name} to={el.to} key={el.name} />
       ))}

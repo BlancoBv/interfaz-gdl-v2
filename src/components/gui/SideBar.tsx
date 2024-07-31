@@ -1,8 +1,9 @@
-import { FC, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { FC } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Icon from "../Icon";
 
 const SideBar: FC = () => {
+  const navigate = useNavigate();
   const userData: {
     auth: {
       nombre: string;
@@ -133,6 +134,10 @@ const SideBar: FC = () => {
     /*  { icon: "file", name: "Documentos SGC don lalo", to: "/despacho" }, */
   ];
 
+  const logout = () => {
+    localStorage.removeItem("credentials");
+    navigate("/");
+  };
   return (
     <nav className="drawer-side z-50 lg:z-auto">
       <label
@@ -227,6 +232,7 @@ const SideBar: FC = () => {
             className="btn btn-error btn-block"
             type="button"
             title="Cerrar sesión"
+            onClick={logout}
           >
             <Icon icon="arrow-right-from-bracket" />
           </button>
