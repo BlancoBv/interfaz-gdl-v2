@@ -5,7 +5,7 @@ const SectionTitle: FC<{ titulo: string; subtitulo: string }> = ({
   subtitulo,
 }) => {
   return (
-    <div className="bg-neutral/80 backdrop-blur-sm prose max-w-full pt-4 z-30">
+    <div className="bg-base-100 backdrop-blur-sm prose max-w-full pt-4 z-30">
       <span className="text-base-content">{subtitulo}</span>
       <h1 className="mb-0">{titulo}</h1>
       <div className="divider mt-0" />

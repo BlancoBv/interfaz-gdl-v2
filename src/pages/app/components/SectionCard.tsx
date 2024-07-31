@@ -9,7 +9,7 @@ const SectionCard: FC<{
   to: string;
 }> = ({ icon, name, to }) => {
   return (
-    <div className="card image-full bg-base-100 w-80 shadow-xl mb-4">
+    <div className="card image-full w-80 shadow-xl mb-4">
       <figure>
         <Icon icon={icon} size="4x" />
       </figure>
