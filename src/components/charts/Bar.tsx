@@ -1,6 +1,5 @@
-import { InteractionItem } from "chart.js";
-import { FC, MouseEvent, useEffect, useRef } from "react";
-import { Bar, getDatasetAtEvent, getElementAtEvent } from "react-chartjs-2";
+import { FC, useEffect, useRef } from "react";
+import { Bar } from "react-chartjs-2";
 /* import {
   CategoryScale,
   LinearScale,
