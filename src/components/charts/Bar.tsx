@@ -20,12 +20,18 @@ const Index: FC<{
   redraw?: boolean;
   legend?: boolean;
   onClick?: (dataset: any, element: any) => void;
+  etiquetaX: string;
+  etiquetaY: string;
+  ticksYCallback?: (value: any) => string;
 }> = ({
   data,
   title = "Texto de ejemplo",
   redraw,
   legend = false,
+  etiquetaX,
+  etiquetaY,
   onClick,
+  ticksYCallback,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
@@ -68,6 +74,11 @@ const Index: FC<{
           scales: {
             y: {
               type: "logarithmic",
+              title: { display: true, text: etiquetaY },
+              ticks: { callback: ticksYCallback },
+            },
+            x: {
+              title: { display: true, text: etiquetaX },
             },
           },
           plugins: {
