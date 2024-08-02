@@ -126,7 +126,14 @@ const SideBar: FC = () => {
     { icon: "screwdriver-wrench", name: "Mantenimiento", to: "mantenimiento" },
     /*   { icon: "box", name: "Almacen", to: "/almacen" }, */
     { icon: "people-group", name: "Recursos humanos", to: "recursos-humanos" },
-    { icon: "rectangle-list", name: "Administrativo", to: "administrativo" },
+    {
+      icon: "rectangle-list",
+      name: "Administrativo",
+      to: "administrativo",
+      links: [
+        { to: "administrativo/usuarios", name: "Usuarios", icon: "users" },
+      ],
+    },
     { icon: "clipboard-check", name: "Liquidación", to: "liquidacion" },
     { icon: "shop", name: "Tienda", to: "tienda" },
     /* { icon: "shield", name: "Seguridad", to: "/despacho" }, */

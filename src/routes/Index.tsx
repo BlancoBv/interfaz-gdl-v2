@@ -7,11 +7,14 @@ import {
 import Login from "../pages/login/Index";
 import Layout from "../layout/Layout";
 import App from "../pages/app/Index";
+import Axios from "../assets/Axios";
 import Despacho from "../pages/despacho/Index";
 import BoletasDesp from "../pages/despacho/boletas/Index";
 import BoletasDespxEmp from "../pages/despacho/boletas/idDespachador/Index";
 import ReporteMF from "../pages/despacho/monto-faltante/reporte/Index";
-import Axios from "../assets/Axios";
+
+//administrativo
+import Usuarios from "../pages/app/administrativo/usuarios/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -72,7 +75,15 @@ const Index: FC = () => {
               path: "monto-faltante",
               children: [{ path: "reporte", element: <ReporteMF /> }],
             },
+            {
+              path: "checklist-bomba",
+              children: [{ path: "capturar", element: <ReporteMF /> }],
+            },
           ],
+        },
+        {
+          path: "administrativo",
+          children: [{ path: "usuarios", element: <Usuarios /> }],
         },
       ],
     },
