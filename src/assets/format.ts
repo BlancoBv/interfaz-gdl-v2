@@ -1,5 +1,7 @@
 //import agruparArr from "./agrupar";
 
+import moment from "moment";
+
 const format = {
   /* formatFechaLocale: (date) =>
     new Date(new Date(date).getTime() + new Date().getTimezoneOffset() * 60000),
@@ -14,7 +16,17 @@ const format = {
       )
     ), */
 
-  formatDinero: (monto: string) =>
+  obtenerDiaMes: (fecha: string) => {
+    const date = moment(fecha);
+    return date.date();
+  },
+  obtenerMes: (fecha: string, formatoMes: "largo" | "corto" = "corto") => {
+    const formato = { largo: "MMMM", corto: "MM" };
+    const date = moment(fecha);
+    return date.format(formato[formatoMes]);
+  },
+
+  formatDinero: (monto: string | number) =>
     Intl.NumberFormat("es-MX", {
       style: "currency",
       currency: "MXN",
