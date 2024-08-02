@@ -20,5 +20,6 @@ export function useGetData(
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     staleTime: 50000,
+    retry: 1,
   });
 }

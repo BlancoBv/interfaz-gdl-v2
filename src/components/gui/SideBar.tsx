@@ -143,6 +143,7 @@ const SideBar: FC = () => {
 
   const logout = () => {
     localStorage.removeItem("credentials");
+    localStorage.removeItem("token");
     navigate("/");
   };
   return (

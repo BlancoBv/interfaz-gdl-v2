@@ -1,20 +1,20 @@
 import { FC, SyntheticEvent, useEffect, useState } from "react";
-import CintaOpciones from "../../../components/gui/CintaOpciones";
+import CintaOpciones from "../../../../components/gui/CintaOpciones";
 import {
   SelectMonth,
   Select,
   SelectYear,
-} from "../../../components/forms/Select";
+} from "../../../../components/forms/Select";
 import moment from "moment";
-import agruparArr from "../../../assets/agruparArr";
-import calcularTotal from "../../../assets/calcularTotal";
+import agruparArr from "../../../../assets/agruparArr";
+import calcularTotal from "../../../../assets/calcularTotal";
 import Decimal from "decimal.js-light";
-import Bar from "../../../components/charts/Bar";
+import Bar from "../../../../components/charts/Bar";
 import { useNavigate } from "react-router-dom";
-import { useGetData } from "../../../hooks/useGetData";
-import Loader from "../../../components/gui/Loader";
-import NoData from "../../../components/gui/NoData";
-import SectionTitle from "../../../components/gui/SectionTitle";
+import { useGetData } from "../../../../hooks/useGetData";
+import Loader from "../../../../components/gui/Loader";
+import NoData from "../../../../components/gui/NoData";
+import SectionTitle from "../../../../components/gui/SectionTitle";
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));
@@ -250,6 +250,8 @@ const Success: FC<{
         data={dataBar}
         title="Boletas de despachadores"
         onClick={detallesBoleta}
+        etiquetaY="Puntos"
+        etiquetaX="Despachadores"
       />
     </div>
   );

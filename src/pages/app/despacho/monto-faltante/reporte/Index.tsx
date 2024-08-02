@@ -1,13 +1,17 @@
-import { FC, SyntheticEvent, useEffect, useState } from "react";
-import SectionTitle from "../../../../components/gui/SectionTitle";
-import CintaOpciones from "../../../../components/gui/CintaOpciones";
-import { useGetData } from "../../../../hooks/useGetData";
-import { SelectMonth, SelectYear } from "../../../../components/forms/Select";
-import Loader from "../../../../components/gui/Loader";
+import { FC, SyntheticEvent, useState } from "react";
+import SectionTitle from "../../../../../components/gui/SectionTitle";
+import CintaOpciones from "../../../../../components/gui/CintaOpciones";
+import { useGetData } from "../../../../../hooks/useGetData";
+import {
+  SelectMonth,
+  SelectYear,
+} from "../../../../../components/forms/Select";
+import Loader from "../../../../../components/gui/Loader";
 import moment from "moment";
-import format from "../../../../assets/format";
-import Modal from "../../../../components/gui/Modal";
-import Bar from "../../../../components/charts/Bar";
+import format from "../../../../../assets/format";
+import Modal from "../../../../../components/gui/Modal";
+import Bar from "../../../../../components/charts/Bar";
+import NoData from "../../../../../components/gui/NoData";
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));
@@ -20,7 +24,7 @@ const Index: FC = () => {
       };
   const [body, setBody] = useState<{ month?: string; year?: string }>(parsed);
 
-  const { data, isPending, isFetching, refetch } = useGetData(
+  const { data, isPending, isFetching, refetch, isError } = useGetData(
     `monto-faltante-despachador/semanas/${body.year}/${body.month}`,
     "reporteMF"
   );
@@ -31,7 +35,7 @@ const Index: FC = () => {
     sessionStorage.setItem("reporteMFFilter", JSON.stringify(body));
   };
 
-  console.log(data);
+  console.log(data, isError);
 
   return (
     <div className="flex flex-col">
@@ -57,7 +61,10 @@ const Index: FC = () => {
         </button>
       </CintaOpciones>
       <Loader isPending={isPending} isFetching={isFetching} />
-      {!isPending && !isFetching && <Success data={data} filtros={body} />}
+      {!isPending && !isFetching && !isError && (
+        <Success data={data} filtros={body} />
+      )}
+      <NoData isError={isError} isFetching={isFetching} isPending={isPending} />
     </div>
   );
 };

@@ -2,30 +2,33 @@ import { FC, FormEvent, SyntheticEvent, useState } from "react";
 import Axios from "../../assets/Axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
+import { useSendData } from "../../hooks/useSendData";
 
 const Index: FC = () => {
-  const [body, setBody] = useState<{ user?: string; password?: string }>({});
-  const [isPending, setIsPending] = useState<boolean>(false);
-
+  const { setToken } = useAuth();
   const navigate = useNavigate();
+  const { isPending, mutate } = useSendData(
+    "auth/login",
+    (res: { data: { token: { token: string } } }) => {
+      console.log(res, "ola");
+      setToken(res.data.token.token);
+      localStorage.setItem("credentials", JSON.stringify(res.data));
+      navigate("/app", { replace: true });
+    }
+  );
+  const [body, setBody] = useState<{ user?: string; password?: string }>({});
 
   const handle = (e: FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
 
     setBody((prev) => ({ ...prev, [name]: value }));
   };
-
-  const login = async (e: SyntheticEvent) => {
+  const login = (e: SyntheticEvent) => {
     e.preventDefault();
-
-    try {
-      const res = await Axios.post("auth/login", body);
-      console.log(res);
-      localStorage.setItem("credentials", JSON.stringify(res.data));
-      navigate("/app");
-      toast.success("Autenticado correctamente");
-    } catch (error) {}
+    mutate(body);
   };
+
   return (
     <div
       className={`w-screen h-screen flex items-center justify-center bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.8)),url("./img/loginbackground.jpg")] bg-cover `}

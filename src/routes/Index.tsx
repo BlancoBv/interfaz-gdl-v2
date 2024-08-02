@@ -8,10 +8,10 @@ import Login from "../pages/login/Index";
 import Layout from "../layout/Layout";
 import App from "../pages/app/Index";
 import Axios from "../assets/Axios";
-import Despacho from "../pages/despacho/Index";
-import BoletasDesp from "../pages/despacho/boletas/Index";
-import BoletasDespxEmp from "../pages/despacho/boletas/idDespachador/Index";
-import ReporteMF from "../pages/despacho/monto-faltante/reporte/Index";
+import Despacho from "../pages/app/despacho/Index";
+import BoletasDesp from "../pages/app/despacho/boletas/Index";
+import BoletasDespxEmp from "../pages/app/despacho/boletas/idDespachador/Index";
+import ReporteMF from "../pages/app/despacho/monto-faltante/reporte/Index";
 
 //administrativo
 import Usuarios from "../pages/app/administrativo/usuarios/Index";
@@ -31,7 +31,13 @@ const Index: FC = () => {
     },
     {
       path: "/app",
-      //errorElement: <>Error 404</>,
+      loader: () => {
+        const userData = localStorage.getItem("credentials");
+        if (!userData) {
+          return redirect("/");
+        }
+        return null;
+      },
       element: <Layout />,
       children: [
         {

@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { useLoaderData } from "react-router-dom";
-import SectionTitle from "../../../../components/gui/SectionTitle";
-import Icon from "../../../../components/Icon";
-import format from "../../../../assets/format";
-import { meses } from "../../../../assets/misc";
+import SectionTitle from "../../../../../components/gui/SectionTitle";
+import Icon from "../../../../../components/Icon";
+import format from "../../../../../assets/format";
+import { meses } from "../../../../../assets/misc";
 
 const Index: FC = () => {
   const { data, filtros }: any = useLoaderData();
