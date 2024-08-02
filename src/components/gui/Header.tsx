@@ -6,7 +6,7 @@ import Clock from "react-live-clock";
 
 const Header: FC = () => {
   return (
-    <div className="navbar bg-base-100/80 backdrop-blur-sm sticky top-0 z-40">
+    <div className="navbar bg-base-200/80 backdrop-blur-sm sticky top-0 z-40">
       <div className="flex-none">
         <label
           htmlFor="my-drawer"

@@ -1,7 +1,5 @@
 import { FC, FormEvent, SyntheticEvent, useState } from "react";
-import Axios from "../../assets/Axios";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 import { useSendData } from "../../hooks/useSendData";
 
