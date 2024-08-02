@@ -12,7 +12,7 @@ const Layout: FC = () => {
         {/* Barra lateral */}
         <SideBar />
         {/* Contenido */}
-        <div className="drawer-content flex flex-col relative lg:overflow-y-auto h-full bg-neutral">
+        <div className="drawer-content flex flex-col relative lg:overflow-y-auto h-full">
           <Header />
           <div className="p-4">
             <Outlet />

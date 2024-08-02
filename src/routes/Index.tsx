@@ -13,6 +13,9 @@ import BoletasDesp from "../pages/despacho/boletas/Index";
 import BoletasDespxEmp from "../pages/despacho/boletas/idDespachador/Index";
 import ReporteMF from "../pages/despacho/monto-faltante/reporte/Index";
 
+//administrativo
+import Usuarios from "../pages/app/administrativo/usuarios/Index";
+
 const Index: FC = () => {
   const router = createBrowserRouter([
     {
@@ -77,6 +80,10 @@ const Index: FC = () => {
               children: [{ path: "capturar", element: <ReporteMF /> }],
             },
           ],
+        },
+        {
+          path: "administrativo",
+          children: [{ path: "usuarios", element: <Usuarios /> }],
         },
       ],
     },
