@@ -23,7 +23,9 @@ export const Select: FC<{
 }) => {
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs">
-      {label}
+      <div className="label">
+        <span className="label-text">{label}</span>
+      </div>
       <select
         className="select select-bordered"
         name={name}
@@ -54,7 +56,9 @@ export const SelectMonth: FC<{
 }> = ({ name, label, variable, setVariable, disabled, required }) => {
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs">
-      {label}
+      <div className="label">
+        <span className="label-text">{label}</span>
+      </div>
       <select
         className="select select-bordered"
         name={name}
@@ -92,7 +96,9 @@ export const SelectYear: FC<{
 
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs">
-      {label}
+      <div className="label">
+        <span className="label-text">{label}</span>
+      </div>
       <select
         className="select select-bordered"
         name={name}

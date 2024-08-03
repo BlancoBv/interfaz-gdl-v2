@@ -33,7 +33,7 @@ const Index: FC = () => {
     quincena?: string;
   }>(parsed);
 
-  const { data, isPending, isFetching, refetch } = useGetData(
+  const { data, isPending, isFetching, refetch, isError } = useGetData(
     `view/boletas/all?year=${body.year}&month=${body.month}&quincena=${body.quincena}`,
     "boletasData"
   );
@@ -83,7 +83,16 @@ const Index: FC = () => {
       {!isPending && !isFetching && data.response.ck.length > 0 && (
         <Success data={data.response} filtros={body} />
       )}
-      {!isPending && !isFetching && data.response.ck.length === 0 && <NoData />}
+
+      <NoData
+        isError={
+          isError ||
+          (!isPending && !isFetching && data.response.ck.length === 0)
+        }
+        isFetching={isFetching}
+        isPending={isPending}
+      />
+
       <Loader isFetching={isFetching} isPending={isPending} />
     </div>
   );

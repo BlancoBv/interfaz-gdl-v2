@@ -4,7 +4,9 @@ import Axios from "../assets/Axios";
 export function useGetData(
   url: string,
   key: string,
-  config: { fetchInURLChange: boolean } = { fetchInURLChange: false }
+  config: { fetchInURLChange?: boolean; selectFn?: (data: any) => any } = {
+    fetchInURLChange: false,
+  }
 ) {
   // const queryClient = useQueryClient();
   return useQuery({
@@ -21,5 +23,12 @@ export function useGetData(
     refetchOnReconnect: false,
     staleTime: 50000,
     retry: 1,
+    select: config.selectFn
+      ? (data) => {
+          if (config.selectFn) {
+            return config.selectFn(data);
+          }
+        }
+      : undefined,
   });
 }

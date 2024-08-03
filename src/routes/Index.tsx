@@ -33,7 +33,8 @@ const Index: FC = () => {
       path: "/app",
       loader: () => {
         const userData = localStorage.getItem("credentials");
-        if (!userData) {
+        const token = localStorage.getItem("token");
+        if (!userData && !token) {
           return redirect("/");
         }
         return null;

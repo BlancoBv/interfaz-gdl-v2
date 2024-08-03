@@ -24,7 +24,7 @@
 *{
   --contexify-menu-bgColor: oklch(var(--b2));
   --contexify-separator-color: var(--fallback-bc,oklch(var(--bc)/0.1));
-  --contexify-item-color: #fff;
+  --contexify-item-color: oklch(var(--bc));
   --contexify-activeItem-color: #fff;
   --contexify-activeItem-bgColor: oklch(var(--p));
   --contexify-rightSlot-color: #6f6e77;
