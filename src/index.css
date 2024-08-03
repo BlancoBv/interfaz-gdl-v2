@@ -33,3 +33,6 @@
   --contexify-activeArrow-color: #fff;
 }
 
+dialog .Toastify{
+  position: fixed;
+}/*  Evita que el componente toast modifique la ventana modal*/

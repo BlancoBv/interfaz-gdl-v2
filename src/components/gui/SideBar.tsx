@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Icon from "../Icon";
+import { toast } from "react-toastify";
 
 const SideBar: FC = () => {
   const navigate = useNavigate();
@@ -145,6 +146,7 @@ const SideBar: FC = () => {
     localStorage.removeItem("credentials");
     localStorage.removeItem("token");
     navigate("/");
+    toast.success("Sesión cerrada correctamente", { containerId: "global" });
   };
   return (
     <nav className="drawer-side z-50 lg:z-auto">

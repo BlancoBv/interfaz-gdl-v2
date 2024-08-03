@@ -10,6 +10,9 @@ import CintaOpciones from "../../../../components/gui/CintaOpciones";
 import { Input } from "../../../../components/forms/Input";
 import Toggle from "../../../../components/forms/Toggle";
 import Modal from "../../../../components/gui/Modal";
+import agruparArr from "../../../../assets/agruparArr";
+import { useSendData } from "../../../../hooks/useSendData";
+import AsyncToggle from "./components/AsyncToggle";
 
 const Usuarios: FC = () => {
   const [body, setBody] = useState<{ user?: string; onlyAlta?: boolean }>({
@@ -44,8 +47,6 @@ const Usuarios: FC = () => {
     "usersData",
     { selectFn: selectFn }
   );
-
-  console.log(body);
 
   return (
     <div>
@@ -87,20 +88,39 @@ const Success: FC<{
 }> = ({ data }) => {
   const [relativeData, setRelativeData] = useState<{ idempleado?: number }>({});
   const { show } = useContextMenu({ id: DEFAULT_ID });
-  console.log(data);
 
   const displayContextMenu = (event: TriggerEvent, element: any) => {
     setRelativeData(element);
     show({ event });
   };
 
-  const permisos = useGetData(
+  const user = useGetData(
     `auth/usuarios/${relativeData.idempleado}`,
-    "detallesPerm",
+    "detallesUserAdmin",
     {
       fetchInURLChange: true,
     }
   );
+
+  const permisos = useGetData(
+    `auth/permisos/${relativeData.idempleado}}`,
+    "detallesPermAdmin",
+    { fetchInURLChange: true }
+  );
+  const { values } =
+    !permisos.isPending && !permisos.isFetching && !permisos.error
+      ? agruparArr(permisos.data.response, (el: { area: string }) => el.area)
+      : { values: [] };
+
+  const addPerm = useSendData("auth/registrar/permiso", {
+    method: "post",
+    containerID: "fromModal",
+  });
+  const delPerm = useSendData("auth/quitar/permiso", {
+    method: "put",
+    containerID: "fromModal",
+  });
+
   return (
     <div>
       <ContextualMenu
@@ -126,7 +146,101 @@ const Success: FC<{
         ]}
       />
       <Modal id="detallePerm" title="Administrar permisos">
-        <div>{}</div>
+        <div>
+          {!user.isPending &&
+            !user.isFetching &&
+            !user.isError &&
+            user.data.response &&
+            !permisos.isPending &&
+            !permisos.isFetching &&
+            !permisos.isError && (
+              <>
+                <span>
+                  {`${user.data.response.nombre} 
+                  ${user.data.response.apellido_materno} 
+                  ${user.data.response.apellido_materno}`}
+                </span>
+                <div
+                  role="tablist"
+                  className="tabs tabs-bordered tabs-xs lg:tabs-md"
+                >
+                  {values.map((el) => {
+                    const { values } = agruparArr(
+                      el,
+                      (el: { peticion: string }) => el.peticion
+                    );
+
+                    return (
+                      <>
+                        <input
+                          type="radio"
+                          name="my_tabs_1"
+                          role="tab"
+                          className="tab min-h-10"
+                          aria-label={el[0].area}
+                          defaultChecked={el[0].area === "Despacho"}
+                        />
+                        <div
+                          role="tabpanel"
+                          className="tab-content w-full p-10 h-96 overflow-y-auto"
+                        >
+                          {values.map(
+                            (
+                              el: {
+                                peticion: string;
+                                permiso: string;
+                                idpermiso: number;
+                                user: null | string;
+                              }[]
+                            ) => (
+                              <div>
+                                <h3 className="font-bold">{el[0].peticion}</h3>
+                                <div className="divider" />
+                                {el.map((perm) => (
+                                  <>
+                                    <AsyncToggle
+                                      perm={perm}
+                                      user={{
+                                        username: user.data.response.username,
+                                      }}
+                                      addMutate={addPerm}
+                                      delMutate={delPerm}
+                                    />
+
+                                    {/* <div className="form-control">
+                                      <label className="label cursor-pointer">
+                                        <span className="label-text me-2">
+                                          {perm.permiso}
+                                        </span>
+                                        <input
+                                          type="checkbox"
+                                          className="toggle"
+                                          onChange={(ev) => {
+                                            const { checked } =
+                                              ev.currentTarget;
+                                            console.log(checked);
+
+                                            delPerm.mutate({
+                                              user: user.data.response.username,
+                                              permiso: [perm.idpermiso],
+                                            });
+                                          }}
+                                        />
+                                      </label>
+                                    </div> */}
+                                  </>
+                                ))}
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+        </div>
       </Modal>
       <table className="table table-fixed table-xs lg:table-md">
         <thead>

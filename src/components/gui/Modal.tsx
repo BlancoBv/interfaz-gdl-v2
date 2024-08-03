@@ -1,4 +1,5 @@
 import { FC, ReactNode } from "react";
+import { ToastContainer } from "react-toastify";
 
 const Modal: FC<{ id: string; title?: string; children?: ReactNode }> = ({
   id,
@@ -8,9 +9,8 @@ const Modal: FC<{ id: string; title?: string; children?: ReactNode }> = ({
   return (
     <dialog id={id} className="modal">
       <div className="modal-box  w-11/12 max-w-5xl flex flex-col">
-        <div className="">
+        <div>
           <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button>
@@ -23,6 +23,7 @@ const Modal: FC<{ id: string; title?: string; children?: ReactNode }> = ({
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>
+      <ToastContainer autoClose={800} closeButton containerId="fromModal" />
     </dialog>
   );
 };

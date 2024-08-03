@@ -2,10 +2,22 @@ import { useMutation } from "@tanstack/react-query";
 import Axios from "../assets/Axios";
 import { toast } from "react-toastify";
 
-export function useSendData(url: string, customFn?: (elem?: any) => void) {
-  const { mutate, isPending } = useMutation({
+export function useSendData(
+  url: string,
+  config: {
+    method: "post" | "delete" | "put";
+    containerID?: "global" | "fromModal";
+    customFn?: (elem?: any) => void;
+    onSuccessMsg?: string;
+    onErrorMsg?: string;
+  } = {
+    method: "post",
+    customFn: undefined,
+  }
+) {
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: async (data: any) => {
-      const res = await Axios.post(url, data);
+      const res = await Axios[config.method](url, data);
       console.log(res);
       if (res.status === 400) {
         return Promise.reject(res.data);
@@ -14,17 +26,21 @@ export function useSendData(url: string, customFn?: (elem?: any) => void) {
       return res;
     },
     onSuccess: (data) => {
-      if (customFn) {
-        console.log(customFn);
-
-        customFn(data);
+      if (config.customFn) {
+        config.customFn(data);
       }
-
-      toast.success("Enviado correctamente");
+      toast.success(
+        config.onSuccessMsg ? config.onSuccessMsg : "Enviado Correctamente",
+        {
+          containerId: config.containerID ? config.containerID : "global",
+        }
+      );
     },
     onError: (err: { msg: string }) => {
-      toast.error(err.msg);
+      toast.error(err.msg, {
+        containerId: config.containerID ? config.containerID : "global",
+      });
     },
   });
-  return { mutate, isPending } as const;
+  return { mutate, isPending, isSuccess } as const;
 }

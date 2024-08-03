@@ -6,15 +6,16 @@ import { useSendData } from "../../hooks/useSendData";
 const Index: FC = () => {
   const { setToken } = useAuth();
   const navigate = useNavigate();
-  const { isPending, mutate } = useSendData(
-    "auth/login",
-    (res: { data: { token: { token: string } } }) => {
+  const { isPending, mutate } = useSendData("auth/login", {
+    method: "post",
+    customFn: (res: { data: { token: { token: string } } }) => {
       console.log(res, "ola");
       setToken(res.data.token.token);
       localStorage.setItem("credentials", JSON.stringify(res.data));
       navigate("/app", { replace: true });
-    }
-  );
+    },
+    onSuccessMsg: "Autenticado correctamente",
+  });
   const [body, setBody] = useState<{ user?: string; password?: string }>({});
 
   const handle = (e: FormEvent<HTMLInputElement>) => {
