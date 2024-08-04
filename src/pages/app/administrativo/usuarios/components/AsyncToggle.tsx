@@ -1,32 +1,47 @@
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { useSendData } from "../../../../../hooks/useSendData";
 
 const AsyncToggle: FC<{
   perm: { permiso: string; idpermiso: number; user: string | null };
-  user: { username: string };
-  addMutate: any;
-  delMutate: any;
-}> = ({ perm, user, addMutate, delMutate }) => {
+  user: { username: string | null | undefined };
+}> = ({ perm, user }) => {
+  const addPerm = useSendData("auth/registrar/permiso", {
+    method: "post",
+    containerID: "fromModal",
+  });
+  const delPerm = useSendData("auth/quitar/permiso", {
+    method: "put",
+    containerID: "fromModal",
+  });
   const [checked, setChecked] = useState<boolean>(perm.user ? true : false);
+
+  const ref = useRef<null | HTMLInputElement>(null);
+
   return (
     <div className="form-control">
-      <label className="label cursor-pointer">
+      <label
+        className={`label ${
+          delPerm.isPending || addPerm.isPending
+            ? "cursor-wait"
+            : "cursor-pointer"
+        }`}
+      >
         <span className="label-text me-2">{perm.permiso}</span>
         <input
           type="checkbox"
           className="toggle"
+          ref={ref}
           onChange={(ev) => {
             const { checked } = ev.currentTarget;
-            console.log(checked);
             if (checked) {
-              addMutate.mutate({
+              addPerm.mutate({
                 user: user.username,
                 permiso: [perm.idpermiso],
               });
               setChecked(true);
-              toast.success("sdadsadsadsadasd");
             } else {
-              delMutate.mutate({
+              delPerm.mutate({
                 user: user.username,
                 permiso: [perm.idpermiso],
               });
@@ -34,7 +49,7 @@ const AsyncToggle: FC<{
             }
           }}
           checked={checked}
-          disabled={addMutate.isPending || delMutate.isPending}
+          disabled={addPerm.isPending || delPerm.isPending}
         />
       </label>
     </div>

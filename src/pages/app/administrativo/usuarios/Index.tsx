@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, Fragment, useCallback, useState } from "react";
 import { useGetData } from "../../../../hooks/useGetData";
 import Loader from "../../../../components/gui/Loader";
 import SectionTitle from "../../../../components/gui/SectionTitle";
@@ -9,7 +9,7 @@ import ContextualMenu, {
 import CintaOpciones from "../../../../components/gui/CintaOpciones";
 import { Input } from "../../../../components/forms/Input";
 import Toggle from "../../../../components/forms/Toggle";
-import Modal from "../../../../components/gui/Modal";
+import Modal, { ModalConfirm } from "../../../../components/gui/Modal";
 import agruparArr from "../../../../assets/agruparArr";
 import { useSendData } from "../../../../hooks/useSendData";
 import AsyncToggle from "./components/AsyncToggle";
@@ -42,7 +42,7 @@ const Usuarios: FC = () => {
     },
     [body]
   );
-  const { data, isError, isFetching, isPending } = useGetData(
+  const { data, isError, isFetching, isPending, refetch } = useGetData(
     "auth/usuarios",
     "usersData",
     { selectFn: selectFn }
@@ -69,7 +69,7 @@ const Usuarios: FC = () => {
       </CintaOpciones>
       <Loader isFetching={isFetching} isPending={isPending} />
       {!isPending && !isFetching && !isError && (
-        <Success data={data.response} />
+        <Success data={data.response} refetch={refetch} />
       )}
     </div>
   );
@@ -85,22 +85,24 @@ const Success: FC<{
     username: null | string;
     idchecador: number | null;
   }[];
-}> = ({ data }) => {
-  const [relativeData, setRelativeData] = useState<{ idempleado?: number }>({});
+  refetch: any;
+}> = ({ data, refetch }) => {
+  const [relativeData, setRelativeData] = useState<{
+    idempleado?: number;
+    username?: null | string;
+    idchecador?: number;
+  }>({});
+  const [body, setBody] = useState<{
+    password?: string;
+    user?: string;
+    newPassword?: string;
+  }>({});
   const { show } = useContextMenu({ id: DEFAULT_ID });
 
   const displayContextMenu = (event: TriggerEvent, element: any) => {
     setRelativeData(element);
     show({ event });
   };
-
-  const user = useGetData(
-    `auth/usuarios/${relativeData.idempleado}`,
-    "detallesUserAdmin",
-    {
-      fetchInURLChange: true,
-    }
-  );
 
   const permisos = useGetData(
     `auth/permisos/${relativeData.idempleado}}`,
@@ -112,11 +114,14 @@ const Success: FC<{
       ? agruparArr(permisos.data.response, (el: { area: string }) => el.area)
       : { values: [] };
 
-  const addPerm = useSendData("auth/registrar/permiso", {
-    method: "post",
-    containerID: "fromModal",
-  });
-  const delPerm = useSendData("auth/quitar/permiso", {
+  const deleteUser = useSendData(
+    `auth/eliminar?username=${relativeData.username}`,
+    {
+      method: "delete",
+    }
+  );
+
+  const changePassword = useSendData("auth/changePassa", {
     method: "put",
     containerID: "fromModal",
   });
@@ -137,111 +142,135 @@ const Success: FC<{
             elementType: "item",
             name: "Administrar permisos",
             icon: "gear",
+            disabled: relativeData.username ? false : true,
             onClick: () => {
               (
                 document.getElementById("detallePerm") as HTMLDialogElement
               ).showModal();
             },
           },
+          {
+            elementType: "item",
+            name: "Eliminar usuario",
+            icon: "trash",
+            disabled: relativeData.username ? false : true,
+            color: "error",
+            onClick: () => {
+              (
+                document.getElementById("modal-confirm") as HTMLDialogElement
+              ).showModal();
+            },
+          },
         ]}
       />
-      <Modal id="detallePerm" title="Administrar permisos">
+      <ModalConfirm mutateVariable={deleteUser} refetch={refetch} />
+      <Modal
+        id="detallePerm"
+        title={`Administrar usuario ${relativeData.username}`}
+      >
         <div>
-          {!user.isPending &&
-            !user.isFetching &&
-            !user.isError &&
-            user.data.response &&
-            !permisos.isPending &&
-            !permisos.isFetching &&
-            !permisos.isError && (
-              <>
-                <span>
-                  {`${user.data.response.nombre} 
-                  ${user.data.response.apellido_materno} 
-                  ${user.data.response.apellido_materno}`}
-                </span>
-                <div
-                  role="tablist"
-                  className="tabs tabs-bordered tabs-xs lg:tabs-md"
+          {!permisos.isPending && !permisos.isFetching && !permisos.isError && (
+            <div
+              role="tablist"
+              className="tabs tabs-bordered tabs-xs lg:tabs-sm"
+            >
+              {values.map((el) => {
+                const { values } = agruparArr(
+                  el,
+                  (el: { peticion: string }) => el.peticion
+                );
+
+                return (
+                  <Fragment key={el[0].area}>
+                    {/* Fragment evita error de unique key */}
+                    <input
+                      type="radio"
+                      name="my_tabs_1"
+                      role="tab"
+                      className="tab min-h-10"
+                      aria-label={el[0].area}
+                      defaultChecked={el[0].area === "Despacho"}
+                    />
+                    <div
+                      role="tabpanel"
+                      className="tab-content w-full p-10 h-96 overflow-y-auto"
+                    >
+                      {values.map(
+                        (
+                          peticion: {
+                            peticion: string;
+                            permiso: string;
+                            idpermiso: number;
+                            user: null | string;
+                          }[]
+                        ) => (
+                          <div key={peticion[0].peticion}>
+                            <h3 className="font-bold">
+                              {peticion[0].peticion}
+                            </h3>
+                            <div className="divider" />
+                            {peticion.map((perm) => (
+                              <AsyncToggle
+                                perm={perm}
+                                user={{
+                                  username: relativeData.username,
+                                }}
+                                key={perm.idpermiso}
+                              />
+                            ))}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </Fragment>
+                );
+              })}
+              <input
+                type="radio"
+                name="my_tabs_1"
+                role="tab"
+                className="tab min-h-10"
+                aria-label="Cambiar contraseña"
+              />
+              <div
+                role="tabpanel"
+                className="tab-content w-full p-10 h-96 overflow-y-auto"
+              >
+                <form
+                  className="flex flex-col gap-4 justify-center items-center"
+                  onSubmit={(ev) => {
+                    ev.preventDefault();
+                    changePassword.mutate({
+                      newPassword: body.newPassword,
+                      user: relativeData.username,
+                    });
+                    setBody({});
+                  }}
                 >
-                  {values.map((el) => {
-                    const { values } = agruparArr(
-                      el,
-                      (el: { peticion: string }) => el.peticion
-                    );
-
-                    return (
-                      <>
-                        <input
-                          type="radio"
-                          name="my_tabs_1"
-                          role="tab"
-                          className="tab min-h-10"
-                          aria-label={el[0].area}
-                          defaultChecked={el[0].area === "Despacho"}
-                        />
-                        <div
-                          role="tabpanel"
-                          className="tab-content w-full p-10 h-96 overflow-y-auto"
-                        >
-                          {values.map(
-                            (
-                              el: {
-                                peticion: string;
-                                permiso: string;
-                                idpermiso: number;
-                                user: null | string;
-                              }[]
-                            ) => (
-                              <div>
-                                <h3 className="font-bold">{el[0].peticion}</h3>
-                                <div className="divider" />
-                                {el.map((perm) => (
-                                  <>
-                                    <AsyncToggle
-                                      perm={perm}
-                                      user={{
-                                        username: user.data.response.username,
-                                      }}
-                                      addMutate={addPerm}
-                                      delMutate={delPerm}
-                                    />
-
-                                    {/* <div className="form-control">
-                                      <label className="label cursor-pointer">
-                                        <span className="label-text me-2">
-                                          {perm.permiso}
-                                        </span>
-                                        <input
-                                          type="checkbox"
-                                          className="toggle"
-                                          onChange={(ev) => {
-                                            const { checked } =
-                                              ev.currentTarget;
-                                            console.log(checked);
-
-                                            delPerm.mutate({
-                                              user: user.data.response.username,
-                                              permiso: [perm.idpermiso],
-                                            });
-                                          }}
-                                        />
-                                      </label>
-                                    </div> */}
-                                  </>
-                                ))}
-                              </div>
-                            )
-                          )}
-                        </div>
-                      </>
-                    );
-                  })}
-                </div>
-              </>
-            )}
+                  <Input
+                    label="Nueva contraseña"
+                    variable={body}
+                    setVariable={setBody}
+                    name="newPassword"
+                  />
+                  <button
+                    className="btn btn-primary"
+                    type="submit"
+                    disabled={changePassword.isPending}
+                  >
+                    {changePassword.isPending ? (
+                      <span className="loading loading-bars loading-md" />
+                    ) : (
+                      "Enviar"
+                    )}
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       </Modal>
+
       <table className="table table-fixed table-xs lg:table-md">
         <thead>
           <tr>
@@ -255,6 +284,7 @@ const Success: FC<{
             <tr
               onContextMenu={(event) => displayContextMenu(event, el)}
               className="hover"
+              key={el.idempleado}
             >
               <td>{el.idchecador ? el.idchecador : "Sin ID"}</td>
               <td>{`${el.nombre} ${el.apellido_paterno} ${el.apellido_materno}`}</td>

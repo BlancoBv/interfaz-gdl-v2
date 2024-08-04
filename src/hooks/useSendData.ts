@@ -15,8 +15,8 @@ export function useSendData(
     customFn: undefined,
   }
 ) {
-  const { mutate, isPending, isSuccess } = useMutation({
-    mutationFn: async (data: any) => {
+  const { mutate, isPending, isSuccess, mutateAsync } = useMutation({
+    mutationFn: async (data?: any) => {
       const res = await Axios[config.method](url, data);
       console.log(res);
       if (res.status === 400) {
@@ -42,5 +42,5 @@ export function useSendData(
       });
     },
   });
-  return { mutate, isPending, isSuccess } as const;
+  return { mutate, isPending, isSuccess, mutateAsync } as const;
 }

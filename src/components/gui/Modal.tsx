@@ -28,4 +28,51 @@ const Modal: FC<{ id: string; title?: string; children?: ReactNode }> = ({
   );
 };
 
+export const ModalConfirm: FC<{
+  refetch: any;
+  mutateVariable: any;
+  closeModalID?: string;
+}> = ({ refetch, mutateVariable }) => {
+  return (
+    <dialog id="modal-confirm" className="modal">
+      <div className="modal-box flex flex-col max-w-xs">
+        <div>
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+          </form>
+          <h3 className="font-bold text-lg">Confirmar acción</h3>
+          <div className="divider mt-0" />
+        </div>
+        <p>¿Desea continuar?</p>
+        <div className="modal-action">
+          <form method="dialog" className="flex gap-4 items-center">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn">Cerrar</button>
+            <button
+              className="btn btn-primary"
+              onClick={async () => {
+                await mutateVariable.mutateAsync({});
+
+                refetch();
+                /*  if (closeModalID) {
+                  (
+                    document.getElementById(closeModalID) as HTMLDialogElement
+                  ).close();
+                } */
+              }}
+            >
+              Aceptar
+            </button>
+          </form>
+        </div>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
+  );
+};
+
 export default Modal;

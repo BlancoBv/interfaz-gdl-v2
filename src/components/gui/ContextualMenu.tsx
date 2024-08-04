@@ -11,6 +11,8 @@ interface ContextualMenuIntf {
     name?: string;
     icon?: string;
     onClick?: () => void;
+    disabled?: boolean;
+    color?: "error";
   }[];
 }
 
@@ -19,19 +21,33 @@ interface contextItems {
   name?: string;
   onClick?: () => void;
   icon?: string;
+  disabled?: boolean;
+  color?: "error";
 }
 [];
 
 const ContextualMenu: FC<ContextualMenuIntf> = ({ id, items }) => {
+  const colors = { error: "text-error" };
   const elements: {
     item: (element: contextItems) => JSX.Element;
     submenu: (element: contextItems) => JSX.Element;
     separator: () => JSX.Element;
   } = {
     item: (element) => (
-      <Item onClick={element.onClick}>
-        {element.icon && <Icon icon={element.icon} />}{" "}
-        <span className="ms-2">{element.name}</span>
+      <Item
+        onClick={element.onClick}
+        key={`${element.name}-only-item`}
+        disabled={element.disabled ? element.disabled : false}
+      >
+        {element.icon && (
+          <Icon
+            icon={element.icon}
+            className={element.color ? colors[element.color] : ""}
+          />
+        )}{" "}
+        <span className={`ms-2 ${element.color ? colors[element.color] : ""}`}>
+          {element.name}
+        </span>
       </Item>
     ),
     submenu: (element) => <Item>{element.name}</Item>,
