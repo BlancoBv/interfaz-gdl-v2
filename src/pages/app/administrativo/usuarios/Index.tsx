@@ -15,16 +15,32 @@ import { useSendData } from "../../../../hooks/useSendData";
 import AsyncToggle from "./components/AsyncToggle";
 
 const Usuarios: FC = () => {
-  const [body, setBody] = useState<{ user?: string; onlyAlta?: boolean }>({
+  const [body, setBody] = useState<{
+    user?: string;
+    onlyAlta?: boolean;
+    onlyWUser?: boolean;
+  }>({
     user: "",
     onlyAlta: true,
+    onlyWUser: true,
   });
 
   const selectFn = useCallback(
     (data: any) => {
       const filtered = data.response.filter(
-        (el: { idchecador: null | number }) =>
-          body.onlyAlta ? el.idchecador : true
+        (el: { idchecador: null | number; username: null | string }) => {
+          if (body.onlyAlta && body.onlyWUser) {
+            return el.idchecador && el.username;
+          }
+          if (body.onlyAlta) {
+            return el.idchecador;
+          }
+          if (body.onlyWUser) {
+            return el.username;
+          }
+
+          return true;
+        }
       );
       const exp = new RegExp(`${body.user}`, "i");
       const response = filtered.filter(
@@ -45,7 +61,7 @@ const Usuarios: FC = () => {
   const { data, isError, isFetching, isPending, refetch } = useGetData(
     "auth/usuarios",
     "usersData",
-    { selectFn: selectFn }
+    { selectFn }
   );
 
   return (
@@ -63,6 +79,12 @@ const Usuarios: FC = () => {
         <Toggle
           label="Mostrar solo usuarios en alta"
           name="onlyAlta"
+          variable={body}
+          setVariable={setBody}
+        />
+        <Toggle
+          label="Mostrar solo empleados que tengan usuario"
+          name="onlyWUser"
           variable={body}
           setVariable={setBody}
         />
@@ -277,6 +299,7 @@ const Success: FC<{
             <th>ID</th>
             <th>Nombre</th>
             <th>Departamento</th>
+            <th>Usuario</th>
           </tr>
         </thead>
         <tbody>
@@ -289,6 +312,7 @@ const Success: FC<{
               <td>{el.idchecador ? el.idchecador : "Sin ID"}</td>
               <td>{`${el.nombre} ${el.apellido_paterno} ${el.apellido_materno}`}</td>
               <td>{el.departamento}</td>
+              <td>{el.username ? el.username : "Sin usuario"}</td>
             </tr>
           ))}
         </tbody>
