@@ -25,6 +25,7 @@
     "react-dom": "^18.3.1",
     "react-live-clock": "6.1.23-beta",
     "react-router-dom": "^6.24.1",
+    "react-select": "^5.8.0",
     "react-toastify": "^10.0.5"
   },
   "devDependencies": {
