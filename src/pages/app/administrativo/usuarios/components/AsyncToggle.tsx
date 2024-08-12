@@ -1,5 +1,4 @@
 import { FC, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { useSendData } from "../../../../../hooks/useSendData";
 
 const AsyncToggle: FC<{

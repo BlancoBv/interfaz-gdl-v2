@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useEffect, useState } from "react";
+import { FC, SyntheticEvent, useState } from "react";
 import CintaOpciones from "../../../../components/gui/CintaOpciones";
 import {
   SelectMonth,
