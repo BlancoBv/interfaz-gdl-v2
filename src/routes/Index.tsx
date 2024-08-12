@@ -15,6 +15,7 @@ import ReporteMF from "../pages/app/despacho/monto-faltante/reporte/Index";
 
 //administrativo
 import Usuarios from "../pages/app/administrativo/usuarios/Index";
+import Preliquidacion from "../pages/preliquidacion/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -93,6 +94,10 @@ const Index: FC = () => {
           children: [{ path: "usuarios", element: <Usuarios /> }],
         },
       ],
+    },
+    {
+      path: "/preliquidacion",
+      children: [{ index: true, element: <Preliquidacion /> }],
     },
   ]);
 
