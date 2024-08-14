@@ -1,16 +1,18 @@
 import { FC, useState } from "react";
-import SectionTitle from "../../components/gui/SectionTitle";
-import CardInfoGral from "./components/CardInfoGral";
-import { SelectEmpleado } from "../../components/forms/Select";
-import { NavLink } from "react-router-dom";
+import SectionTitle from "../../../components/gui/SectionTitle";
+import CardInfoGral from "../components/CardInfoGral";
+import { SelectEmpleado } from "../../../components/forms/Select";
 
-const Preliquidacion: FC = () => {
-  const [body, setBody] = useState<{ empleado?: "string" }>({});
+const ConfigurarPrecios: FC = () => {
+  const [body, setBody] = useState<{}>({});
   return (
     <div className="w-full h-full flex flex-col">
-      <SectionTitle titulo="Información general" subtitulo="Preliquidación" />
+      <SectionTitle
+        titulo="Configuración de precios"
+        subtitulo="Preliquidación"
+      />
       <div className="w-full grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <CardInfoGral titulo="Empleado" icon="user">
+        <CardInfoGral titulo="Magna" icon="gas-pump">
           <SelectEmpleado
             name="empleado"
             label="Selecciona un empleado"
@@ -20,7 +22,7 @@ const Preliquidacion: FC = () => {
             departamento="1"
           />
         </CardInfoGral>
-        <CardInfoGral titulo="Turno" icon="user">
+        <CardInfoGral titulo="Premium" icon="gas-pump">
           <SelectEmpleado
             name="empleado"
             label="Selecciona un empleado"
@@ -30,17 +32,7 @@ const Preliquidacion: FC = () => {
             departamento="1"
           />
         </CardInfoGral>
-        <CardInfoGral titulo="Estación de servicio" icon="user">
-          <SelectEmpleado
-            name="empleado"
-            label="Selecciona un empleado"
-            variable={body}
-            setVariable={setBody}
-            estatus={["1", "6"]}
-            departamento="1"
-          />
-        </CardInfoGral>
-        <CardInfoGral titulo="Isla(s) de trabajo" icon="user">
+        <CardInfoGral titulo="Diesel" icon="gas-pump">
           <SelectEmpleado
             name="empleado"
             label="Selecciona un empleado"
@@ -51,14 +43,17 @@ const Preliquidacion: FC = () => {
           />
         </CardInfoGral>
       </div>
-      <NavLink
-        to="/preliquidacion/configurar-precios"
+      <button
         className="btn btn-primary btn-block mt-4"
+        onClick={() => {
+          console.log("dsadasd");
+
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        }}
       >
         Siguiente
-      </NavLink>
+      </button>
     </div>
   );
 };
-
-export default Preliquidacion;
+export default ConfigurarPrecios;

@@ -212,7 +212,7 @@ export const ReactSelect: FC = () => {
                 ? "outline outline-2 outline-base-content/20 outline-offset-2"
                 : ""
             }`,
-          menu: () => `bg-base-200`,
+          menu: () => `bg-base-200 mt-2 z-50`,
         }}
         unstyled
         styles={{
@@ -221,7 +221,7 @@ export const ReactSelect: FC = () => {
             return { ...base };
           },
         }}
-        noOptionsMessage={(value) => "Sin Opciones"}
+        noOptionsMessage={() => "Sin opciones"}
       />
     </label>
   );

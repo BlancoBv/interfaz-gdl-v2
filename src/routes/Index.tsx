@@ -16,6 +16,8 @@ import ReporteMF from "../pages/app/despacho/monto-faltante/reporte/Index";
 //administrativo
 import Usuarios from "../pages/app/administrativo/usuarios/Index";
 import Preliquidacion from "../pages/preliquidacion/Index";
+import LayoutPreliquidacion from "../layout/LayoutPreliquidacion";
+import ConfigurarPrecios from "../pages/preliquidacion/configurar-precios/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -97,7 +99,11 @@ const Index: FC = () => {
     },
     {
       path: "/preliquidacion",
-      children: [{ index: true, element: <Preliquidacion /> }],
+      element: <LayoutPreliquidacion />,
+      children: [
+        { index: true, element: <Preliquidacion /> },
+        { path: "configurar-precios", element: <ConfigurarPrecios /> },
+      ],
     },
   ]);
 

@@ -8,6 +8,6 @@ export default {
   },
   plugins: [typography, daisyui],
   daisyui: {
-    themes: ["business", "cupcake"],
+    themes: ["business", "cupcake", "corporate"],
   },
 };
