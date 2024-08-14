@@ -6,7 +6,7 @@ import Clock from "react-live-clock";
 
 const Header: FC<{ noShowBarMenu?: boolean }> = ({ noShowBarMenu }) => {
   return (
-    <div className="navbar bg-base-100/80 backdrop-blur-sm sticky top-0 z-40 pb-0">
+    <div className="navbar bg-base-100/80 backdrop-blur-sm sticky top-0 z-40 pb-0 shadow-sm">
       {!noShowBarMenu && (
         <div className="flex-none">
           <label

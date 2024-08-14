@@ -186,6 +186,7 @@ export const SelectEmpleado: FC<{
         </option>
         {!isPending &&
           !isFetching &&
+          !isError &&
           data.response.map(
             (el: { nombre_completo: string; idempleado: number }) => (
               <option value={el.idempleado} key={el.idempleado}>
