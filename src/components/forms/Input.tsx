@@ -1,5 +1,4 @@
 import { FC } from "react";
-import Icon from "../Icon";
 
 export const Input: FC<{
   label: string;
@@ -18,7 +17,6 @@ export const Input: FC<{
   inputType = "text",
   disabled = false,
   required = true,
-  icon,
 }) => {
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs ">
