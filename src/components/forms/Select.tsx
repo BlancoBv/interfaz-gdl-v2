@@ -170,31 +170,6 @@ export const SelectEmpleado: FC<{
       <div className="label">
         <span className="label-text">{label}</span>
       </div>
-      {/*       <select
-        className="select select-bordered"
-        name={name}
-        onChange={(ev) => {
-          const { name, value } = ev.currentTarget;
-          setVariable((prev: any) => ({ ...prev, [name]: value }));
-        }}
-        value={variable.hasOwnProperty(name) ? variable[name] : ""}
-        disabled={disabled}
-        required={required}
-      >
-        <option disabled value="">
-          Selecciona un empleado
-        </option>
-        {!isPending &&
-          !isFetching &&
-          !isError &&
-          data.response.map(
-            (el: { nombre_completo: string; idempleado: number }) => (
-              <option value={el.idempleado} key={el.idempleado}>
-                {el.nombre_completo}
-              </option>
-            )
-          )}
-      </select> */}
       <ReactSelect
         placeholder="Selecciona un empleado"
         options={
@@ -298,6 +273,7 @@ export const ReactSelect: FC<{
       value={value}
       tabIndex={tabIndex}
       isMulti={multiple}
+      menuPosition="fixed"
     />
   );
 };

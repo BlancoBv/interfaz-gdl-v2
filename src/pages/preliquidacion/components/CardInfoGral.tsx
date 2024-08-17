@@ -5,10 +5,11 @@ const CardInfoGral: FC<{
   children?: ReactNode;
   titulo: string;
   icon: string;
-}> = ({ children, titulo, icon }) => {
+  iconClassName?: string;
+}> = ({ children, titulo, icon, iconClassName }) => {
   return (
     <div className="card bg-base-100 max-w-xs w-full shadow-xl">
-      <figure className="px-10 pt-10">
+      <figure className={`px-10 pt-10 ${iconClassName ? iconClassName : ""}`}>
         <Icon icon={icon} size="5x" />
       </figure>
       <div className="card-body items-center text-center">

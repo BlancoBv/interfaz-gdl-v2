@@ -20,30 +20,30 @@ const Preliquidacion: FC = () => {
             departamento="1"
           />
         </CardInfoGral>
-        <CardInfoGral titulo="Turno" icon="user">
+        <CardInfoGral titulo="Turno" icon="business-time">
           <SelectEmpleado
             name="empleado"
-            label="Selecciona un empleado"
+            label="Selecciona un turno"
             variable={body}
             setVariable={setBody}
             estatus={["1", "6"]}
             departamento="1"
           />
         </CardInfoGral>
-        <CardInfoGral titulo="Estación de servicio" icon="user">
+        <CardInfoGral titulo="Estación de servicio" icon="tent">
           <SelectEmpleado
             name="empleado"
-            label="Selecciona un empleado"
+            label="Selecciona una estación de servicio"
             variable={body}
             setVariable={setBody}
             estatus={["1", "6"]}
             departamento="1"
           />
         </CardInfoGral>
-        <CardInfoGral titulo="Isla(s) de trabajo" icon="user">
+        <CardInfoGral titulo="Isla(s) de trabajo" icon="gas-pump">
           <SelectEmpleado
             name="empleado"
-            label="Selecciona un empleado"
+            label="Selecciona una isla de trabajo"
             variable={body}
             setVariable={setBody}
             estatus={["1", "6"]}

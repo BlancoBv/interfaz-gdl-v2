@@ -12,7 +12,11 @@ const ConfigurarPrecios: FC = () => {
         subtitulo="Preliquidación"
       />
       <div className="w-full grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <CardInfoGral titulo="Magna" icon="gas-pump">
+        <CardInfoGral
+          titulo="Magna"
+          icon="gas-pump"
+          iconClassName="text-success"
+        >
           <SelectEmpleado
             name="empleado"
             label="Selecciona un empleado"
@@ -22,7 +26,11 @@ const ConfigurarPrecios: FC = () => {
             departamento="1"
           />
         </CardInfoGral>
-        <CardInfoGral titulo="Premium" icon="gas-pump">
+        <CardInfoGral
+          titulo="Premium"
+          icon="gas-pump"
+          iconClassName="text-error"
+        >
           <SelectEmpleado
             name="empleado"
             label="Selecciona un empleado"
@@ -32,7 +40,11 @@ const ConfigurarPrecios: FC = () => {
             departamento="1"
           />
         </CardInfoGral>
-        <CardInfoGral titulo="Diesel" icon="gas-pump">
+        <CardInfoGral
+          titulo="Diesel"
+          icon="gas-pump"
+          iconClassName="text-black"
+        >
           <SelectEmpleado
             name="empleado"
             label="Selecciona un empleado"
