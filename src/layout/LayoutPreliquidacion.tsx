@@ -1,12 +1,34 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import Icon from "../components/Icon";
 import ScrollToTop from "../assets/ScrollToTop";
 import Header from "../components/gui/Header";
+import { ModalConfirmNoMutate } from "../components/gui/Modal";
 
 const LayoutPreliquidacion: FC = () => {
+  useEffect(() => {
+    console.log("rerender");
+
+    const infoGralCache = localStorage.getItem("infoGeneralPreliq");
+    if (infoGralCache) {
+      const modal = document.getElementById(
+        "modal-confirm-no-mutate"
+      ) as HTMLDialogElement;
+      modal.showModal();
+    }
+  }, []);
+
+  const cleanAll = () => {
+    console.log("ola");
+  };
+
   return (
     <div className="h-screen w-screen flex">
+      <ModalConfirmNoMutate
+        action={cleanAll}
+        msg="Existen datos sin guardar, ¿desea recuperarlos?"
+        title="Advertencia"
+      />
       <ul className="menu bg-base-200 rounded-box w-2/6 lg:w-1/6 h-full gap-2">
         <li>
           <NavLink to="/preliquidacion" end>

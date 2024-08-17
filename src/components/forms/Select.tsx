@@ -124,8 +124,6 @@ export const SelectYear: FC<{
   );
 };
 
-//http://localhost:4000/api/empleado?departamento=1&auth=false&estatus=1&estatus=6
-
 export const SelectEmpleado: FC<{
   name: string;
   label: string;
@@ -194,7 +192,144 @@ export const SelectEmpleado: FC<{
   );
 };
 
-export const ReactSelect: FC<{
+export const SelectTurno: FC<{
+  name: string;
+  label: string;
+  variable: any;
+  setVariable: any;
+  required?: boolean;
+  disabled?: boolean;
+}> = ({ name, label, variable, setVariable, disabled, required }) => {
+  const { data, isPending, isFetching, isError } = useGetData(
+    "administrativo/turnos/buscartodo",
+    "turnoSelectData"
+  );
+
+  return (
+    <label className="form-control w-full max-w-40 lg:max-w-xs">
+      <div className="label">
+        <span className="label-text">{label}</span>
+      </div>
+      <ReactSelect
+        placeholder="Selecciona un turno"
+        options={
+          !isFetching &&
+          !isPending &&
+          !isError &&
+          data.response.map(
+            (el: { turno: string; idturno: number; hora_empiezo: string }) => ({
+              value: el.idturno,
+              label: `${el.turno} (${el.hora_empiezo})`,
+            })
+          )
+        }
+        isLoading={isPending && isFetching}
+        setVariable={setVariable}
+        name={name}
+        variable={variable}
+        disabled={disabled}
+        required={required}
+      />
+    </label>
+  );
+};
+
+export const SelectEstacion: FC<{
+  name: string;
+  label: string;
+  variable: any;
+  setVariable: any;
+  required?: boolean;
+  disabled?: boolean;
+}> = ({ name, label, variable, setVariable, disabled, required }) => {
+  const { data, isPending, isFetching, isError } = useGetData(
+    "estaciones-servicio",
+    "estacionSelectData"
+  );
+
+  return (
+    <label className="form-control w-full max-w-40 lg:max-w-xs">
+      <div className="label">
+        <span className="label-text">{label}</span>
+      </div>
+      <ReactSelect
+        placeholder="Selecciona un turno"
+        options={
+          !isFetching &&
+          !isPending &&
+          !isError &&
+          data.response.map(
+            (el: { nombre: string; idestacion_servicio: number }) => ({
+              value: el.idestacion_servicio,
+              label: el.nombre,
+            })
+          )
+        }
+        isLoading={isPending && isFetching}
+        setVariable={setVariable}
+        name={name}
+        variable={variable}
+        disabled={disabled}
+        required={required}
+      />
+    </label>
+  );
+};
+
+export const SelectIsla: FC<{
+  name: string;
+  label: string;
+  variable: any;
+  setVariable: any;
+  required?: boolean;
+  disabled?: boolean;
+  estacionServicio?: number;
+  multiple?: boolean;
+}> = ({
+  name,
+  label,
+  variable,
+  setVariable,
+  disabled,
+  required,
+  estacionServicio,
+  multiple,
+}) => {
+  const { data, isPending, isFetching, isError } = useGetData(
+    `liquidacion/islas/${estacionServicio}`,
+    "islaSelectData",
+    { fetchInURLChange: true }
+  );
+
+  return (
+    <label className="form-control w-full max-w-40 lg:max-w-xs">
+      <div className="label">
+        <span className="label-text">{label}</span>
+      </div>
+      <ReactSelect
+        placeholder="Selecciona una o más islas"
+        options={
+          !isFetching &&
+          !isPending &&
+          !isError &&
+          data.response.map((el: { idisla: number; nisla: number }) => ({
+            value: el.idisla,
+            label: `Isla ${el.nisla}`,
+          }))
+        }
+        isLoading={isPending && isFetching}
+        setVariable={setVariable}
+        name={name}
+        variable={variable}
+        disabled={disabled}
+        required={required}
+        multiple={multiple}
+      />
+    </label>
+  );
+};
+
+const ReactSelect: FC<{
   options: { value: string | number; label: string }[];
   placeholder: string;
   isLoading?: boolean;
@@ -218,7 +353,7 @@ export const ReactSelect: FC<{
   multiple,
 }) => {
   const value = useMemo(() => {
-    if (variable[name]) {
+    if (variable[name] && !isLoading) {
       const indexOfValue = options.findIndex(
         (el) => el.value === Number(variable[name])
       );
@@ -228,7 +363,7 @@ export const ReactSelect: FC<{
       return options[indexOfValue];
     }
     return undefined;
-  }, [variable]);
+  }, [variable, isLoading]);
 
   return (
     <RSelect
@@ -268,7 +403,19 @@ export const ReactSelect: FC<{
       isDisabled={disabled}
       isClearable
       onChange={(ev) => {
-        setVariable((prev: any) => ({ ...prev, [name]: ev?.value }));
+        console.log({ ev });
+
+        if (multiple) {
+          setVariable((prev: any) => ({
+            ...prev,
+            [name]: ev,
+          }));
+        } else {
+          setVariable((prev: any) => ({
+            ...prev,
+            [name]: ev ? ev.value : null,
+          }));
+        }
       }}
       value={value}
       tabIndex={tabIndex}

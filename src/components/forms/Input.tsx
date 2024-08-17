@@ -9,6 +9,7 @@ export const Input: FC<{
   required?: boolean;
   disabled?: boolean;
   icon?: string;
+  autoFocus?: boolean;
 }> = ({
   label,
   name,
@@ -17,6 +18,7 @@ export const Input: FC<{
   inputType = "text",
   disabled = false,
   required = true,
+  autoFocus,
 }) => {
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs ">
@@ -34,6 +36,7 @@ export const Input: FC<{
           setVariable((prev: any) => ({ ...prev, [name]: value }));
         }}
         value={variable.hasOwnProperty(name) ? variable[name] : ""}
+        autoFocus={autoFocus}
       />
     </label>
   );

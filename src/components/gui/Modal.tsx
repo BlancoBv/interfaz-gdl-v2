@@ -75,4 +75,47 @@ export const ModalConfirm: FC<{
   );
 };
 
+export const ModalConfirmNoMutate: FC<{
+  action: any;
+  closeModalID?: string;
+  msg?: string;
+  title?: string;
+  closeOnESC?: boolean;
+}> = ({ action, msg, title, closeOnESC }) => {
+  return (
+    <dialog
+      id="modal-confirm-no-mutate"
+      className="modal"
+      onCancel={closeOnESC ? undefined : (ev) => ev.preventDefault()}
+    >
+      <div className="modal-box flex flex-col max-w-xs">
+        <div>
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+          </form>
+          <h3 className="font-bold text-lg">
+            {title ? title : "Confirmar acción"}
+          </h3>
+          <div className="divider mt-0" />
+        </div>
+        <p>{msg ? msg : "Confirmar acción"}</p>
+        <div className="modal-action">
+          <form method="dialog" className="flex gap-4 items-center">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn">Cerrar</button>
+            <button className="btn btn-primary" onClick={action}>
+              Aceptar
+            </button>
+          </form>
+        </div>
+      </div>
+      {/* <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form> */}
+    </dialog>
+  );
+};
+
 export default Modal;
