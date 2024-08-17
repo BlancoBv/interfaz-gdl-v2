@@ -170,7 +170,7 @@ export const SelectEmpleado: FC<{
       <div className="label">
         <span className="label-text">{label}</span>
       </div>
-      <select
+      {/*       <select
         className="select select-bordered"
         name={name}
         onChange={(ev) => {
@@ -194,36 +194,110 @@ export const SelectEmpleado: FC<{
               </option>
             )
           )}
-      </select>
+      </select> */}
+      <ReactSelect
+        placeholder="Selecciona un empleado"
+        options={
+          !isFetching &&
+          !isPending &&
+          !isError &&
+          data.response.map(
+            (el: { nombre_completo: string; idempleado: number }) => ({
+              value: el.idempleado,
+              label: el.nombre_completo,
+            })
+          )
+        }
+        isLoading={isPending && isFetching}
+        setVariable={setVariable}
+        name={name}
+        variable={variable}
+        disabled={disabled}
+        required={required}
+      />
     </label>
   );
 };
 
-export const ReactSelect: FC = () => {
+export const ReactSelect: FC<{
+  options: { value: string | number; label: string }[];
+  placeholder: string;
+  isLoading?: boolean;
+  required?: boolean;
+  disabled?: boolean;
+  variable: any;
+  name: string;
+  setVariable: any;
+  tabIndex?: number;
+  multiple?: boolean;
+}> = ({
+  options,
+  placeholder,
+  isLoading,
+  required,
+  disabled,
+  variable,
+  setVariable,
+  name,
+  tabIndex,
+  multiple,
+}) => {
+  const value = useMemo(() => {
+    if (variable[name]) {
+      const indexOfValue = options.findIndex(
+        (el) => el.value === Number(variable[name])
+      );
+      if (multiple) {
+        return variable[name];
+      }
+      return options[indexOfValue];
+    }
+    return undefined;
+  }, [variable]);
+
   return (
-    <label className="form-control w-full max-w-40 lg:max-w-xs">
-      <div className="label">
-        <span className="label-text">Etiqueta de ejemplo</span>
-      </div>
-      <RSelect
-        classNames={{
-          control: (state) =>
-            `bg-base-100 rounded-btn border-base-content/20 border h-12 min-h-12 w-full ps-4 pe-10 text-sm ${
-              state.isFocused
-                ? "outline outline-2 outline-base-content/20 outline-offset-2"
-                : ""
-            }`,
-          menu: () => `bg-base-200 mt-2 z-50`,
-        }}
-        unstyled
-        styles={{
-          control: (baseStyles) => {
-            const { outline, ...base } = baseStyles;
-            return { ...base };
-          },
-        }}
-        noOptionsMessage={() => "Sin opciones"}
-      />
-    </label>
+    <RSelect
+      classNames={{
+        control: (state) =>
+          `${
+            state.isDisabled
+              ? "bg-base-200 text-base-content/40 border-base-200"
+              : "bg-base-100 border-base-content/20"
+          } rounded-btn border h-12 w-full text-sm ${
+            state.isFocused
+              ? "outline outline-2 outline-base-content/20 outline-offset-2"
+              : ""
+          }`,
+        valueContainer: () => `ps-4 pe-10`,
+        menu: () => `menu bg-base-200 mt-2 p-2 rounded-btn shadow-sm`,
+        option: (status) =>
+          `rounded-btn p-2 text-left min-h-9 ${
+            status.isSelected ? "bg-primary" : "hover:bg-primary/40"
+          }`,
+        placeholder: () => `overflow-clip text-nowrap me-22`,
+        clearIndicator: () => "cursor-pointer hover:text-error",
+      }}
+      unstyled
+      styles={{
+        control: (baseStyles) => {
+          const { outline, ...base } = baseStyles;
+          return { ...base };
+        },
+      }}
+      isLoading={isLoading}
+      noOptionsMessage={() => "Sin opciones"}
+      placeholder={placeholder ? placeholder : "Selecciona un elemento"}
+      options={options}
+      loadingMessage={() => "Cargando..."}
+      required={required}
+      isDisabled={disabled}
+      isClearable
+      onChange={(ev) => {
+        setVariable((prev: any) => ({ ...prev, [name]: ev?.value }));
+      }}
+      value={value}
+      tabIndex={tabIndex}
+      isMulti={multiple}
+    />
   );
 };
