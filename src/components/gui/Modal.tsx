@@ -32,9 +32,14 @@ export const ModalConfirm: FC<{
   refetch: any;
   mutateVariable: any;
   closeModalID?: string;
-}> = ({ refetch, mutateVariable }) => {
+  closeOnESC?: boolean;
+}> = ({ refetch, mutateVariable, closeOnESC }) => {
   return (
-    <dialog id="modal-confirm" className="modal">
+    <dialog
+      id="modal-confirm"
+      className="modal"
+      onCancel={closeOnESC ? undefined : (ev) => ev.preventDefault()}
+    >
       <div className="modal-box flex flex-col max-w-xs">
         <div>
           <form method="dialog">

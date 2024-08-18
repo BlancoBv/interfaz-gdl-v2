@@ -18,6 +18,7 @@ import Usuarios from "../pages/app/administrativo/usuarios/Index";
 import Preliquidacion from "../pages/preliquidacion/Index";
 import LayoutPreliquidacion from "../layout/LayoutPreliquidacion";
 import ConfigurarPrecios from "../pages/preliquidacion/configurar-precios/Index";
+import CapturarLecturas from "../pages/preliquidacion/capturar-lecturas/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -103,6 +104,7 @@ const Index: FC = () => {
       children: [
         { index: true, element: <Preliquidacion /> },
         { path: "configurar-precios", element: <ConfigurarPrecios /> },
+        { path: "capturar-lecturas", element: <CapturarLecturas /> },
       ],
     },
   ]);

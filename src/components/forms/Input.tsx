@@ -24,13 +24,24 @@ export const Input: FC<{
   const handle = (ev: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = ev.currentTarget;
 
-    const regExp = new RegExp(/^\s+$/, "g");
+    const regExpNoWhiteSpace = new RegExp(/^\s+$/, "g");
+    const regExpOnlyNumber = new RegExp(/^\d+$|^\d+\.\d*$/, "g");
 
-    if (!regExp.test(value)) {
+    if (!regExpNoWhiteSpace.test(value)) {
       ref.current?.classList.remove("input-error");
       setVariable((prev: any) => ({ ...prev, [name]: value }));
     } else {
       ref.current?.classList.add("input-error");
+    }
+
+    if (inputType === "number") {
+      if (regExpOnlyNumber.test(value)) {
+        ref.current?.classList.remove("input-error");
+        setVariable((prev: any) => ({ ...prev, [name]: value }));
+      } else {
+        ref.current?.classList.add("input-error");
+      }
+    } else {
     }
   };
   return (
@@ -48,6 +59,8 @@ export const Input: FC<{
         onChange={handle}
         value={variable.hasOwnProperty(name) ? variable[name] : ""}
         autoFocus={autoFocus}
+        step={inputType === "number" ? 0.01 : undefined}
+        min={inputType === "number" ? 0 : undefined}
       />
     </label>
   );

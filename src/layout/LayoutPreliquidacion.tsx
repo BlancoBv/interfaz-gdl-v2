@@ -11,10 +11,14 @@ const LayoutPreliquidacion: FC = () => {
 
     const infoGralCache = localStorage.getItem("infoGeneralPreliq");
     if (infoGralCache) {
-      const modal = document.getElementById(
-        "modal-confirm-no-mutate"
-      ) as HTMLDialogElement;
-      modal.showModal();
+      //comprueba que existe la variable en el almacenamiento local
+      if (JSON.parse(infoGralCache).hasOwnProperty("empleado")) {
+        //comprueba que exista al menos la informacion del empleado
+        const modal = document.getElementById(
+          "modal-confirm-no-mutate"
+        ) as HTMLDialogElement;
+        modal.showModal();
+      }
     }
   }, []);
 
@@ -29,7 +33,7 @@ const LayoutPreliquidacion: FC = () => {
         msg="Existen datos sin guardar, ¿desea recuperarlos?"
         title="Advertencia"
       />
-      <ul className="menu bg-base-200 rounded-box w-2/6 lg:w-1/6 h-full gap-2">
+      <ul className="menu bg-base-200 rounded-box w-1/4 lg:w-2/6 h-full gap-2">
         <li>
           <NavLink to="/preliquidacion" end>
             <Icon icon="info" />
@@ -43,7 +47,10 @@ const LayoutPreliquidacion: FC = () => {
           </NavLink>
         </li>
         <li>
-          <a>Captura de lecturas</a>
+          <NavLink to="/preliquidacion/capturar-lecturas">
+            <Icon icon="gauge-simple-high" />
+            Captura de lecturas
+          </NavLink>
         </li>
         <li>
           <a>Captura de efectivo</a>
@@ -65,7 +72,7 @@ const LayoutPreliquidacion: FC = () => {
       </ul>
       <ScrollToTop scrollAreaID="scroll-area">
         <div
-          className="flex flex-col w-4/6 lg:w-5/6 h-full overflow-auto"
+          className="flex flex-col w-3/4 lg:w-4/6 h-full overflow-auto"
           id="scroll-area"
         >
           <Header noShowBarMenu />

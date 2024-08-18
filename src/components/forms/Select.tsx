@@ -205,6 +205,8 @@ export const SelectTurno: FC<{
     "turnoSelectData"
   );
 
+  console.log({ isError, isPending, isFetching });
+
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs">
       <div className="label">
@@ -352,18 +354,23 @@ const ReactSelect: FC<{
   tabIndex,
   multiple,
 }) => {
+  console.log(options, placeholder);
+
   const value = useMemo(() => {
-    if (variable[name] && !isLoading) {
+    if (variable[name] && options) {
       const indexOfValue = options.findIndex(
         (el) => el.value === Number(variable[name])
       );
       if (multiple) {
         return variable[name];
       }
+      if (!options) {
+        variable[name];
+      }
       return options[indexOfValue];
     }
     return undefined;
-  }, [variable, isLoading]);
+  }, [variable, options]);
 
   return (
     <RSelect

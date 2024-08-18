@@ -1,11 +1,20 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import SectionTitle from "../../../components/gui/SectionTitle";
 import CardInfoGral from "../components/CardInfoGral";
 import ButtonNext from "../components/ButtonNext";
 import { Input } from "../../../components/forms/Input";
 
 const ConfigurarPrecios: FC = () => {
-  const [body, setBody] = useState<{}>({});
+  const CACHE_PRECIOS = localStorage.getItem("preciosPreliq");
+  const PARSED_CACHE = CACHE_PRECIOS ? JSON.parse(CACHE_PRECIOS) : {};
+  const [body, setBody] = useState<{ M?: string; P?: string; D?: string }>(
+    PARSED_CACHE
+  );
+  const islasActivas = useState<string[]>([]);
+
+  useEffect(() => {
+    localStorage.setItem("preciosPreliq", JSON.stringify(body));
+  }, [body]);
   return (
     <div className="w-full h-full flex flex-col">
       <SectionTitle
@@ -29,6 +38,7 @@ const ConfigurarPrecios: FC = () => {
               setVariable={setBody}
               name="M"
               autoFocus
+              inputType="number"
             />
           </CardInfoGral>
           <CardInfoGral
@@ -41,6 +51,7 @@ const ConfigurarPrecios: FC = () => {
               variable={body}
               setVariable={setBody}
               name="P"
+              inputType="number"
             />
           </CardInfoGral>
           <CardInfoGral
@@ -53,6 +64,7 @@ const ConfigurarPrecios: FC = () => {
               variable={body}
               setVariable={setBody}
               name="D"
+              inputType="number"
             />
           </CardInfoGral>
         </div>
