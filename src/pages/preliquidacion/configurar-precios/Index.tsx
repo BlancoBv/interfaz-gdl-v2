@@ -27,7 +27,7 @@ const ConfigurarPrecios: FC = () => {
               label="Magna"
               variable={body}
               setVariable={setBody}
-              name="magna"
+              name="M"
               autoFocus
             />
           </CardInfoGral>
@@ -40,7 +40,7 @@ const ConfigurarPrecios: FC = () => {
               label="Premium"
               variable={body}
               setVariable={setBody}
-              name="premium"
+              name="P"
             />
           </CardInfoGral>
           <CardInfoGral
@@ -52,7 +52,7 @@ const ConfigurarPrecios: FC = () => {
               label="Diesel"
               variable={body}
               setVariable={setBody}
-              name="diesel"
+              name="D"
             />
           </CardInfoGral>
         </div>
