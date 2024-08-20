@@ -1,16 +1,12 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect } from "react";
 import SectionTitle from "../../../components/gui/SectionTitle";
 import CardInfoGral from "../components/CardInfoGral";
 import ButtonNext from "../components/ButtonNext";
 import { Input } from "../../../components/forms/Input";
+import { ContextPreliq } from "../components/ContextPreliq";
 
 const ConfigurarPrecios: FC = () => {
-  const CACHE_PRECIOS = localStorage.getItem("preciosPreliq");
-  const PARSED_CACHE = CACHE_PRECIOS ? JSON.parse(CACHE_PRECIOS) : {};
-  const [body, setBody] = useState<{ M?: string; P?: string; D?: string }>(
-    PARSED_CACHE
-  );
-  const islasActivas = useState<string[]>([]);
+  const { body, setBody } = useContext(ContextPreliq).precios;
 
   useEffect(() => {
     localStorage.setItem("preciosPreliq", JSON.stringify(body));

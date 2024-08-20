@@ -314,10 +314,27 @@ export const SelectIsla: FC<{
           !isFetching &&
           !isPending &&
           !isError &&
-          data.response.map((el: { idisla: number; nisla: number }) => ({
-            value: el.idisla,
-            label: `Isla ${el.nisla}`,
-          }))
+          data.response.map(
+            (el: {
+              idisla: number;
+              nisla: number;
+              gas: {
+                idgas: string;
+                nombre: string;
+                mangueras: {
+                  idmanguera: string;
+                  tiene: boolean;
+                  direccion: "dr" | "iz";
+                  idgas: string;
+                  idsla: number;
+                }[];
+              };
+            }) => ({
+              value: el.idisla,
+              label: `Isla ${el.nisla}`,
+              extra: el.gas,
+            })
+          )
         }
         isLoading={isPending && isFetching}
         setVariable={setVariable}

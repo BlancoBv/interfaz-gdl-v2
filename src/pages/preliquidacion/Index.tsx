@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect } from "react";
 import SectionTitle from "../../components/gui/SectionTitle";
 import CardInfoGral from "./components/CardInfoGral";
 import {
@@ -7,17 +7,13 @@ import {
   SelectIsla,
   SelectTurno,
 } from "../../components/forms/Select";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ButtonNext from "./components/ButtonNext";
+import { ContextPreliq } from "./components/ContextPreliq";
 
 const Preliquidacion: FC = () => {
-  const CACHE_INFO = localStorage.getItem("infoGeneralPreliq");
-  const PARSED_INFO = CACHE_INFO ? JSON.parse(CACHE_INFO) : {};
-  const [body, setBody] = useState<{
-    empleado?: number;
-    turno?: number;
-    estacion?: number;
-  }>(PARSED_INFO);
+  const { body, setBody } = useContext(ContextPreliq)?.infoGeneral;
+
   const navigate = useNavigate();
 
   useEffect(() => {
