@@ -86,10 +86,11 @@ export const ModalConfirmNoMutate: FC<{
   msg?: string;
   title?: string;
   closeOnESC?: boolean;
-}> = ({ action, msg, title, closeOnESC }) => {
+  customID?: string;
+}> = ({ action, msg, title, closeOnESC, customID }) => {
   return (
     <dialog
-      id="modal-confirm-no-mutate"
+      id={customID ? customID : "modal-confirm-no-mutate"}
       className="modal"
       onCancel={closeOnESC ? undefined : (ev) => ev.preventDefault()}
     >

@@ -16,6 +16,19 @@ export interface islasInterface {
   }[];
 }
 
+export interface preciosInterface {
+  M?: string;
+  P?: string;
+  D?: string;
+}
+
+export interface manguerasInterface {
+  idManguera?: string;
+  precioUnitario?: string;
+  lecturaInicial?: string;
+  lecturaFinal?: string;
+  litrosVendidos?: string | number;
+}
 export const ContextPreliq = createContext<{
   infoGeneral: {
     body: {
@@ -27,10 +40,15 @@ export const ContextPreliq = createContext<{
     setBody: any;
   };
   precios: {
-    body: { M?: string; P?: string; D?: string };
+    body: preciosInterface;
+    setBody: any;
+  };
+  mangueras: {
+    body: manguerasInterface[];
     setBody: any;
   };
 }>({
   infoGeneral: { body: {}, setBody: {} },
   precios: { body: {}, setBody: {} },
+  mangueras: { body: [], setBody: {} },
 });

@@ -7,8 +7,6 @@ const ScrollToTop: FC<{ children?: ReactNode; scrollAreaID?: string }> = ({
 }) => {
   const location = useLocation();
 
-  console.log(location);
-
   useEffect(() => {
     if (scrollAreaID) {
       const element = document.getElementById("scroll-area");

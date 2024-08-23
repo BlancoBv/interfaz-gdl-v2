@@ -10,6 +10,7 @@ export const Input: FC<{
   disabled?: boolean;
   icon?: string;
   autoFocus?: boolean;
+  max?: number;
 }> = ({
   label,
   name,
@@ -19,6 +20,7 @@ export const Input: FC<{
   disabled = false,
   required = true,
   autoFocus,
+  max,
 }) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const handle = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +43,6 @@ export const Input: FC<{
       } else {
         ref.current?.classList.add("input-error");
       }
-    } else {
     }
   };
   return (
@@ -61,6 +62,7 @@ export const Input: FC<{
         autoFocus={autoFocus}
         step={inputType === "number" ? 0.01 : undefined}
         min={inputType === "number" ? 0 : undefined}
+        max={inputType === "number" && max ? max : undefined}
       />
     </label>
   );

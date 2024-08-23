@@ -7,6 +7,8 @@ import { ModalConfirmNoMutate } from "../components/gui/Modal";
 import {
   ContextPreliq,
   islasInterface,
+  manguerasInterface,
+  preciosInterface,
 } from "../pages/preliquidacion/components/ContextPreliq";
 
 const LayoutPreliquidacion: FC = () => {
@@ -25,11 +27,12 @@ const LayoutPreliquidacion: FC = () => {
   const CACHE_PRECIOS = localStorage.getItem("preciosPreliq");
   const PARSED_PRECIOS = CACHE_PRECIOS ? JSON.parse(CACHE_PRECIOS) : {};
 
-  const [precios, setPrecios] = useState<{
-    M?: string;
-    P?: string;
-    D?: string;
-  }>(PARSED_PRECIOS);
+  const [precios, setPrecios] = useState<preciosInterface>(PARSED_PRECIOS);
+
+  const CACHE_MANGUERAS = localStorage.getItem("manguerasPreliq");
+  const PARSED_MANGUERAS = CACHE_MANGUERAS ? JSON.parse(CACHE_MANGUERAS) : [];
+  const [mangueras, setMangueras] =
+    useState<manguerasInterface[]>(PARSED_MANGUERAS);
 
   useEffect(() => {
     const infoGralCache = localStorage.getItem("infoGeneralPreliq");
@@ -54,6 +57,7 @@ const LayoutPreliquidacion: FC = () => {
       value={{
         infoGeneral: { body: infoGeneral, setBody: setInfoGeneral },
         precios: { body: precios, setBody: setPrecios },
+        mangueras: { body: mangueras, setBody: setMangueras },
       }}
     >
       <div className="h-screen w-screen flex">
