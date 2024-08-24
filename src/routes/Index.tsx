@@ -19,6 +19,7 @@ import Preliquidacion from "../pages/preliquidacion/Index";
 import LayoutPreliquidacion from "../layout/LayoutPreliquidacion";
 import ConfigurarPrecios from "../pages/preliquidacion/configurar-precios/Index";
 import CapturarLecturas from "../pages/preliquidacion/capturar-lecturas/Index";
+import CapturarEfectivo from "../pages/preliquidacion/capturar-efectivo/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -105,6 +106,7 @@ const Index: FC = () => {
         { index: true, element: <Preliquidacion /> },
         { path: "configurar-precios", element: <ConfigurarPrecios /> },
         { path: "capturar-lecturas", element: <CapturarLecturas /> },
+        { path: "capturar-efectivo", element: <CapturarEfectivo /> },
       ],
     },
   ]);

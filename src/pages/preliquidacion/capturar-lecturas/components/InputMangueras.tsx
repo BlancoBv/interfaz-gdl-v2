@@ -110,14 +110,20 @@ const InputMangueras: FC<{
     );
 
     if (indexOfValue >= 0) {
-      if (body[indexOfValue].hasOwnProperty("lecturaInicial")) {
+      if (
+        body[indexOfValue].hasOwnProperty("lecturaInicial") &&
+        !body[indexOfValue].hasOwnProperty("lecturaFinal")
+      ) {
         return {
           inicial: body[indexOfValue].lecturaInicial,
           final: "",
         } as const;
       }
 
-      if (body[indexOfValue].hasOwnProperty("lecturaFinal")) {
+      if (
+        body[indexOfValue].hasOwnProperty("lecturaFinal") &&
+        !body[indexOfValue].hasOwnProperty("lecturaInicial")
+      ) {
         return {
           inicial: "",
           final: body[indexOfValue].lecturaFinal,
@@ -162,10 +168,9 @@ const InputMangueras: FC<{
           />
           <button
             className={`btn btn-error ${
-              inicial !== "" && final !== "" ? "" : "btn-disabled"
+              inicial !== "" || final !== "" ? "" : "btn-disabled"
             }`}
             onClick={() => {
-              console.log(data.mangueras.idmanguera);
               setIdManguera({
                 idManguera: data.mangueras.idmanguera,
                 refs: { final: refFinal, inicial: refInicial },

@@ -6,6 +6,7 @@ import Header from "../components/gui/Header";
 import { ModalConfirmNoMutate } from "../components/gui/Modal";
 import {
   ContextPreliq,
+  efectivoInterface,
   islasInterface,
   manguerasInterface,
   preciosInterface,
@@ -34,6 +35,11 @@ const LayoutPreliquidacion: FC = () => {
   const [mangueras, setMangueras] =
     useState<manguerasInterface[]>(PARSED_MANGUERAS);
 
+  const [efectivo, setEfectivo] = useState<efectivoInterface>({
+    type: "efectivo",
+    cantidad: [],
+  });
+
   useEffect(() => {
     const infoGralCache = localStorage.getItem("infoGeneralPreliq");
     if (infoGralCache) {
@@ -58,6 +64,7 @@ const LayoutPreliquidacion: FC = () => {
         infoGeneral: { body: infoGeneral, setBody: setInfoGeneral },
         precios: { body: precios, setBody: setPrecios },
         mangueras: { body: mangueras, setBody: setMangueras },
+        efectivo: { body: efectivo, setBody: setEfectivo },
       }}
     >
       <div className="h-screen w-screen flex">
@@ -67,27 +74,47 @@ const LayoutPreliquidacion: FC = () => {
           title="Advertencia"
         />
         <ul className="menu bg-base-200 rounded-box w-1/4 lg:w-1/6 h-full gap-2">
-          <li>
+          <NavButton
+            to="/preliquidacion"
+            icon="info"
+            text="Información general"
+            end
+          />
+          <NavButton
+            to="/preliquidacion/configurar-precios"
+            icon="coins"
+            text="Configuración de precios"
+          />
+          <NavButton
+            to="/preliquidacion/capturar-lecturas"
+            icon="gauge-simple-high"
+            text="Capturar lecturas"
+          />
+          <NavButton
+            to="/preliquidacion/capturar-efectivo"
+            icon="hand-holding-dollar"
+            text="Capturar efectivo"
+          />
+
+          {/* <li>
             <NavLink to="/preliquidacion" end>
               <Icon icon="info" />
               Información general
             </NavLink>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <NavLink to="/preliquidacion/configurar-precios">
               <Icon icon="coins" />
               Configuración de precios
             </NavLink>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <NavLink to="/preliquidacion/capturar-lecturas">
               <Icon icon="gauge-simple-high" />
               Captura de lecturas
             </NavLink>
-          </li>
-          <li>
-            <a>Captura de efectivo</a>
-          </li>
+          </li> */}
+
           <li>
             <a>Captura de vales</a>
           </li>
@@ -116,6 +143,23 @@ const LayoutPreliquidacion: FC = () => {
         </ScrollToTop>
       </div>
     </ContextPreliq.Provider>
+  );
+};
+
+const NavButton: FC<{
+  to: string;
+  icon: string;
+  text: string;
+  disabled?: boolean;
+  end?: boolean;
+}> = ({ to, icon, text, disabled, end }) => {
+  return (
+    <li className={disabled ? "disabled" : ""}>
+      <NavLink to={to} className={disabled ? "btn-disabled" : ""} end={end}>
+        <Icon icon={icon} />
+        {text}
+      </NavLink>
+    </li>
   );
 };
 export default LayoutPreliquidacion;

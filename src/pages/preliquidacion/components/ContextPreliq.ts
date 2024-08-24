@@ -29,6 +29,12 @@ export interface manguerasInterface {
   lecturaFinal?: string;
   litrosVendidos?: string | number;
 }
+
+export interface efectivoInterface {
+  type: "efectivo";
+  cantidad: string[];
+}
+
 export const ContextPreliq = createContext<{
   infoGeneral: {
     body: {
@@ -47,8 +53,10 @@ export const ContextPreliq = createContext<{
     body: manguerasInterface[];
     setBody: any;
   };
+  efectivo: { body: efectivoInterface; setBody: any };
 }>({
   infoGeneral: { body: {}, setBody: {} },
   precios: { body: {}, setBody: {} },
   mangueras: { body: [], setBody: {} },
+  efectivo: { body: { type: "efectivo", cantidad: [] }, setBody: {} },
 });

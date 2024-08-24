@@ -73,8 +73,6 @@ const InputPreliq = forwardRef<ref, props>(
     },
     ref
   ) => {
-    console.log({ value });
-
     return (
       <label className="form-control w-full max-w-40 lg:max-w-xs ">
         <div className="label">
