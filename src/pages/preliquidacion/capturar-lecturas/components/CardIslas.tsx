@@ -56,10 +56,10 @@ const CardIslas: FC<{
               ))}
             </div>
 
-            <div className="stat place-items-center">
+            <div className="stat flex flex-col justify-center items-center gap-4">
               <div className="stat-title">{isla.label}</div>
               <div className="stat-value">
-                <Icon icon="gas-pump" size="3x" />
+                <Icon icon="gas-pump" size="2x" />
               </div>
               <div className="stat-desc text-secondary">
                 GDL {estacionServicio}

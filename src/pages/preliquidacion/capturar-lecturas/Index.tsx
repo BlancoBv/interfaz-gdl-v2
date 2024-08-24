@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import SectionTitle from "../../../components/gui/SectionTitle";
 import Icon from "../../../components/Icon";
 import { Input } from "../../../components/forms/Input";
@@ -43,6 +43,10 @@ const CapturarLecturas: FC = () => {
       setMangueras([...fGroup, ...lGroup]);
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem("manguerasPreliq", JSON.stringify(mangueras));
+  }, [mangueras]);
 
   return (
     <div className="w-full h-full">

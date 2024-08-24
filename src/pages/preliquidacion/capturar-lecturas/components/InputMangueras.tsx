@@ -1,5 +1,5 @@
 import Icon from "../../../../components/Icon";
-import { FC, useContext, useRef, ChangeEvent, useMemo, useEffect } from "react";
+import { FC, useContext, useRef, ChangeEvent, useMemo } from "react";
 import format from "../../../../assets/format";
 import {
   ContextPreliq,
@@ -138,10 +138,6 @@ const InputMangueras: FC<{
     return { inicial: "", final: "" } as const;
   }, [body]); //retorna los valores de cada input automaticamente
 
-  useEffect(() => {
-    localStorage.setItem("manguerasPreliq", JSON.stringify(body));
-  }, [body]);
-
   return (
     <>
       <div className="flex flex-col">
@@ -167,7 +163,7 @@ const InputMangueras: FC<{
             ref={refFinal}
           />
           <button
-            className={`btn btn-error ${
+            className={`btn btn-error btn-sm lg:btn-md ${
               inicial !== "" || final !== "" ? "" : "btn-disabled"
             }`}
             onClick={() => {

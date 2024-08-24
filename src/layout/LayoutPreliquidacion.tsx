@@ -73,10 +73,10 @@ const LayoutPreliquidacion: FC = () => {
           msg="Existen datos sin guardar, ¿desea recuperarlos?"
           title="Advertencia"
         />
-        <ul className="menu bg-base-200 rounded-box w-1/4 lg:w-1/6 h-full gap-2">
+        <ul className="menu bg-base-200 rounded-box lg:w-1/6 h-full gap-2">
           <NavButton
             to="/preliquidacion"
-            icon="info"
+            icon="circle-info"
             text="Información general"
             end
           />
@@ -95,44 +95,22 @@ const LayoutPreliquidacion: FC = () => {
             icon="hand-holding-dollar"
             text="Capturar efectivo"
           />
+          <NavButton to="/" icon="file-invoice-dollar" text="Capturar vales" />
+          <NavButton to="/" icon="eye" text="Previsualizar y enviar" />
 
-          {/* <li>
-            <NavLink to="/preliquidacion" end>
-              <Icon icon="info" />
-              Información general
-            </NavLink>
-          </li> */}
-          {/* <li>
-            <NavLink to="/preliquidacion/configurar-precios">
-              <Icon icon="coins" />
-              Configuración de precios
-            </NavLink>
-          </li> */}
-          {/* <li>
-            <NavLink to="/preliquidacion/capturar-lecturas">
-              <Icon icon="gauge-simple-high" />
-              Captura de lecturas
-            </NavLink>
-          </li> */}
-
-          <li>
-            <a>Captura de vales</a>
-          </li>
-          <li>
-            <a>Previsualizar y enviar</a>
-          </li>
           <NavLink
             to="/"
             className="btn btn-error btn-block"
             type="button"
             title="Cerrar sesión"
           >
-            <Icon icon="arrow-right-from-bracket" /> Volver al inicio
+            <Icon icon="arrow-right-from-bracket" />
+            <span className="hidden lg:block">Volver al inicio</span>
           </NavLink>
         </ul>
         <ScrollToTop scrollAreaID="scroll-area">
           <div
-            className="flex flex-col w-3/4 lg:w-5/6 h-full overflow-auto"
+            className="flex flex-col w-full lg:w-5/6 h-full overflow-auto"
             id="scroll-area"
           >
             <Header noShowBarMenu />
@@ -155,9 +133,13 @@ const NavButton: FC<{
 }> = ({ to, icon, text, disabled, end }) => {
   return (
     <li className={disabled ? "disabled" : ""}>
-      <NavLink to={to} className={disabled ? "btn-disabled" : ""} end={end}>
+      <NavLink
+        to={to}
+        className={`${disabled ? "btn-disabled" : ""} text-center sm:text-left`}
+        end={end}
+      >
         <Icon icon={icon} />
-        {text}
+        <span className="hidden lg:block">{text}</span>
       </NavLink>
     </li>
   );
