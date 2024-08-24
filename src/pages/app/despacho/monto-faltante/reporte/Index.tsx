@@ -19,7 +19,7 @@ const Index: FC = () => {
   const parsed = item
     ? JSON.parse(item)
     : {
-        month: String(date.date()),
+        month: String(date.month() + 1),
         year: String(date.year()),
       };
   const [body, setBody] = useState<{ month?: string; year?: string }>(parsed);
@@ -34,8 +34,6 @@ const Index: FC = () => {
     refetch();
     sessionStorage.setItem("reporteMFFilter", JSON.stringify(body));
   };
-
-  console.log(data, isError);
 
   return (
     <div className="flex flex-col">

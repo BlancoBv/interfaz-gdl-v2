@@ -24,7 +24,7 @@ const Index: FC = () => {
     : {
         quincena: date.date() > 15 ? "2" : "1",
         year: String(date.year()),
-        month: String(date.month()),
+        month: String(date.month() + 1),
       }; //obtiene el valor guardado en la sesion para el filtro
 
   const [body, setBody] = useState<{

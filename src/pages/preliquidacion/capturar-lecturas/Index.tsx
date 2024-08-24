@@ -212,6 +212,7 @@ const CapturarLecturas: FC = () => {
           </div>
         </div>
       </div> */}
+      <button className="btn btn-primary btn-block mt-4">Siguiente</button>
     </div>
   );
 };

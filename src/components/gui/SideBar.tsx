@@ -45,7 +45,7 @@ const SideBar: FC = () => {
             { to: "despacho/monto-faltante/historial", name: "Historial" },
           ],
         },
-        {
+        /* {
           to: "checklist-bomba",
           name: "Checklist bomba",
           icon: "check",
@@ -116,17 +116,17 @@ const SideBar: FC = () => {
               name: "Tendencia",
             },
           ],
-        },
+        }, */
       ],
     },
-    {
+    /* {
       icon: "thumbs-down",
       name: "Salidas no conformes",
       to: "salidas-no-conformes",
     },
-    { icon: "screwdriver-wrench", name: "Mantenimiento", to: "mantenimiento" },
+    { icon: "screwdriver-wrench", name: "Mantenimiento", to: "mantenimiento" }, */
     /*   { icon: "box", name: "Almacen", to: "/almacen" }, */
-    { icon: "people-group", name: "Recursos humanos", to: "recursos-humanos" },
+    /* { icon: "people-group", name: "Recursos humanos", to: "recursos-humanos" }, */
     {
       icon: "rectangle-list",
       name: "Administrativo",
@@ -135,10 +135,10 @@ const SideBar: FC = () => {
         { to: "administrativo/usuarios", name: "Usuarios", icon: "users" },
       ],
     },
-    { icon: "clipboard-check", name: "Liquidación", to: "liquidacion" },
-    { icon: "shop", name: "Tienda", to: "tienda" },
+    /* { icon: "clipboard-check", name: "Liquidación", to: "liquidacion" },
+    { icon: "shop", name: "Tienda", to: "tienda" }, */
     /* { icon: "shield", name: "Seguridad", to: "/despacho" }, */
-    { icon: "money-check-dollar", name: "Pagarés", to: "pagares" },
+    /* { icon: "money-check-dollar", name: "Pagarés", to: "pagares" }, */
     /*  { icon: "file", name: "Documentos SGC don lalo", to: "/despacho" }, */
   ];
 
