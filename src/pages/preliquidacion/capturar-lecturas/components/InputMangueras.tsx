@@ -7,7 +7,6 @@ import {
   preciosInterface,
 } from "../../components/ContextPreliq";
 import Input from "./Input";
-import { ModalConfirmNoMutate } from "../../../../components/gui/Modal";
 
 interface manguera {
   idgas: string;
@@ -110,13 +109,27 @@ const InputMangueras: FC<{
       (el) => el.idManguera === data.mangueras.idmanguera
     );
 
-    if (indexOfValue < 0) {
-      return { inicial: "", final: "" } as const;
-    } else
+    if (indexOfValue >= 0) {
+      if (body[indexOfValue].hasOwnProperty("lecturaInicial")) {
+        return {
+          inicial: body[indexOfValue].lecturaInicial,
+          final: "",
+        } as const;
+      }
+
+      if (body[indexOfValue].hasOwnProperty("lecturaFinal")) {
+        return {
+          inicial: "",
+          final: body[indexOfValue].lecturaFinal,
+        } as const;
+      }
+
       return {
         inicial: body[indexOfValue].lecturaInicial,
         final: body[indexOfValue].lecturaFinal,
       } as const;
+    }
+    return { inicial: "", final: "" } as const;
   }, [body]); //retorna los valores de cada input automaticamente
 
   useEffect(() => {

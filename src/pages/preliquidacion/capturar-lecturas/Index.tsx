@@ -52,6 +52,7 @@ const CapturarLecturas: FC = () => {
         customID={ID_MODAL}
         closeOnESC
       />
+      {/* // esto va aqui debido a como maneja daisyui los modales */}
       <SectionTitle titulo="Captura de lecturas" subtitulo="Preliquidación" />
       {/* {body.islas?.map((el) => {
         const {
