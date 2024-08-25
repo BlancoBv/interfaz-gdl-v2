@@ -1,16 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import Icon from "../components/Icon";
-import ScrollToTop from "../assets/ScrollToTop";
-import Header from "../components/gui/Header";
-import { ModalConfirmNoMutate } from "../components/gui/Modal";
+import Icon from "@components/Icon";
+import ScrollToTop from "@assets/ScrollToTop";
+import Header from "@components/gui/Header";
+import { ModalConfirmNoMutate } from "@components/gui/Modal";
 import {
   ContextPreliq,
   efectivoInterface,
   islasInterface,
   manguerasInterface,
   preciosInterface,
-} from "../pages/preliquidacion/components/ContextPreliq";
+} from "@pages/preliquidacion/components/ContextPreliq";
 
 const LayoutPreliquidacion: FC = () => {
   const CACHE_INFOGENERAL = localStorage.getItem("infoGeneralPreliq");

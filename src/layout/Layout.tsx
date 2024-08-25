@@ -1,7 +1,7 @@
 import { FC } from "react";
-import Header from "../components/gui/Header";
+import Header from "@components/gui/Header";
 import { Outlet } from "react-router-dom";
-import SideBar from "../components/gui/SideBar";
+import SideBar from "@components/gui/SideBar";
 
 const Layout: FC = () => {
   return (

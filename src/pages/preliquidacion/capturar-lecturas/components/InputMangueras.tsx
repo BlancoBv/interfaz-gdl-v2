@@ -1,6 +1,6 @@
-import Icon from "../../../../components/Icon";
+import Icon from "@components/Icon";
 import { FC, useContext, useRef, ChangeEvent, useMemo } from "react";
-import format from "../../../../assets/format";
+import format from "@assets/format";
 import {
   ContextPreliq,
   manguerasInterface,

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
-import Icon from "../../../components/Icon";
+import Icon from "@components/Icon";
 
 const SectionCard: FC<{
   icon: string;

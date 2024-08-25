@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import Axios from "../assets/Axios";
+import Axios from "@assets/Axios";
 import { toast } from "react-toastify";
 
 export function useSendData(

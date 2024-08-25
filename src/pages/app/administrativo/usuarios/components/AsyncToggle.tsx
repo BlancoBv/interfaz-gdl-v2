@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from "react";
-import { useSendData } from "../../../../../hooks/useSendData";
+import { useSendData } from "@hooks/useSendData";
 
 const AsyncToggle: FC<{
   perm: { permiso: string; idpermiso: number; user: string | null };

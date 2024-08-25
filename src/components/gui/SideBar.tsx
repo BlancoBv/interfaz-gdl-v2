@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import Icon from "../Icon";
+import Icon from "@components/Icon";
 import { toast } from "react-toastify";
 
 const SideBar: FC = () => {

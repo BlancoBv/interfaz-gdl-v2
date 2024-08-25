@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect } from "react";
-import SectionTitle from "../../../components/gui/SectionTitle";
+import SectionTitle from "@components/gui/SectionTitle";
 import Input from "./components/Input";
 import TablaEV from "./components/Table";
 import { ContextPreliq } from "../components/ContextPreliq";

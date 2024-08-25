@@ -1,17 +1,14 @@
 import { FC, SyntheticEvent, useState } from "react";
-import SectionTitle from "../../../../../components/gui/SectionTitle";
-import CintaOpciones from "../../../../../components/gui/CintaOpciones";
-import { useGetData } from "../../../../../hooks/useGetData";
-import {
-  SelectMonth,
-  SelectYear,
-} from "../../../../../components/forms/Select";
-import Loader from "../../../../../components/gui/Loader";
+import SectionTitle from "@components/gui/SectionTitle";
+import CintaOpciones from "@components/gui/CintaOpciones";
+import { useGetData } from "@hooks/useGetData";
+import { SelectMonth, SelectYear } from "@components/forms/Select";
+import Loader from "@components/gui/Loader";
 import moment from "moment";
-import format from "../../../../../assets/format";
-import Modal from "../../../../../components/gui/Modal";
-import Bar from "../../../../../components/charts/Bar";
-import NoData from "../../../../../components/gui/NoData";
+import format from "@assets/format";
+import Modal from "@components/gui/Modal";
+import Bar from "@components/charts/Bar";
+import NoData from "@components/gui/NoData";
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));

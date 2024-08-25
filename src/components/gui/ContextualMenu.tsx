@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Menu, Item, Separator, Submenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
-import Icon from "../Icon";
+import Icon from "@components/Icon";
 export const DEFAULT_ID = "contextualMenu";
 
 interface ContextualMenuIntf {

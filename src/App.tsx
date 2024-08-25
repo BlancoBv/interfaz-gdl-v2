@@ -1,14 +1,14 @@
 import "react-toastify/dist/ReactToastify.css";
-import Routes from "../src/routes/Index";
+import Routes from "@routes/Index";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import Chart from "chart.js/auto";
 import chartDataLabels from "chartjs-plugin-datalabels";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import Axios from "./assets/Axios";
-import { AuthContext } from "./hooks/useAuth";
-import ToastPortal from "./components/gui/ToastPortal";
+import Axios from "@assets/Axios";
+import { AuthContext } from "@hooks/useAuth";
+import ToastPortal from "@components/gui/ToastPortal";
 
 Chart;
 Chart.register(chartDataLabels);

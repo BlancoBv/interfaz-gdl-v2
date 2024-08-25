@@ -1,17 +1,15 @@
 import { FC, Fragment, useCallback, useState } from "react";
-import { useGetData } from "../../../../hooks/useGetData";
-import Loader from "../../../../components/gui/Loader";
-import SectionTitle from "../../../../components/gui/SectionTitle";
+import { useGetData } from "@hooks/useGetData";
+import Loader from "@components/gui/Loader";
+import SectionTitle from "@components/gui/SectionTitle";
 import { TriggerEvent, useContextMenu } from "react-contexify";
-import ContextualMenu, {
-  DEFAULT_ID,
-} from "../../../../components/gui/ContextualMenu";
-import CintaOpciones from "../../../../components/gui/CintaOpciones";
-import { Input } from "../../../../components/forms/Input";
-import Toggle from "../../../../components/forms/Toggle";
-import Modal, { ModalConfirm } from "../../../../components/gui/Modal";
-import agruparArr from "../../../../assets/agruparArr";
-import { useSendData } from "../../../../hooks/useSendData";
+import ContextualMenu, { DEFAULT_ID } from "@components/gui/ContextualMenu";
+import CintaOpciones from "@components/gui/CintaOpciones";
+import { Input } from "@components/forms/Input";
+import Toggle from "@components/forms/Toggle";
+import Modal, { ModalConfirm } from "@components/gui/Modal";
+import agruparArr from "@assets/agruparArr";
+import { useSendData } from "@hooks/useSendData";
 import AsyncToggle from "./components/AsyncToggle";
 
 const Usuarios: FC = () => {

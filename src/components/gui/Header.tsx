@@ -1,7 +1,7 @@
 import { FC } from "react";
-import logoGDL from "../../assets/img/logogdl.png";
+import logoGDL from "@assets/img/logogdl.png";
 import { NavLink } from "react-router-dom";
-import Icon from "../Icon";
+import Icon from "@components/Icon";
 import Clock from "react-live-clock";
 
 const Header: FC<{ noShowBarMenu?: boolean }> = ({ noShowBarMenu }) => {

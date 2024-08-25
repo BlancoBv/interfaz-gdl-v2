@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, FormEvent, useRef, useState } from "react";
-import CintaOpciones from "../../../../components/gui/CintaOpciones";
+import CintaOpciones from "@components/gui/CintaOpciones";
 
 interface montos {
   type: "efectivo";
@@ -25,7 +25,7 @@ const Input: FC<{
     if (!regExpNoWhiteSpace.test(value)) {
       ref.current?.classList.remove("input-error");
 
-      if (regExpOnlyNumber.test(value)) setValue((prev) => (prev = value));
+      if (regExpOnlyNumber.test(value)) setValue(value);
     } else {
       ref.current?.classList.add("input-error");
     }
@@ -38,7 +38,7 @@ const Input: FC<{
           ...prev,
           cantidad: [value, ...prev.cantidad],
         }));
-        setValue((prev) => (prev = ""));
+        setValue(value);
         console.log(variable.cantidad);
       }}
     >

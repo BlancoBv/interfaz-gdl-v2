@@ -4,22 +4,26 @@ import {
   redirect,
   RouterProvider,
 } from "react-router-dom";
-import Login from "../pages/login/Index";
-import Layout from "../layout/Layout";
-import App from "../pages/app/Index";
-import Axios from "../assets/Axios";
-import Despacho from "../pages/app/despacho/Index";
-import BoletasDesp from "../pages/app/despacho/boletas/Index";
-import BoletasDespxEmp from "../pages/app/despacho/boletas/idDespachador/Index";
-import ReporteMF from "../pages/app/despacho/monto-faltante/reporte/Index";
+
+//layouts
+import LayoutPreliquidacion from "@layout/LayoutPreliquidacion";
+import Layout from "@layout/Layout";
+
+import Login from "@pages/login/Index";
+import App from "@pages/app/Index";
+import Axios from "@assets/Axios";
+import Despacho from "@pages/app/despacho/Index";
+import BoletasDesp from "@pages/app/despacho/boletas/Index";
+import BoletasDespxEmp from "@pages/app/despacho/boletas/idDespachador/Index";
+import ReporteMF from "@pages/app/despacho/monto-faltante/reporte/Index";
 
 //administrativo
-import Usuarios from "../pages/app/administrativo/usuarios/Index";
-import Preliquidacion from "../pages/preliquidacion/Index";
-import LayoutPreliquidacion from "../layout/LayoutPreliquidacion";
-import ConfigurarPrecios from "../pages/preliquidacion/configurar-precios/Index";
-import CapturarLecturas from "../pages/preliquidacion/capturar-lecturas/Index";
-import CapturarEfectivo from "../pages/preliquidacion/capturar-efectivo/Index";
+import Usuarios from "@pages/app/administrativo/usuarios/Index";
+import Preliquidacion from "@pages/preliquidacion/Index";
+
+import ConfigurarPrecios from "@pages/preliquidacion/configurar-precios/Index";
+import CapturarLecturas from "@pages/preliquidacion/capturar-lecturas/Index";
+import CapturarEfectivo from "@pages/preliquidacion/capturar-efectivo/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([

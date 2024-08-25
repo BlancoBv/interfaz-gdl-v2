@@ -1,8 +1,8 @@
 import { FC, FormEvent, SyntheticEvent, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import { useSendData } from "../../hooks/useSendData";
-import Icon from "../../components/Icon";
+import useAuth from "@hooks/useAuth";
+import { useSendData } from "@hooks/useSendData";
+import Icon from "@components/Icon";
 
 const Index: FC = () => {
   const { setToken } = useAuth();

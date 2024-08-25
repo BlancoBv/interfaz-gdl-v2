@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import Icon from "../../../components/Icon";
+import Icon from "@components/Icon";
 
 const CardInfoGral: FC<{
   children?: ReactNode;

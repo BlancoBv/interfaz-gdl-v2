@@ -1,12 +1,12 @@
 import { FC, useContext, useEffect } from "react";
-import SectionTitle from "../../components/gui/SectionTitle";
+import SectionTitle from "@components/gui/SectionTitle";
 import CardInfoGral from "./components/CardInfoGral";
 import {
   SelectEmpleado,
   SelectEstacion,
   SelectIsla,
   SelectTurno,
-} from "../../components/forms/Select";
+} from "@components/forms/Select";
 import { useNavigate } from "react-router-dom";
 import ButtonNext from "./components/ButtonNext";
 import { ContextPreliq } from "./components/ContextPreliq";

@@ -1,8 +1,8 @@
 import { FC, useContext, useEffect } from "react";
-import SectionTitle from "../../../components/gui/SectionTitle";
+import SectionTitle from "@components/gui/SectionTitle";
 import CardInfoGral from "../components/CardInfoGral";
 import ButtonNext from "../components/ButtonNext";
-import { Input } from "../../../components/forms/Input";
+import { Input } from "@components/forms/Input";
 import {
   ContextPreliq,
   manguerasInterface,

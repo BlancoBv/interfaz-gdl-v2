@@ -1,7 +1,7 @@
 import { FC } from "react";
-import Icon from "../../../../components/Icon";
+import Icon from "@components/Icon";
 import { islasInterface } from "../../components/ContextPreliq";
-import agruparArr from "../../../../assets/agruparArr";
+import agruparArr from "@assets/agruparArr";
 
 import InputMangueras from "./InputMangueras";
 

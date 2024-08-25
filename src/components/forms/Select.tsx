@@ -1,7 +1,7 @@
 import moment from "moment";
 import { FC, ReactNode, useMemo, useState } from "react";
-import { meses } from "../../assets/misc";
-import { useGetData } from "../../hooks/useGetData";
+import { meses } from "@assets/misc";
+import { useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
 
 export const Select: FC<{

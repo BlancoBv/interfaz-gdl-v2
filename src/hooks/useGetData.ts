@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import Axios from "../assets/Axios";
+import Axios from "@assets/Axios";
 
 export function useGetData(
   url: string,
