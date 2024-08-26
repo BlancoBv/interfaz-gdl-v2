@@ -38,8 +38,7 @@ const Input: FC<{
           ...prev,
           cantidad: [value, ...prev.cantidad],
         }));
-        setValue(value);
-        console.log(variable.cantidad);
+        setValue("");
       }}
     >
       <label className="form-control w-full max-w-40 lg:max-w-xs ">

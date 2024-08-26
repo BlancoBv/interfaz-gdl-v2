@@ -19,11 +19,13 @@ import ReporteMF from "@pages/app/despacho/monto-faltante/reporte/Index";
 
 //administrativo
 import Usuarios from "@pages/app/administrativo/usuarios/Index";
-import Preliquidacion from "@pages/preliquidacion/Index";
 
+//preliquidacion
+import Preliquidacion from "@pages/preliquidacion/Index";
 import ConfigurarPrecios from "@pages/preliquidacion/configurar-precios/Index";
 import CapturarLecturas from "@pages/preliquidacion/capturar-lecturas/Index";
 import CapturarEfectivo from "@pages/preliquidacion/capturar-efectivo/Index";
+import CapturarVales from "@pages/preliquidacion/capturar-vales/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -111,6 +113,7 @@ const Index: FC = () => {
         { path: "configurar-precios", element: <ConfigurarPrecios /> },
         { path: "capturar-lecturas", element: <CapturarLecturas /> },
         { path: "capturar-efectivo", element: <CapturarEfectivo /> },
+        { path: "capturar-vales", element: <CapturarVales /> },
       ],
     },
   ]);

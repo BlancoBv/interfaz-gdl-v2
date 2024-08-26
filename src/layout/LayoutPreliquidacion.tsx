@@ -95,7 +95,11 @@ const LayoutPreliquidacion: FC = () => {
             icon="hand-holding-dollar"
             text="Capturar efectivo"
           />
-          <NavButton to="/" icon="file-invoice-dollar" text="Capturar vales" />
+          <NavButton
+            to="/preliquidacion/capturar-vales"
+            icon="file-invoice-dollar"
+            text="Capturar vales"
+          />
           <NavButton to="/" icon="eye" text="Previsualizar y enviar" />
 
           <NavLink

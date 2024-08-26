@@ -4,19 +4,7 @@ import "react-contexify/dist/ReactContexify.css";
 import Icon from "@components/Icon";
 export const DEFAULT_ID = "contextualMenu";
 
-interface ContextualMenuIntf {
-  id?: string;
-  items?: {
-    elementType: "item" | "submenu" | "separator";
-    name?: string;
-    icon?: string;
-    onClick?: () => void;
-    disabled?: boolean;
-    color?: "error";
-  }[];
-}
-
-interface contextItems {
+export interface contextItems {
   elementType: "item" | "submenu" | "separator";
   name?: string;
   onClick?: () => void;
@@ -24,9 +12,13 @@ interface contextItems {
   disabled?: boolean;
   color?: "error";
 }
-[];
 
-const ContextualMenu: FC<ContextualMenuIntf> = ({ id, items }) => {
+interface contextualMenuInterface {
+  id?: string;
+  items?: contextItems[];
+}
+
+const ContextualMenu: FC<contextualMenuInterface> = ({ id, items }) => {
   const colors = { error: "text-error" };
   const elements: {
     item: (element: contextItems) => JSX.Element;

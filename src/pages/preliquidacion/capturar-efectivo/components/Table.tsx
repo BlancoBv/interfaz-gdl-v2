@@ -1,8 +1,9 @@
+import format from "@assets/format";
 import { FC } from "react";
 
 const TablaEV: FC<{ data: string[] }> = ({ data }) => {
   return (
-    <table className="table table-fixed">
+    <table className="table table-fixed max-w-xs">
       <thead>
         <tr>
           <th className="text-wrap lg:text-nowrap text-center">Monto</th>
@@ -12,12 +13,12 @@ const TablaEV: FC<{ data: string[] }> = ({ data }) => {
         {data.length > 0 ? (
           data.map((el, index) => (
             <tr className="text-wrap text-center">
-              <th key={index}>{el}</th>
+              <td key={index}>{format.formatDinero(el)}</td>
             </tr>
           ))
         ) : (
           <tr className="text-wrap text-center">
-            <th>Ingresa algunos montos</th>
+            <td>Ingresa algunos montos</td>
           </tr>
         )}
       </tbody>

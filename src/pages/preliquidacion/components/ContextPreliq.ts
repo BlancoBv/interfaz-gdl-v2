@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
 
 export interface islasInterface {
   label: string;
@@ -14,6 +14,13 @@ export interface islasInterface {
       idsla: number;
     };
   }[];
+}
+
+export interface infoGeneralInterface {
+  empleado?: number;
+  turno?: number;
+  estacion?: number;
+  islas?: islasInterface[];
 }
 
 export interface preciosInterface {
@@ -37,26 +44,24 @@ export interface efectivoInterface {
 
 export const ContextPreliq = createContext<{
   infoGeneral: {
-    body: {
-      empleado?: number;
-      turno?: number;
-      estacion?: number;
-      islas?: islasInterface[];
-    };
-    setBody: any;
+    body: infoGeneralInterface;
+    setBody?: Dispatch<SetStateAction<infoGeneralInterface>>;
   };
   precios: {
     body: preciosInterface;
-    setBody: any;
+    setBody?: Dispatch<SetStateAction<preciosInterface>>;
   };
   mangueras: {
     body: manguerasInterface[];
-    setBody: any;
+    setBody?: Dispatch<SetStateAction<manguerasInterface[]>>;
   };
-  efectivo: { body: efectivoInterface; setBody: any };
+  efectivo: {
+    body: efectivoInterface;
+    setBody?: Dispatch<SetStateAction<efectivoInterface>>;
+  };
 }>({
-  infoGeneral: { body: {}, setBody: {} },
-  precios: { body: {}, setBody: {} },
-  mangueras: { body: [], setBody: {} },
-  efectivo: { body: { type: "efectivo", cantidad: [] }, setBody: {} },
+  infoGeneral: { body: {} },
+  precios: { body: {} },
+  mangueras: { body: [] },
+  efectivo: { body: { type: "efectivo", cantidad: [] } },
 });

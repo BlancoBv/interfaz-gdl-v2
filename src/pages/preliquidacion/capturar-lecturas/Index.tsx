@@ -39,7 +39,7 @@ const CapturarLecturas: FC = () => {
         "input-error"
       );
 
-      setMangueras([...fGroup, ...lGroup]);
+      setMangueras?.([...fGroup, ...lGroup]);
     }
   };
 
