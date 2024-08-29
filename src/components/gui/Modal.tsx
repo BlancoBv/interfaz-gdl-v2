@@ -1,14 +1,17 @@
 import { FC, ReactNode } from "react";
 import { ToastContainer } from "react-toastify";
 
-const Modal: FC<{ id: string; title?: string; children?: ReactNode }> = ({
-  id,
-  title = "Titulo de ejemplo",
-  children,
-}) => {
+const Modal: FC<{
+  id: string;
+  title?: string;
+  children?: ReactNode;
+  sm?: boolean;
+}> = ({ id, title = "Titulo de ejemplo", children, sm }) => {
   return (
     <dialog id={id} className="modal">
-      <div className="modal-box  w-11/12 max-w-5xl flex flex-col">
+      <div
+        className={`modal-box ${sm ? "" : "w-11/12 max-w-5xl"} flex flex-col`}
+      >
         <div>
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
