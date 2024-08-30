@@ -19,7 +19,7 @@ const ConfigurarPrecios: FC = () => {
     localStorage.setItem("preciosPreliq", JSON.stringify(body));
   }, [body]);
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full flex flex-col">
       <SectionTitle
         titulo="Configuración de precios"
         subtitulo="Preliquidación"
@@ -35,7 +35,7 @@ const ConfigurarPrecios: FC = () => {
             newArray.push(element);
           }); //itera y cambia los precios
 
-          setMangueras([...newArray]);
+          setMangueras?.([...newArray]);
 
           navigate("/preliquidacion/capturar-lecturas");
         }}

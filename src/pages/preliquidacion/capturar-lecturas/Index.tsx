@@ -46,7 +46,7 @@ const CapturarLecturas: FC = () => {
   }, [mangueras]);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <ModalConfirmNoMutate
         action={deleteElement}
         msg={`¿Desea eliminar las lecturas de la manguera seleccionada?`}

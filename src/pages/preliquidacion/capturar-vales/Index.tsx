@@ -26,19 +26,18 @@ const CapturarVales: FC = () => {
   }, [body]);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <SectionTitle titulo="Capturar vales" subtitulo="Preliquidación" />
-      <div className="flex flex-col items-center">
-        <Input label="Monto" setVariable={setBody} />
-        <TablaEV
-          data={body.cantidad.map((el, index) => ({ value: el, index }))}
-          deleteElement={deleteElement}
-          relativeData={relativeData}
-          setRelativeData={setRelativeData}
-          variable={body.cantidad}
-          setVariable={setBody}
-        />
-      </div>
+
+      <Input label="Monto" setVariable={setBody} />
+      <TablaEV
+        data={body.cantidad.map((el, index) => ({ value: el, index }))}
+        deleteElement={deleteElement}
+        relativeData={relativeData}
+        setRelativeData={setRelativeData}
+        variable={body.cantidad}
+        setVariable={setBody}
+      />
     </div>
   );
 };

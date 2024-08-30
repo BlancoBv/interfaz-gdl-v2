@@ -41,6 +41,7 @@ const Input: FC<{
         }));
         setValue("");
       }}
+      zeroTop
     >
       <label className="form-control w-full max-w-40 lg:max-w-xs ">
         <div className="label">

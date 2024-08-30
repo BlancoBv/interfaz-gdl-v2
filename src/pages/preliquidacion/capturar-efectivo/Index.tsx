@@ -26,7 +26,7 @@ const CapturarEfectivo: FC = () => {
   }, [body]);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <SectionTitle titulo="Capturar efectivo" subtitulo="Preliquidación" />
       <div className="flex flex-col items-center">
         <Input label="Monto" setVariable={setBody} />

@@ -13,6 +13,7 @@ import {
   valesInterface,
 } from "@pages/preliquidacion/components/ContextPreliq";
 import Decimal from "decimal.js-light";
+import format from "@assets/format";
 
 const LayoutPreliquidacion: FC = () => {
   const CACHE_INFOGENERAL = localStorage.getItem("infoGeneralPreliq");
@@ -53,7 +54,7 @@ const LayoutPreliquidacion: FC = () => {
       totalVales: 0,
       totalEfectivo: 0,
       totalEntregado: 0,
-      diferencia: 0,
+      diferencia: "0",
     }; // sirve para almacenar los valores temporalmente
 
     if (mangueras.length > 0) {
@@ -89,7 +90,9 @@ const LayoutPreliquidacion: FC = () => {
     }
 
     valores.totalEntregado = valores.totalEfectivo + valores.totalVales;
-    valores.diferencia = valores.totalEsperado - valores.totalEntregado;
+    valores.diferencia = new Decimal(valores.totalEsperado)
+      .minus(valores.totalEntregado)
+      .toFixed(2);
 
     return valores;
   }, [infoGeneral, mangueras, efectivo, vales]);
@@ -180,8 +183,37 @@ const LayoutPreliquidacion: FC = () => {
             id="scroll-area"
           >
             <Header noShowBarMenu />
-            <div className="w-full h-full p-4">
+            <div className="p-4">
               <Outlet />
+              <div className="stats shadow w-full sticky bottom-0 bg-base-100/80 backdrop-blur-sm mt-4">
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <Icon icon="calculator" size="2x" />
+                  </div>
+                  <div className="stat-title">Total calculado</div>
+                  <div className="stat-value text-xl lg:text-4xl">
+                    {format.formatDinero(totales.totalEsperado)}
+                  </div>
+                </div>
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <Icon icon="sack-dollar" size="2x" />
+                  </div>
+                  <div className="stat-title">Total entregado</div>
+                  <div className="stat-value text-xl lg:text-4xl">
+                    {format.formatDinero(totales.totalEntregado)}
+                  </div>
+                </div>
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <Icon icon="minus" size="2x" />
+                  </div>
+                  <div className="stat-title">Diferencia</div>
+                  <div className="stat-value text-xl lg:text-4xl">
+                    {format.formatDinero(totales.diferencia)}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </ScrollToTop>

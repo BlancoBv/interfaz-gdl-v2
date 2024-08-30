@@ -40,7 +40,7 @@ const Index: FC = () => {
           <Icon icon="bars" size="2x" />
         </label> */}
         <div
-          className={`w-screen h-screen flex flex-col bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.8)),url("./img/loginbackground.jpg")] bg-cover `}
+          className={`w-screen h-screen flex flex-col bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.8)),url("/img/loginbackground.jpg")] bg-cover `}
         >
           <Header noShowBarMenu>
             <div className="flex-none">

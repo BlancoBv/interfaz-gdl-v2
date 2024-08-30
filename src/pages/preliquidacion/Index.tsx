@@ -21,7 +21,7 @@ const Preliquidacion: FC = () => {
   }, [body]);
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full flex flex-col">
       <SectionTitle titulo="Información general" subtitulo="Preliquidación" />
       <form
         onSubmit={(ev) => {
