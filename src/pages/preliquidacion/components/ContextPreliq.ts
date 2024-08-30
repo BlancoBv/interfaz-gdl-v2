@@ -41,7 +41,10 @@ export interface efectivoInterface {
   type: "efectivo";
   cantidad: string[];
 }
-
+export interface valesInterface {
+  type: "vales";
+  cantidad: string[];
+}
 export const ContextPreliq = createContext<{
   infoGeneral: {
     body: infoGeneralInterface;
@@ -59,9 +62,14 @@ export const ContextPreliq = createContext<{
     body: efectivoInterface;
     setBody?: Dispatch<SetStateAction<efectivoInterface>>;
   };
+  vales: {
+    body: valesInterface;
+    setBody?: Dispatch<SetStateAction<valesInterface>>;
+  };
 }>({
   infoGeneral: { body: {} },
   precios: { body: {} },
   mangueras: { body: [] },
   efectivo: { body: { type: "efectivo", cantidad: [] } },
+  vales: { body: { type: "vales", cantidad: [] } },
 });

@@ -1,12 +1,9 @@
 import { FC, useContext, useEffect, useState } from "react";
 import SectionTitle from "@components/gui/SectionTitle";
-import Input, { InputEdit } from "./components/Input";
+import Input from "./components/Input";
 import TablaEV from "./components/Table";
 import { ContextPreliq } from "../components/ContextPreliq";
-import Table from "@components/Table";
-import format from "@assets/format";
 import { toast } from "react-toastify";
-import Modal from "@components/gui/Modal";
 
 const CapturarEfectivo: FC = () => {
   const { body, setBody } = useContext(ContextPreliq).efectivo;
@@ -14,7 +11,6 @@ const CapturarEfectivo: FC = () => {
     value?: string;
     index?: number;
   }>({});
-  const [showModal, setShowModal] = useState<boolean>(false);
 
   const deleteElement = (index: number | undefined) => {
     if (index !== undefined) {
@@ -31,18 +27,18 @@ const CapturarEfectivo: FC = () => {
 
   return (
     <div className="w-full h-full">
-      <Modal id="edit-monto" title="Editar monto" sm>
-        <InputEdit
-          label="Monto"
-          setVariable={setRelativeData}
-          initialValue={String(relativeData.value)}
-        />
-      </Modal>
       <SectionTitle titulo="Capturar efectivo" subtitulo="Preliquidación" />
       <div className="flex flex-col items-center">
         <Input label="Monto" setVariable={setBody} />
-        {/* <TablaEV data={body.cantidad} /> */}
-        <Table
+        <TablaEV
+          data={body.cantidad.map((el, index) => ({ value: el, index }))}
+          deleteElement={deleteElement}
+          relativeData={relativeData}
+          setRelativeData={setRelativeData}
+          variable={body.cantidad}
+          setVariable={setBody}
+        />
+        {/* <Table
           data={body.cantidad.map((el, index) => ({ value: el, index }))}
           columns={[
             { name: "Monto", selector: (el) => format.formatDinero(el.value) },
@@ -70,7 +66,7 @@ const CapturarEfectivo: FC = () => {
           ]}
           hoverable
           noDataMsg="Ingresa algunos montos"
-        />
+        /> */}
       </div>
     </div>
   );

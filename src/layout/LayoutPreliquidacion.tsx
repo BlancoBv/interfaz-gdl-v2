@@ -10,6 +10,7 @@ import {
   islasInterface,
   manguerasInterface,
   preciosInterface,
+  valesInterface,
 } from "@pages/preliquidacion/components/ContextPreliq";
 
 const LayoutPreliquidacion: FC = () => {
@@ -17,7 +18,6 @@ const LayoutPreliquidacion: FC = () => {
   const PARSED_INFOGENERAL = CACHE_INFOGENERAL
     ? JSON.parse(CACHE_INFOGENERAL)
     : {};
-
   const [infoGeneral, setInfoGeneral] = useState<{
     empleado?: number;
     turno?: number;
@@ -27,18 +27,24 @@ const LayoutPreliquidacion: FC = () => {
   //Empieza configuracion de precios
   const CACHE_PRECIOS = localStorage.getItem("preciosPreliq");
   const PARSED_PRECIOS = CACHE_PRECIOS ? JSON.parse(CACHE_PRECIOS) : {};
-
   const [precios, setPrecios] = useState<preciosInterface>(PARSED_PRECIOS);
-
+  //mangueras
   const CACHE_MANGUERAS = localStorage.getItem("manguerasPreliq");
   const PARSED_MANGUERAS = CACHE_MANGUERAS ? JSON.parse(CACHE_MANGUERAS) : [];
   const [mangueras, setMangueras] =
     useState<manguerasInterface[]>(PARSED_MANGUERAS);
-
-  const [efectivo, setEfectivo] = useState<efectivoInterface>({
-    type: "efectivo",
-    cantidad: [],
-  });
+  //efetivo
+  const CACHE_EFECTIVO = localStorage.getItem("efectivoPreliq");
+  const PARSED_EFECTIVO = CACHE_EFECTIVO
+    ? JSON.parse(CACHE_EFECTIVO)
+    : { type: "efectivo", cantidad: [] };
+  const [efectivo, setEfectivo] = useState<efectivoInterface>(PARSED_EFECTIVO);
+  //vales
+  const CACHE_VALES = localStorage.getItem("valesPreliq");
+  const PARSED_VALES = CACHE_VALES
+    ? JSON.parse(CACHE_VALES)
+    : { type: "efectivo", cantidad: [] };
+  const [vales, setVales] = useState<valesInterface>(PARSED_VALES);
 
   useEffect(() => {
     const infoGralCache = localStorage.getItem("infoGeneralPreliq");
@@ -46,10 +52,11 @@ const LayoutPreliquidacion: FC = () => {
       //comprueba que existe la variable en el almacenamiento local
       if (JSON.parse(infoGralCache).hasOwnProperty("empleado")) {
         //comprueba que exista al menos la informacion del empleado
-        const modal = document.getElementById(
-          "modal-confirm-no-mutate"
-        ) as HTMLDialogElement;
-        modal.showModal();
+        (
+          document.getElementById(
+            "modal-confirm-no-mutate"
+          ) as HTMLDialogElement
+        ).showModal();
       }
     }
   }, []);
@@ -65,6 +72,7 @@ const LayoutPreliquidacion: FC = () => {
         precios: { body: precios, setBody: setPrecios },
         mangueras: { body: mangueras, setBody: setMangueras },
         efectivo: { body: efectivo, setBody: setEfectivo },
+        vales: { body: vales, setBody: setVales },
       }}
     >
       <div className="h-screen w-screen flex">
@@ -100,7 +108,11 @@ const LayoutPreliquidacion: FC = () => {
             icon="file-invoice-dollar"
             text="Capturar vales"
           />
-          <NavButton to="/" icon="eye" text="Previsualizar y enviar" />
+          <NavButton
+            to="/preliquidacion/previsualizar"
+            icon="eye"
+            text="Previsualizar y enviar"
+          />
 
           <NavLink
             to="/"

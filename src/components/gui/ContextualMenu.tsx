@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Fragment } from "react";
 import { Menu, Item, Separator, Submenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 import Icon from "@components/Icon";
@@ -21,11 +21,11 @@ interface contextualMenuInterface {
 const ContextualMenu: FC<contextualMenuInterface> = ({ id, items }) => {
   const colors = { error: "text-error" };
   const elements: {
-    item: (element: contextItems) => JSX.Element;
+    item: (element: contextItems, index: number) => JSX.Element;
     submenu: (element: contextItems) => JSX.Element;
     separator: () => JSX.Element;
   } = {
-    item: (element) => (
+    item: (element, index) => (
       <Item
         onClick={element.onClick}
         key={`${element.name}-only-item`}
@@ -48,7 +48,11 @@ const ContextualMenu: FC<contextualMenuInterface> = ({ id, items }) => {
   return (
     <Menu id={id ? id : DEFAULT_ID}>
       {items ? (
-        <>{items.map((el) => elements[el.elementType](el))}</>
+        items.map((el, index) => (
+          <Fragment key={`${el.elementType} ${index}`}>
+            {elements[el.elementType](el, index)}
+          </Fragment>
+        ))
       ) : (
         <>
           <Item>Item 1</Item>

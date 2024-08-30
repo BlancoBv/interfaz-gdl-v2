@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from "react";
 import CintaOpciones from "@components/gui/CintaOpciones";
+import { toast } from "react-toastify";
 
 const Input: FC<{
   label: string;
@@ -24,6 +25,12 @@ const Input: FC<{
       ref.current?.classList.add("input-error");
     }
   };
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.focus();
+    }
+  }, []);
   return (
     <CintaOpciones
       onSubmit={(ev: FormEvent<HTMLFormElement>) => {
@@ -47,7 +54,6 @@ const Input: FC<{
           disabled={disabled}
           onChange={handle}
           value={value}
-          autoFocus
         />
       </label>
       <button type="submit" className="btn btn-primary">
@@ -62,8 +68,17 @@ export const InputEdit: FC<{
   disabled?: boolean;
   icon?: string;
   setVariable: any;
+  variable: string[];
   initialValue: string;
-}> = ({ label, disabled, setVariable, initialValue }) => {
+  elementIndex: number;
+}> = ({
+  label,
+  disabled,
+  setVariable,
+  initialValue,
+  variable,
+  elementIndex,
+}) => {
   const ref = useRef<HTMLInputElement | null>(null);
 
   const [value, setValue] = useState<string>("");
@@ -87,20 +102,21 @@ export const InputEdit: FC<{
     setValue(initialValue);
   }, [initialValue]);
 
-  console.log(value);
-
   return (
     <form
       onSubmit={(ev: FormEvent<HTMLFormElement>) => {
         ev.preventDefault();
-        setVariable((prev: any) => ({
-          ...prev,
-          value,
-        }));
-        setValue("");
+
+        const actualValues = [...variable];
+        actualValues[elementIndex] = value;
+
+        setVariable((prev: any) => ({ ...prev, cantidad: [...actualValues] }));
+        toast.success("Monto cambiado correctamente", {
+          containerId: "global",
+        });
         (document.getElementById("edit-monto") as HTMLDialogElement).close();
       }}
-      className="flex items-center justify-evenly flex-wrap"
+      className="flex items-center justify-evenly flex-wrap p-4"
     >
       <label className="form-control w-full max-w-40 lg:max-w-xs ">
         <div className="label">
@@ -114,7 +130,6 @@ export const InputEdit: FC<{
           disabled={disabled}
           onChange={handle}
           value={value}
-          autoFocus
         />
       </label>
       <button type="submit" className="btn btn-primary">

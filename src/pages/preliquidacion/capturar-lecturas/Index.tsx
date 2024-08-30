@@ -1,10 +1,8 @@
 import { FC, useContext, useEffect, useState } from "react";
 import SectionTitle from "@components/gui/SectionTitle";
-
 import { ContextPreliq } from "../components/ContextPreliq";
 import CardIslas from "./components/CardIslas";
 import { ModalConfirmNoMutate } from "@components/gui/Modal";
-import Icon from "@components/Icon";
 
 const CapturarLecturas: FC = () => {
   const { body } = useContext(ContextPreliq).infoGeneral;
@@ -65,7 +63,6 @@ const CapturarLecturas: FC = () => {
           setIdManguera={setIdManguera}
         />
       )}
-      <Icon icon="info" />
 
       <button className="btn btn-primary btn-block mt-4">Siguiente</button>
     </div>

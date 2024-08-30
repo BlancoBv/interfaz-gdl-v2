@@ -57,7 +57,7 @@ const InputMangueras: FC<{
 
       if (indexOfValue < 0) {
         //verifica que existe el valor en el arreglo de las mangueras
-        setBody((prev: manguerasInterface[]) => [...prev, newValue]);
+        setBody?.((prev: manguerasInterface[]) => [...prev, newValue]);
       } else {
         const actualValues = body;
 
@@ -93,7 +93,7 @@ const InputMangueras: FC<{
           actualValues[indexOfValue]["litrosVendidos"] = litrosVendidos;
         } //verifica y realiza el calculo de litros vendidos
 
-        setBody([...actualValues]);
+        setBody?.([...actualValues]);
       }
     } else {
       if (name === "lecturaInicial") {

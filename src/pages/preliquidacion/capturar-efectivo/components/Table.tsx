@@ -1,28 +1,65 @@
 import format from "@assets/format";
+import Modal from "@components/gui/Modal";
+import Table from "@components/Table";
 import { FC } from "react";
+import { InputEdit } from "./Input";
 
-const TablaEV: FC<{ data: string[] }> = ({ data }) => {
+const TablaEV: FC<{
+  data: { value: string; index: number }[];
+  deleteElement: (index: number) => void;
+  setRelativeData: any;
+  relativeData: any;
+  variable: string[];
+  setVariable: any;
+}> = ({
+  data,
+  setRelativeData,
+  deleteElement,
+  relativeData,
+  variable,
+  setVariable,
+}) => {
   return (
-    <table className="table table-fixed max-w-xs">
-      <thead>
-        <tr>
-          <th className="text-wrap lg:text-nowrap text-center">Monto</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.length > 0 ? (
-          data.map((el, index) => (
-            <tr className="text-wrap text-center">
-              <td key={index}>{format.formatDinero(el)}</td>
-            </tr>
-          ))
-        ) : (
-          <tr className="text-wrap text-center">
-            <td>Ingresa algunos montos</td>
-          </tr>
-        )}
-      </tbody>
-    </table>
+    <>
+      <Modal id="edit-monto" title="Editar monto" sm>
+        <InputEdit
+          label="Monto"
+          setVariable={setVariable}
+          initialValue={String(relativeData.value)}
+          variable={variable}
+          elementIndex={relativeData.index}
+        />
+      </Modal>
+      <Table
+        data={data}
+        columns={[
+          { name: "Monto", selector: (el) => format.formatDinero(el.value) },
+        ]}
+        setRelativeData={setRelativeData}
+        contextualMenuItems={[
+          {
+            name: "Editar",
+            elementType: "item",
+            icon: "pen-to-square",
+            onClick: () => {
+              (
+                document.getElementById("edit-monto") as HTMLDialogElement
+              ).showModal();
+            },
+          },
+          { elementType: "separator" },
+          {
+            name: "Eliminar",
+            elementType: "item",
+            icon: "trash",
+            color: "error",
+            onClick: () => deleteElement(relativeData.index),
+          },
+        ]}
+        hoverable
+        noDataMsg="Ingresa algunos montos"
+      />
+    </>
   );
 };
 export default TablaEV;
