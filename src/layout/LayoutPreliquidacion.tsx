@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import Icon from "@components/Icon";
 import ScrollToTop from "@assets/ScrollToTop";
@@ -12,6 +12,7 @@ import {
   preciosInterface,
   valesInterface,
 } from "@pages/preliquidacion/components/ContextPreliq";
+import Decimal from "decimal.js-light";
 
 const LayoutPreliquidacion: FC = () => {
   const CACHE_INFOGENERAL = localStorage.getItem("infoGeneralPreliq");
@@ -46,6 +47,53 @@ const LayoutPreliquidacion: FC = () => {
     : { type: "efectivo", cantidad: [] };
   const [vales, setVales] = useState<valesInterface>(PARSED_VALES);
 
+  const totales = useMemo(() => {
+    const valores = {
+      totalEsperado: 0,
+      totalVales: 0,
+      totalEfectivo: 0,
+      totalEntregado: 0,
+      diferencia: 0,
+    }; // sirve para almacenar los valores temporalmente
+
+    if (mangueras.length > 0) {
+      const sumatoriaImportes = mangueras
+        .map((el) => {
+          if (
+            el.litrosVendidos !== undefined &&
+            el.precioUnitario !== undefined
+          ) {
+            return Number(el.litrosVendidos) * Number(el.precioUnitario);
+          }
+          return 0;
+        })
+        .reduce((a, b) => Number(new Decimal(a).add(b).toFixed(2)), 0);
+
+      valores.totalEsperado = sumatoriaImportes;
+    }
+
+    if (vales.cantidad.length > 0) {
+      const sumatoriaVales: number = vales.cantidad.reduce(
+        (a, b) => Number(new Decimal(Number(a)).add(Number(b)).toFixed(2)),
+        0
+      );
+      valores.totalVales = sumatoriaVales;
+    }
+
+    if (efectivo.cantidad.length > 0) {
+      const sumatoriaEfectivo: number = efectivo.cantidad.reduce(
+        (a, b) => Number(new Decimal(Number(a)).add(Number(b)).toFixed(2)),
+        0
+      );
+      valores.totalEfectivo = sumatoriaEfectivo;
+    }
+
+    valores.totalEntregado = valores.totalEfectivo + valores.totalVales;
+    valores.diferencia = valores.totalEsperado - valores.totalEntregado;
+
+    return valores;
+  }, [infoGeneral, mangueras, efectivo, vales]);
+
   useEffect(() => {
     const infoGralCache = localStorage.getItem("infoGeneralPreliq");
     if (infoGralCache) {
@@ -64,6 +112,8 @@ const LayoutPreliquidacion: FC = () => {
   const cleanAll = () => {
     console.log("ola");
   };
+
+  console.log({ totales });
 
   return (
     <ContextPreliq.Provider
