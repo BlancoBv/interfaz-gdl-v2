@@ -90,7 +90,19 @@ export const ModalConfirmNoMutate: FC<{
   title?: string;
   closeOnESC?: boolean;
   customID?: string;
-}> = ({ action, msg, title, closeOnESC, customID }) => {
+  actionOnCloseButton?: boolean;
+  confirmButtonText?: string;
+  closeButtonText?: string;
+}> = ({
+  action,
+  msg,
+  title,
+  closeOnESC,
+  customID,
+  actionOnCloseButton,
+  confirmButtonText,
+  closeButtonText,
+}) => {
   return (
     <dialog
       id={customID ? customID : "modal-confirm-no-mutate"}
@@ -113,9 +125,17 @@ export const ModalConfirmNoMutate: FC<{
         <div className="modal-action">
           <form method="dialog" className="flex gap-4 items-center">
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn">Cerrar</button>
-            <button className="btn btn-primary" onClick={action}>
-              Aceptar
+            <button
+              className="btn"
+              onClick={actionOnCloseButton ? action : undefined}
+            >
+              {closeButtonText ? closeButtonText : "Cerrar"}
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={actionOnCloseButton ? undefined : action}
+            >
+              {confirmButtonText ? confirmButtonText : "Aceptar"}
             </button>
           </form>
         </div>

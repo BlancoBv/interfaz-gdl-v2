@@ -1,15 +1,20 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Axios from "@assets/Axios";
 
+export interface getDataInterface {
+  data: { response: any[] };
+  isPending: boolean;
+  isError: boolean;
+}
+
 export function useGetData(
   url: string,
   key: string,
   config: { fetchInURLChange?: boolean; selectFn?: (data: any) => any } = {
     fetchInURLChange: false,
   }
-) {
-  // const queryClient = useQueryClient();
-  return useQuery({
+): getDataInterface {
+  const { data, isPending, isFetching, isError } = useQuery({
     queryKey: config.fetchInURLChange ? [key, url] : [key],
     queryFn: async () => {
       const { data } = await Axios.get(url);
@@ -31,4 +36,6 @@ export function useGetData(
         }
       : undefined,
   });
+
+  return { data, isPending: isPending && isFetching, isError } as const;
 }

@@ -14,6 +14,7 @@ import {
 } from "@pages/preliquidacion/components/ContextPreliq";
 import Decimal from "decimal.js-light";
 import format from "@assets/format";
+import { useGetData } from "@hooks/useGetData";
 
 const LayoutPreliquidacion: FC = () => {
   const CACHE_INFOGENERAL = localStorage.getItem("infoGeneralPreliq");
@@ -47,10 +48,87 @@ const LayoutPreliquidacion: FC = () => {
     ? JSON.parse(CACHE_VALES)
     : { type: "efectivo", cantidad: [] };
   const [vales, setVales] = useState<valesInterface>(PARSED_VALES);
+  //error de reinicio o lectura mal capturada
+  const [error, setError] = useState<boolean>(false);
 
+  const empleados = useGetData(
+    "/empleado?departamento=1&auth=false&estatus=1&estatus=6",
+    "empleadoDespachoData"
+  );
+  const estacionServicio = useGetData(
+    "/estaciones-servicio/",
+    "estacionSelectData"
+  );
+  const islas = useGetData(
+    `/liquidacion/islas/${infoGeneral.estacion}&auth=false`,
+    "islaSelectData",
+    { fetchInURLChange: true }
+  );
+  const turnos = useGetData(
+    "/administrativo/turnos/buscartodo",
+    "turnoSelectData"
+  );
+
+  const otherData = useMemo(() => {
+    const values: {
+      islas: any[];
+      estacionServicio: any;
+      turno: any;
+      empleado: any;
+    } = {
+      islas: [],
+      estacionServicio: "",
+      turno: "",
+      empleado: "",
+    };
+
+    if (!islas.isPending) {
+      const filteredIslas: any[] = [];
+      infoGeneral.islas?.forEach((element) => {
+        const indexOfValue = islas.data.response.findIndex(
+          (el: { idisla: number }) => el.idisla === element.value
+        );
+        if (indexOfValue >= 0) {
+          filteredIslas.push(islas.data.response[indexOfValue]);
+        }
+      });
+      values.islas = filteredIslas;
+    }
+
+    if (!estacionServicio.isPending) {
+      const indexOfValue = estacionServicio.data.response.findIndex(
+        (el) => el.idestacion_servicio === infoGeneral.estacion
+      );
+
+      if (indexOfValue >= 0) {
+        values.estacionServicio = estacionServicio.data.response[indexOfValue];
+      }
+    }
+
+    if (!turnos.isPending) {
+      const indexOfValue = turnos.data.response.findIndex(
+        (el: { idturno: number }) => el.idturno === infoGeneral.turno
+      );
+      if (indexOfValue >= 0) {
+        values.turno = turnos.data.response[indexOfValue];
+      }
+    }
+
+    if (!empleados.isPending) {
+      const indexOfValue = empleados.data.response.findIndex(
+        (el: { idempleado: number }) => el.idempleado === infoGeneral.empleado
+      );
+      if (indexOfValue >= 0) {
+        values.empleado = empleados.data.response[indexOfValue];
+      }
+    }
+    return values;
+  }, [islas, estacionServicio, turnos, empleados]);
+
+  //totales
   const totales = useMemo(() => {
     const valores = {
-      totalEsperado: 0,
+      totalEntregar: 0,
       totalVales: 0,
       totalEfectivo: 0,
       totalEntregado: 0,
@@ -70,7 +148,7 @@ const LayoutPreliquidacion: FC = () => {
         })
         .reduce((a, b) => Number(new Decimal(a).add(b).toFixed(2)), 0);
 
-      valores.totalEsperado = sumatoriaImportes;
+      valores.totalEntregar = sumatoriaImportes;
     }
 
     if (vales.cantidad.length > 0) {
@@ -90,12 +168,14 @@ const LayoutPreliquidacion: FC = () => {
     }
 
     valores.totalEntregado = valores.totalEfectivo + valores.totalVales;
-    valores.diferencia = new Decimal(valores.totalEsperado)
+    valores.diferencia = new Decimal(valores.totalEntregar)
       .minus(valores.totalEntregado)
       .toFixed(2);
 
     return valores;
   }, [infoGeneral, mangueras, efectivo, vales]);
+
+  console.log(otherData);
 
   useEffect(() => {
     const infoGralCache = localStorage.getItem("infoGeneralPreliq");
@@ -113,10 +193,12 @@ const LayoutPreliquidacion: FC = () => {
   }, []);
 
   const cleanAll = () => {
-    console.log("ola");
+    setInfoGeneral({});
+    setPrecios({});
+    setEfectivo({ type: "efectivo", cantidad: [] });
+    setVales({ type: "vales", cantidad: [] });
+    setMangueras([]);
   };
-
-  console.log({ totales });
 
   return (
     <ContextPreliq.Provider
@@ -126,6 +208,9 @@ const LayoutPreliquidacion: FC = () => {
         mangueras: { body: mangueras, setBody: setMangueras },
         efectivo: { body: efectivo, setBody: setEfectivo },
         vales: { body: vales, setBody: setVales },
+        error: { body: error, setBody: setError },
+        otherData,
+        totales,
       }}
     >
       <div className="h-screen w-screen flex">
@@ -133,6 +218,9 @@ const LayoutPreliquidacion: FC = () => {
           action={cleanAll}
           msg="Existen datos sin guardar, ¿desea recuperarlos?"
           title="Advertencia"
+          actionOnCloseButton
+          confirmButtonText="Sí"
+          closeButtonText="No"
         />
         <ul className="menu bg-base-200 rounded-box lg:w-1/6 h-full gap-2">
           <NavButton
@@ -150,6 +238,7 @@ const LayoutPreliquidacion: FC = () => {
             to="/preliquidacion/capturar-lecturas"
             icon="gauge-simple-high"
             text="Capturar lecturas"
+            disabled={Object.values(precios).length < 3}
           />
           <NavButton
             to="/preliquidacion/capturar-efectivo"
@@ -165,13 +254,14 @@ const LayoutPreliquidacion: FC = () => {
             to="/preliquidacion/previsualizar"
             icon="eye"
             text="Previsualizar y enviar"
+            disabled={mangueras.length <= 0}
           />
 
           <NavLink
             to="/"
             className="btn btn-error btn-block"
             type="button"
-            title="Cerrar sesión"
+            title="Volver al inicio"
           >
             <Icon icon="arrow-right-from-bracket" />
             <span className="hidden lg:block">Volver al inicio</span>
@@ -192,7 +282,7 @@ const LayoutPreliquidacion: FC = () => {
                   </div>
                   <div className="stat-title">Total calculado</div>
                   <div className="stat-value text-xl lg:text-4xl">
-                    {format.formatDinero(totales.totalEsperado)}
+                    {format.formatDinero(totales.totalEntregar)}
                   </div>
                 </div>
                 <div className="stat">
@@ -229,6 +319,8 @@ const NavButton: FC<{
   disabled?: boolean;
   end?: boolean;
 }> = ({ to, icon, text, disabled, end }) => {
+  console.log(disabled);
+
   return (
     <li className={disabled ? "disabled" : ""}>
       <NavLink

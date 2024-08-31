@@ -8,8 +8,8 @@ import { TriggerEvent, useContextMenu } from "react-contexify";
 const Table: FC<{
   data: any[];
   columns: { name: string; selector: (prop: any) => string }[];
-  setRelativeData: any;
-  contextualMenuItems: contextItems[];
+  setRelativeData?: any;
+  contextualMenuItems?: contextItems[];
   hoverable?: boolean;
   noDataMsg?: string;
 }> = ({
@@ -49,7 +49,11 @@ const Table: FC<{
               <tr
                 className={`text-wrap text-center ${hoverable ? "hover" : ""}`}
                 key={`row ${rowIndex}`}
-                onContextMenu={(ev) => displayContextMenu(ev, row)}
+                onContextMenu={
+                  contextualMenuItems
+                    ? (ev) => displayContextMenu(ev, row)
+                    : undefined
+                }
               >
                 {columns.map((col, colIndex) => (
                   <td key={`col-data ${rowIndex}${colIndex}`}>

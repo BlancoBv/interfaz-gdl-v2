@@ -1,5 +1,5 @@
 import Icon from "@components/Icon";
-import { FC, useContext, useRef, ChangeEvent, useMemo } from "react";
+import { FC, useContext, useRef, ChangeEvent, useMemo, useEffect } from "react";
 import format from "@assets/format";
 import {
   ContextPreliq,
@@ -27,16 +27,14 @@ const InputMangueras: FC<{
 }> = ({ data, label, setIdManguera }) => {
   const { body, setBody } = useContext(ContextPreliq).mangueras;
   const { body: precios } = useContext(ContextPreliq).precios;
+  const { setBody: setError } = useContext(ContextPreliq).error;
   const numIsla = Number(label.split(" ")[1]);
   const ID_MODAL = "modal-confirm-delete-lectura";
 
   const refInicial = useRef<HTMLInputElement>(null);
   const refFinal = useRef<HTMLInputElement>(null);
 
-  const handle = (
-    ev: ChangeEvent<HTMLInputElement>,
-    ref: { current: HTMLInputElement }
-  ) => {
+  const handle = (ev: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = ev.currentTarget;
 
     const regExpOnlyNumber = new RegExp(/^\d+$/, "g");
@@ -48,7 +46,9 @@ const InputMangueras: FC<{
 
     if (regExpOnlyNumber.test(value)) {
       //verifica si que quieren agregar caracteres distintos a numeros
-      ref.current.classList.remove("input-error");
+      refFinal.current?.classList.remove("input-sucess", "input-error");
+      refInicial.current?.classList.remove("input-sucess", "input-error");
+
       const newValue: manguerasInterface = {
         idManguera: data.mangueras.idmanguera,
         [name]: formatedValue,
@@ -80,9 +80,11 @@ const InputMangueras: FC<{
           if (lecturaF < lecturaI) {
             refInicial.current?.classList.add("input-warning");
             refFinal.current?.classList.add("input-warning");
+            setError?.(true);
           } else {
             refInicial.current?.classList.add("input-success");
             refFinal.current?.classList.add("input-success");
+            setError?.(false);
           }
 
           const litrosVendidos =
@@ -103,6 +105,34 @@ const InputMangueras: FC<{
       }
     }
   };
+
+  useEffect(() => {
+    const indexOfValue = body.findIndex(
+      (el) => el.idManguera === data.mangueras.idmanguera
+    );
+
+    if (indexOfValue >= 0) {
+      if (
+        body[indexOfValue].hasOwnProperty("lecturaInicial") &&
+        !body[indexOfValue].hasOwnProperty("lecturaFinal")
+      ) {
+        refFinal.current?.classList.add("input-error");
+        refInicial.current?.classList.add("input-error");
+      }
+
+      if (
+        body[indexOfValue].hasOwnProperty("lecturaFinal") &&
+        body[indexOfValue].hasOwnProperty("lecturaInicial")
+      ) {
+        refFinal.current?.classList.add("input-success");
+        refInicial.current?.classList.add("input-success");
+      }
+    }
+    return () => {
+      refFinal.current?.classList.remove("input-sucess", "input-error");
+      refInicial.current?.classList.remove("input-sucess", "input-error");
+    };
+  }, []);
 
   const { inicial, final } = useMemo(() => {
     const indexOfValue = body.findIndex(

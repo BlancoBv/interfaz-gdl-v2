@@ -156,7 +156,7 @@ export const SelectEmpleado: FC<{
   estatus,
   departamento,
 }) => {
-  const { data, isPending, isFetching, isError } = useGetData(
+  const { data, isPending, isError } = useGetData(
     `empleado?departamento=${
       departamento ? departamento : "1"
     }&auth=false&estatus=${estatus ? estatus.join("&estatus=") : ""}`,
@@ -171,17 +171,16 @@ export const SelectEmpleado: FC<{
       <ReactSelect
         placeholder="Selecciona un empleado"
         options={
-          !isFetching &&
-          !isPending &&
-          !isError &&
-          data.response.map(
-            (el: { nombre_completo: string; idempleado: number }) => ({
-              value: el.idempleado,
-              label: el.nombre_completo,
-            })
-          )
+          !isPending && !isError
+            ? data.response.map(
+                (el: { nombre_completo: string; idempleado: number }) => ({
+                  value: el.idempleado,
+                  label: el.nombre_completo,
+                })
+              )
+            : []
         }
-        isLoading={isPending && isFetching}
+        isLoading={isPending}
         setVariable={setVariable}
         name={name}
         variable={variable}
@@ -200,12 +199,10 @@ export const SelectTurno: FC<{
   required?: boolean;
   disabled?: boolean;
 }> = ({ name, label, variable, setVariable, disabled, required }) => {
-  const { data, isPending, isFetching, isError } = useGetData(
+  const { data, isPending, isError } = useGetData(
     "administrativo/turnos/buscartodo",
     "turnoSelectData"
   );
-
-  console.log({ isError, isPending, isFetching });
 
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs">
@@ -215,17 +212,20 @@ export const SelectTurno: FC<{
       <ReactSelect
         placeholder="Selecciona un turno"
         options={
-          !isFetching &&
-          !isPending &&
-          !isError &&
-          data.response.map(
-            (el: { turno: string; idturno: number; hora_empiezo: string }) => ({
-              value: el.idturno,
-              label: `${el.turno} (${el.hora_empiezo})`,
-            })
-          )
+          !isPending && !isError
+            ? data.response.map(
+                (el: {
+                  turno: string;
+                  idturno: number;
+                  hora_empiezo: string;
+                }) => ({
+                  value: el.idturno,
+                  label: `${el.turno} (${el.hora_empiezo})`,
+                })
+              )
+            : []
         }
-        isLoading={isPending && isFetching}
+        isLoading={isPending}
         setVariable={setVariable}
         name={name}
         variable={variable}
@@ -244,7 +244,7 @@ export const SelectEstacion: FC<{
   required?: boolean;
   disabled?: boolean;
 }> = ({ name, label, variable, setVariable, disabled, required }) => {
-  const { data, isPending, isFetching, isError } = useGetData(
+  const { data, isPending, isError } = useGetData(
     "estaciones-servicio",
     "estacionSelectData"
   );
@@ -257,17 +257,16 @@ export const SelectEstacion: FC<{
       <ReactSelect
         placeholder="Selecciona un turno"
         options={
-          !isFetching &&
-          !isPending &&
-          !isError &&
-          data.response.map(
-            (el: { nombre: string; idestacion_servicio: number }) => ({
-              value: el.idestacion_servicio,
-              label: el.nombre,
-            })
-          )
+          !isPending && !isError
+            ? data.response.map(
+                (el: { nombre: string; idestacion_servicio: number }) => ({
+                  value: el.idestacion_servicio,
+                  label: el.nombre,
+                })
+              )
+            : []
         }
-        isLoading={isPending && isFetching}
+        isLoading={isPending}
         setVariable={setVariable}
         name={name}
         variable={variable}
@@ -297,7 +296,7 @@ export const SelectIsla: FC<{
   estacionServicio,
   multiple,
 }) => {
-  const { data, isPending, isFetching, isError } = useGetData(
+  const { data, isPending, isError } = useGetData(
     `liquidacion/islas/${estacionServicio}`,
     "islaSelectData",
     { fetchInURLChange: true }
@@ -311,32 +310,31 @@ export const SelectIsla: FC<{
       <ReactSelect
         placeholder="Selecciona una o más islas"
         options={
-          !isFetching &&
-          !isPending &&
-          !isError &&
-          data.response.map(
-            (el: {
-              idisla: number;
-              nisla: number;
-              gas: {
-                idgas: string;
-                nombre: string;
-                mangueras: {
-                  idmanguera: string;
-                  tiene: boolean;
-                  direccion: "dr" | "iz";
-                  idgas: string;
-                  idsla: number;
-                }[];
-              };
-            }) => ({
-              value: el.idisla,
-              label: `Isla ${el.nisla}`,
-              extra: el.gas,
-            })
-          )
+          !isPending && !isError
+            ? data.response.map(
+                (el: {
+                  idisla: number;
+                  nisla: number;
+                  gas: {
+                    idgas: string;
+                    nombre: string;
+                    mangueras: {
+                      idmanguera: string;
+                      tiene: boolean;
+                      direccion: "dr" | "iz";
+                      idgas: string;
+                      idsla: number;
+                    }[];
+                  };
+                }) => ({
+                  value: el.idisla,
+                  label: `Isla ${el.nisla}`,
+                  extra: el.gas,
+                })
+              )
+            : []
         }
-        isLoading={isPending && isFetching}
+        isLoading={isPending}
         setVariable={setVariable}
         name={name}
         variable={variable}

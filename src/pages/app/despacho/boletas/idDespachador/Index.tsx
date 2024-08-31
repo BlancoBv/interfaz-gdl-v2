@@ -8,8 +8,6 @@ import { meses } from "@assets/misc";
 const Index: FC = () => {
   const { data, filtros }: any = useLoaderData();
 
-  console.log(data);
-
   return (
     <div className="flex flex-col">
       <SectionTitle titulo="Boleta de despachador" subtitulo="Despacho" />

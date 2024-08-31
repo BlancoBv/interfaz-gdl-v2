@@ -18,7 +18,7 @@ export function useSendData(
   const { mutate, isPending, isSuccess, mutateAsync } = useMutation({
     mutationFn: async (data?: any) => {
       const res = await Axios[config.method](url, data);
-      console.log(res);
+
       if (res.status === 400) {
         return Promise.reject(res.data);
       }
@@ -37,7 +37,7 @@ export function useSendData(
       );
     },
     onError: (err: { msg: string }) => {
-      toast.error(err.msg, {
+      toast.error(err.msg ? err.msg : "Error al enviar los datos", {
         containerId: config.containerID ? config.containerID : "global",
       });
     },

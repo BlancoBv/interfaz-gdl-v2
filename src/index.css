@@ -4,10 +4,10 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-/*   line-height: 1.5;
+  /*   line-height: 1.5;
   font-weight: 400; */
 
-/*   color-scheme: light dark;
+  /*   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424; */
 
@@ -15,14 +15,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
-  
 }
 
 /* Variables para el menu contextual */
-*{
+* {
   --contexify-menu-bgColor: oklch(var(--b2));
-  --contexify-separator-color: var(--fallback-bc,oklch(var(--bc)/0.1));
+  --contexify-separator-color: var(--fallback-bc, oklch(var(--bc) / 0.1));
   --contexify-item-color: oklch(var(--bc));
   --contexify-activeItem-color: #fff;
   --contexify-activeItem-bgColor: oklch(var(--p));
@@ -32,6 +30,6 @@
   --contexify-activeArrow-color: #fff;
 }
 
-dialog .Toastify{
+dialog .Toastify {
   position: fixed;
-}/*  Evita que el componente toast modifique la ventana modal*/
+} /*  Evita que el componente toast modifique la ventana modal*/
