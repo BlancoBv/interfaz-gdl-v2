@@ -1,14 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es" data-theme="corporate">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gasolinera don lalo</title>
+    <style>
+      /* HTML: <div class="loader"></div> */
+      .loading-message {
+        display: flex;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .loading-message img {
+        width: 100%;
+        max-width: 300px;
+        aspect-ratio: 3/1;
+        object-fit: contain;
+      }
+      .loader {
+        height: 4px;
+        width: 350px;
+        --c: no-repeat linear-gradient(#002cee 0 0);
+        background: var(--c), var(--c), #fcb8bb;
+        background-size: 60% 100%;
+        animation: l16 3s infinite;
+      }
+      @keyframes l16 {
+        0% {
+          background-position: -150% 0, -150% 0;
+        }
+        66% {
+          background-position: 250% 0, -150% 0;
+        }
+        100% {
+          background-position: 250% 0, 250% 0;
+        }
+      }
+    </style>
   </head>
+
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
     <div id="toast-root"></div>
+    <div id="root">
+      <div class="loading-message">
+        <img src="/img/logogdl.png" />
+        <div class="loader" />
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

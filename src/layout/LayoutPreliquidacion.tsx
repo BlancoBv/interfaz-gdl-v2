@@ -25,7 +25,7 @@ const LayoutPreliquidacion: FC = () => {
     empleado?: number;
     turno?: number;
     estacion?: number;
-    islas?: islasInterface[];
+    islas?: { nIsla: string; idIsla: number }[];
   }>(PARSED_INFOGENERAL);
   //Empieza configuracion de precios
   const CACHE_PRECIOS = localStorage.getItem("preciosPreliq");
@@ -86,7 +86,7 @@ const LayoutPreliquidacion: FC = () => {
       const filteredIslas: any[] = [];
       infoGeneral.islas?.forEach((element) => {
         const indexOfValue = islas.data.response.findIndex(
-          (el: { idisla: number }) => el.idisla === element.value
+          (el: { idisla: number }) => el.idisla === element.idIsla
         );
         if (indexOfValue >= 0) {
           filteredIslas.push(islas.data.response[indexOfValue]);

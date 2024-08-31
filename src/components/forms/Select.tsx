@@ -285,7 +285,6 @@ export const SelectIsla: FC<{
   required?: boolean;
   disabled?: boolean;
   estacionServicio?: number;
-  multiple?: boolean;
 }> = ({
   name,
   label,
@@ -294,7 +293,6 @@ export const SelectIsla: FC<{
   disabled,
   required,
   estacionServicio,
-  multiple,
 }) => {
   const { data, isPending, isError } = useGetData(
     `liquidacion/islas/${estacionServicio}`,
@@ -329,7 +327,6 @@ export const SelectIsla: FC<{
                 }) => ({
                   value: el.idisla,
                   label: `Isla ${el.nisla}`,
-                  extra: el.gas,
                 })
               )
             : []
@@ -340,13 +337,15 @@ export const SelectIsla: FC<{
         variable={variable}
         disabled={disabled}
         required={required}
-        multiple={multiple}
+        multiple
+        valueName="idIsla"
+        labelName="nIsla"
       />
     </label>
   );
 };
 
-const ReactSelect: FC<{
+interface rSelectBase {
   options: { value: string | number; label: string }[];
   placeholder: string;
   isLoading?: boolean;
@@ -356,28 +355,42 @@ const ReactSelect: FC<{
   name: string;
   setVariable: any;
   tabIndex?: number;
-  multiple?: boolean;
-}> = ({
-  options,
-  placeholder,
-  isLoading,
-  required,
-  disabled,
-  variable,
-  setVariable,
-  name,
-  tabIndex,
-  multiple,
-}) => {
-  console.log(options, placeholder);
+}
+interface rSelectSingle extends rSelectBase {
+  multiple?: false;
+}
 
+interface rSelectMultiple extends rSelectBase {
+  multiple: true;
+  valueName: string;
+  labelName: string;
+}
+
+type rSelectInterface = rSelectMultiple | rSelectSingle;
+
+const ReactSelect: FC<rSelectInterface> = (props) => {
+  const {
+    options,
+    placeholder,
+    isLoading,
+    required,
+    disabled,
+    variable,
+    setVariable,
+    name,
+    tabIndex,
+    multiple,
+  } = props;
   const value = useMemo(() => {
     if (variable[name] && options) {
       const indexOfValue = options.findIndex(
         (el) => el.value === Number(variable[name])
       );
       if (multiple) {
-        return variable[name];
+        return variable[name].map((el: any) => ({
+          label: el[props.labelName],
+          value: el[props.valueName],
+        }));
       }
       if (!options) {
         variable[name];
@@ -428,9 +441,13 @@ const ReactSelect: FC<{
         console.log({ ev });
 
         if (multiple) {
+          const values = ev.map((el: { value: string; label: string }) => ({
+            [props.labelName]: el.label,
+            [props.valueName]: el.value,
+          }));
           setVariable((prev: any) => ({
             ...prev,
-            [name]: ev,
+            [name]: values,
           }));
         } else {
           setVariable((prev: any) => ({

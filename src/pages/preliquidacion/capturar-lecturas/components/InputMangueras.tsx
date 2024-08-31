@@ -29,6 +29,9 @@ const InputMangueras: FC<{
   const { body: precios } = useContext(ContextPreliq).precios;
   const { setBody: setError } = useContext(ContextPreliq).error;
   const numIsla = Number(label.split(" ")[1]);
+  const idMangueraCalculated = `${data.idgas}${
+    data.mangueras.direccion === "dr" ? numIsla * 2 : numIsla * 2 - 1
+  }`;
   const ID_MODAL = "modal-confirm-delete-lectura";
 
   const refInicial = useRef<HTMLInputElement>(null);
@@ -40,7 +43,7 @@ const InputMangueras: FC<{
     const regExpOnlyNumber = new RegExp(/^\d+$/, "g");
 
     const indexOfValue = body.findIndex(
-      (el) => el.idManguera === data.mangueras.idmanguera
+      (el) => el.idManguera === idMangueraCalculated
     );
     const formatedValue = format.zFill(value);
 
@@ -50,7 +53,7 @@ const InputMangueras: FC<{
       refInicial.current?.classList.remove("input-sucess", "input-error");
 
       const newValue: manguerasInterface = {
-        idManguera: data.mangueras.idmanguera,
+        idManguera: idMangueraCalculated,
         [name]: formatedValue,
         precioUnitario: precios[data.idgas as keyof preciosInterface],
       };
@@ -106,37 +109,9 @@ const InputMangueras: FC<{
     }
   };
 
-  useEffect(() => {
-    const indexOfValue = body.findIndex(
-      (el) => el.idManguera === data.mangueras.idmanguera
-    );
-
-    if (indexOfValue >= 0) {
-      if (
-        body[indexOfValue].hasOwnProperty("lecturaInicial") &&
-        !body[indexOfValue].hasOwnProperty("lecturaFinal")
-      ) {
-        refFinal.current?.classList.add("input-error");
-        refInicial.current?.classList.add("input-error");
-      }
-
-      if (
-        body[indexOfValue].hasOwnProperty("lecturaFinal") &&
-        body[indexOfValue].hasOwnProperty("lecturaInicial")
-      ) {
-        refFinal.current?.classList.add("input-success");
-        refInicial.current?.classList.add("input-success");
-      }
-    }
-    return () => {
-      refFinal.current?.classList.remove("input-sucess", "input-error");
-      refInicial.current?.classList.remove("input-sucess", "input-error");
-    };
-  }, []);
-
   const { inicial, final } = useMemo(() => {
     const indexOfValue = body.findIndex(
-      (el) => el.idManguera === data.mangueras.idmanguera
+      (el) => el.idManguera === idMangueraCalculated
     );
 
     if (indexOfValue >= 0) {
@@ -168,11 +143,37 @@ const InputMangueras: FC<{
     return { inicial: "", final: "" } as const;
   }, [body]); //retorna los valores de cada input automaticamente
 
+  useEffect(() => {
+    const indexOfValue = body.findIndex(
+      (el) => el.idManguera === data.mangueras.idmanguera
+    );
+
+    if (indexOfValue >= 0) {
+      if (
+        body[indexOfValue].hasOwnProperty("lecturaInicial") &&
+        !body[indexOfValue].hasOwnProperty("lecturaFinal")
+      ) {
+        refFinal.current?.classList.add("input-error");
+        refInicial.current?.classList.add("input-error");
+      }
+
+      if (
+        body[indexOfValue].hasOwnProperty("lecturaFinal") &&
+        body[indexOfValue].hasOwnProperty("lecturaInicial")
+      ) {
+        refFinal.current?.classList.add("input-success");
+        refInicial.current?.classList.add("input-success");
+      }
+    }
+    return () => {
+      refFinal.current?.classList.remove("input-sucess", "input-error");
+      refInicial.current?.classList.remove("input-sucess", "input-error");
+    };
+  }, []);
   return (
     <>
       <div className="flex flex-col">
         <p className="text-center">
-          {data.mangueras.idmanguera}{" "}
           {`${data.idgas}${
             data.mangueras.direccion === "dr" ? numIsla * 2 : numIsla * 2 - 1
           }`}
@@ -198,7 +199,7 @@ const InputMangueras: FC<{
             }`}
             onClick={() => {
               setIdManguera({
-                idManguera: data.mangueras.idmanguera,
+                idManguera: idMangueraCalculated,
                 refs: { final: refFinal, inicial: refInicial },
               });
               (

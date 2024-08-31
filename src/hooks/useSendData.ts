@@ -37,7 +37,7 @@ export function useSendData(
       );
     },
     onError: (err: { msg: string }) => {
-      toast.error(err.msg ? err.msg : "Error al enviar los datos", {
+      toast.error("Error al enviar los datos", {
         containerId: config.containerID ? config.containerID : "global",
       });
     },

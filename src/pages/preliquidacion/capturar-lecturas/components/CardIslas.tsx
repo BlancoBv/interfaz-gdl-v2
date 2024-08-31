@@ -1,9 +1,10 @@
 import { FC } from "react";
 import Icon from "@components/Icon";
-import { islasInterface } from "../../components/ContextPreliq";
+
 import agruparArr from "@assets/agruparArr";
 
 import InputMangueras from "./InputMangueras";
+import { islasInterface } from "@assets/interfaces";
 
 interface single {
   iz: {
@@ -35,6 +36,8 @@ const CardIslas: FC<{
   estacionServicio: number;
   setIdManguera: any;
 }> = ({ data, estacionServicio, setIdManguera }) => {
+  console.log(data);
+
   return (
     <>
       {data.map((isla) => {
@@ -42,14 +45,14 @@ const CardIslas: FC<{
           single,
         }: {
           single: single;
-        } = agruparArr(isla.extra, (pos) => pos.mangueras.direccion);
+        } = agruparArr(isla.gas, (pos) => pos.mangueras.direccion);
         return (
-          <div className="stats shadow w-full lg:h-96 mb-4" key={isla.value}>
+          <div className="stats shadow w-full lg:h-96 mb-4" key={isla.idisla}>
             <div className="stat">
               {single.iz.map((manguera) => (
                 <InputMangueras
                   data={manguera}
-                  label={isla.label}
+                  label={`Isla ${isla.nisla}`}
                   key={`izq ${manguera.idgas}`}
                   setIdManguera={setIdManguera}
                 />
@@ -57,7 +60,7 @@ const CardIslas: FC<{
             </div>
 
             <div className="stat flex flex-col justify-center items-center gap-4">
-              <div className="stat-title">{isla.label}</div>
+              <div className="stat-title">Isla {isla.nisla}</div>
               <div className="stat-value">
                 <Icon icon="gas-pump" size="2x" />
               </div>
@@ -70,7 +73,7 @@ const CardIslas: FC<{
               {single.dr.map((manguera) => (
                 <InputMangueras
                   data={manguera}
-                  label={isla.label}
+                  label={`Isla ${isla.nisla}`}
                   key={`dr ${manguera.idgas}`}
                   setIdManguera={setIdManguera}
                 />

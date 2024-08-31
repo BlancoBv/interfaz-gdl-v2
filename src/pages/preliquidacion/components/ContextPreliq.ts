@@ -7,19 +7,8 @@ import {
 import { createContext, Dispatch, SetStateAction } from "react";
 
 export interface islasInterface {
-  label: string;
-  value: number;
-  extra: {
-    idgas: string;
-    nombre: string;
-    mangueras: {
-      idmanguera: string;
-      tiene: boolean;
-      direccion: "dr" | "iz";
-      idgas: string;
-      idsla: number;
-    };
-  }[];
+  nIsla: string;
+  idIsla: number;
 }
 
 export interface infoGeneralInterface {

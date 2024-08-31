@@ -3,11 +3,15 @@ import SectionTitle from "@components/gui/SectionTitle";
 import { ContextPreliq } from "../components/ContextPreliq";
 import CardIslas from "./components/CardIslas";
 import { ModalConfirmNoMutate } from "@components/gui/Modal";
+import { useNavigate } from "react-router-dom";
 
 const CapturarLecturas: FC = () => {
   const { body } = useContext(ContextPreliq).infoGeneral;
   const { body: mangueras, setBody: setMangueras } =
     useContext(ContextPreliq).mangueras;
+  const { islas } = useContext(ContextPreliq).otherData;
+
+  const navigate = useNavigate();
 
   const [idManguera, setIdManguera] = useState<{
     idManguera: string;
@@ -45,6 +49,8 @@ const CapturarLecturas: FC = () => {
     localStorage.setItem("manguerasPreliq", JSON.stringify(mangueras));
   }, [mangueras]);
 
+  console.log(islas);
+
   return (
     <div className="w-full">
       <ModalConfirmNoMutate
@@ -58,13 +64,18 @@ const CapturarLecturas: FC = () => {
 
       {body.islas && body.estacion && (
         <CardIslas
-          data={body.islas}
+          data={islas}
           estacionServicio={body.estacion}
           setIdManguera={setIdManguera}
         />
       )}
 
-      <button className="btn btn-primary btn-block mt-4">Siguiente</button>
+      <button
+        className="btn btn-primary btn-block mt-4"
+        onClick={() => navigate("/preliquidacion/capturar-efectivo")}
+      >
+        Siguiente
+      </button>
     </div>
   );
 };

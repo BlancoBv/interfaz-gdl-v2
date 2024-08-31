@@ -10,6 +10,7 @@ import { ModalConfirmNoMutate } from "@components/gui/Modal";
 import { useSendData } from "@hooks/useSendData";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import SendingScreen from "./components/SendingScreen";
 
 const Previsualizar: FC = () => {
   const date = new Date(Date.now());
@@ -32,14 +33,30 @@ const Previsualizar: FC = () => {
   const sendPreliq = useSendData("pdf/sendFile");
 
   const handleSend = () => {
-    if (confirmValues(mangueras)) {
-      toast.error("Una o más lecturas estan sin capturar", {
-        containerId: "global",
-      });
-      navigate("/preliquidacion/capturar-lecturas");
-    } else {
+    handleSend: {
+      if (confirmValues(mangueras)) {
+        toast.error("Una o más lecturas estan sin capturar", {
+          containerId: "global",
+        });
+        navigate("/preliquidacion/capturar-lecturas");
+        break handleSend;
+      }
+      if (efectivo.cantidad.length < 1) {
+        toast.error("No ingresaste ningun monto de efectivo", {
+          containerId: "global",
+        });
+        navigate("/preliquidacion/capturar-efectivo");
+        break handleSend;
+      }
+      if (vales.cantidad.length < 1) {
+        toast.error("No ingresaste ningun monto de vales", {
+          containerId: "global",
+        });
+        navigate("/preliquidacion/capturar-vales");
+        break handleSend;
+      }
       sendPreliq.mutate({
-        data: { error, ...infoGeneral, ...totales, ...mangueras },
+        data: { error, ...infoGeneral, ...totales, mangueras },
         otherData: {
           empleado,
           turno,
@@ -52,6 +69,7 @@ const Previsualizar: FC = () => {
   };
   return (
     <div className="w-full">
+      <SendingScreen isPending={sendPreliq.isPending} />
       <ModalConfirmNoMutate
         action={handleSend}
         customID="confirm-enviar"
