@@ -80,6 +80,7 @@ export const ContextPreliq = createContext<{
     efectivo?: string[];
   };
   totales: {};
+  cleanAll: () => void;
 }>({
   infoGeneral: { body: {} },
   precios: { body: {} },
@@ -95,4 +96,5 @@ export const ContextPreliq = createContext<{
     totalEntregado: 0,
     diferencia: "0",
   },
+  cleanAll: () => {},
 });

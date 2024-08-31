@@ -80,7 +80,6 @@ const Preliquidacion: FC = () => {
               variable={body}
               setVariable={setBody}
               estacionServicio={body.estacion}
-              multiple
               required
             />
           </CardInfoGral>

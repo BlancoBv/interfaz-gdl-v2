@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Icon from "@components/Icon";
 import ScrollToTop from "@assets/ScrollToTop";
 import Header from "@components/gui/Header";
@@ -50,6 +50,8 @@ const LayoutPreliquidacion: FC = () => {
   const [vales, setVales] = useState<valesInterface>(PARSED_VALES);
   //error de reinicio o lectura mal capturada
   const [error, setError] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const empleados = useGetData(
     "/empleado?departamento=1&auth=false&estatus=1&estatus=6",
@@ -198,6 +200,16 @@ const LayoutPreliquidacion: FC = () => {
     setEfectivo({ type: "efectivo", cantidad: [] });
     setVales({ type: "vales", cantidad: [] });
     setMangueras([]);
+    setError(false);
+
+    localStorage.removeItem("efectivoPreliq");
+    localStorage.removeItem("infoGeneralPreliq");
+    localStorage.removeItem("manguerasPreliq");
+    localStorage.removeItem("preciosPreliq");
+    localStorage.removeItem("valesPreliq");
+    localStorage.removeItem("errorPreliq");
+
+    navigate("/preliquidacion");
   };
 
   return (
@@ -211,6 +223,7 @@ const LayoutPreliquidacion: FC = () => {
         error: { body: error, setBody: setError },
         otherData,
         totales,
+        cleanAll,
       }}
     >
       <div className="h-screen w-screen flex">
@@ -254,7 +267,11 @@ const LayoutPreliquidacion: FC = () => {
             to="/preliquidacion/previsualizar"
             icon="eye"
             text="Previsualizar y enviar"
-            disabled={mangueras.length <= 0}
+            disabled={
+              mangueras.length < 1 &&
+              efectivo.cantidad.length < 1 &&
+              vales.cantidad.length < 1
+            }
           />
 
           <NavLink

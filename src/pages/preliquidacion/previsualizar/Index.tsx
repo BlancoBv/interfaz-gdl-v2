@@ -23,6 +23,7 @@ const Previsualizar: FC = () => {
   const { body: error } = useContext(ContextPreliq).error;
   const { body: infoGeneral } = useContext(ContextPreliq).infoGeneral;
   const totales = useContext(ContextPreliq).totales;
+  const cleanAll = useContext(ContextPreliq).cleanAll;
 
   const navigate = useNavigate();
 
@@ -30,7 +31,10 @@ const Previsualizar: FC = () => {
     return mangueras.some((el) => !el.hasOwnProperty("lecturaFinal"));
   };
 
-  const sendPreliq = useSendData("pdf/sendFile");
+  const sendPreliq = useSendData("pdf/sendFile", {
+    customFn: cleanAll,
+    method: "post",
+  });
 
   const handleSend = () => {
     handleSend: {

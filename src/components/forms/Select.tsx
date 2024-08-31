@@ -327,6 +327,7 @@ export const SelectIsla: FC<{
                 }) => ({
                   value: el.idisla,
                   label: `Isla ${el.nisla}`,
+                  extra: el.gas,
                 })
               )
             : []
