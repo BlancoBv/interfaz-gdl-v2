@@ -30,7 +30,7 @@ const Table: FC<{
   return (
     <>
       <ContextualMenu items={contextualMenuItems} />
-      <table className="table table-fixed table-xs lg:table-md">
+      <table className="table table-fixed table-xs lg:table-md not-prose">
         <thead>
           <tr>
             {columns.map((col) => (
