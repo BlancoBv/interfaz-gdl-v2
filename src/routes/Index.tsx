@@ -27,6 +27,8 @@ import CapturarLecturas from "@pages/preliquidacion/capturar-lecturas/Index";
 import CapturarEfectivo from "@pages/preliquidacion/capturar-efectivo/Index";
 import CapturarVales from "@pages/preliquidacion/capturar-vales/Index";
 import Previsualizar from "@pages/preliquidacion/previsualizar/Index";
+import RecursosHumanos from "@pages/app/recursos-humanos/Index";
+import Departamentos from "@pages/app/recursos-humanos/departamentos/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -103,6 +105,13 @@ const Index: FC = () => {
         {
           path: "administrativo",
           children: [{ path: "usuarios", element: <Usuarios /> }],
+        },
+        {
+          path: "recursos-humanos",
+          children: [
+            { index: true, element: <RecursosHumanos /> },
+            { path: "departamentos", element: <Departamentos /> },
+          ],
         },
       ],
     },

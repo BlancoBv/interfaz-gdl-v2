@@ -30,19 +30,19 @@ const SideBar: FC = () => {
       name: "Despacho",
       to: "despacho",
       links: [
-        { to: "despacho/boletas", name: "Boletas", icon: "chart-column" },
+        { to: "boletas", name: "Boletas", icon: "chart-column" },
         {
-          to: "despacho/monto-faltante",
+          to: "monto-faltante",
           name: "Monto faltante",
           icon: "money-bills",
           collapse: [
             //{ to: "despacho/monto-faltante/capturar", name: "Capturar" },
-            { to: "despacho/monto-faltante/reporte", name: "Reporte" },
-            {
-              to: "despacho/monto-faltante/reporte/empleado",
+            { to: "reporte", name: "Reporte" },
+            /* {
+              to: "reporte/empleado",
               name: "Reporte de empleado",
-            },
-            { to: "despacho/monto-faltante/historial", name: "Historial" },
+            }, */
+            // { to: "historial", name: "Historial" },
           ],
         },
         /* {
@@ -126,7 +126,14 @@ const SideBar: FC = () => {
     },
     { icon: "screwdriver-wrench", name: "Mantenimiento", to: "mantenimiento" }, */
     /*   { icon: "box", name: "Almacen", to: "/almacen" }, */
-    /* { icon: "people-group", name: "Recursos humanos", to: "recursos-humanos" }, */
+    {
+      icon: "people-group",
+      name: "Recursos humanos",
+      to: "recursos-humanos",
+      links: [
+        { to: "departamentos", name: "Departamentos", icon: "briefcase" },
+      ],
+    },
     {
       icon: "rectangle-list",
       name: "Administrativo",
@@ -206,7 +213,9 @@ const SideBar: FC = () => {
                         <ul>
                           {child.collapse?.map((subchild) => (
                             <li key={`subchild ${subchild.name}`}>
-                              <NavLink to={subchild.to}>
+                              <NavLink
+                                to={`${item.to}/${child.to}/${subchild.to}`}
+                              >
                                 {subchild.name}
                               </NavLink>
                             </li>
@@ -214,7 +223,7 @@ const SideBar: FC = () => {
                         </ul>
                       </>
                     ) : (
-                      <NavLink to={child.to}>
+                      <NavLink to={`${item.to}/${child.to}`}>
                         <Icon icon={child.icon} /> {child.name}
                       </NavLink>
                     )}

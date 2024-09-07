@@ -13,8 +13,8 @@ export function useGetData(
   config: { fetchInURLChange?: boolean; selectFn?: (data: any) => any } = {
     fetchInURLChange: false,
   }
-): getDataInterface {
-  const { data, isPending, isFetching, isError } = useQuery({
+) {
+  const { data, isPending, isFetching, isError, refetch } = useQuery({
     queryKey: config.fetchInURLChange ? [key, url] : [key],
     queryFn: async () => {
       const { data } = await Axios.get(url);
@@ -37,5 +37,10 @@ export function useGetData(
       : undefined,
   });
 
-  return { data, isPending: isPending && isFetching, isError } as const;
+  return {
+    data,
+    isPending: isPending && isFetching,
+    isError,
+    refetch,
+  } as const;
 }
