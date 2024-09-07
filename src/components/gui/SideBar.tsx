@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, SyntheticEvent, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Icon from "@components/Icon";
 import { toast } from "react-toastify";
@@ -12,7 +12,7 @@ const SideBar: FC = () => {
       apellido_materno: string;
     };
   } = JSON.parse(String(localStorage.getItem("credentials")));
-
+  const overlay = useRef<HTMLLabelElement>(null);
   const navElements: {
     icon: string;
     name: string;
@@ -153,16 +153,30 @@ const SideBar: FC = () => {
     navigate("/");
     toast.success("Sesión cerrada correctamente", { containerId: "global" });
   };
+
+  const handleClick = () => {
+    handleClick: {
+      const visibilityOfDrawer = document
+        .getElementById("my-drawer")
+        ?.checkVisibility({ visibilityProperty: true });
+
+      if (visibilityOfDrawer) {
+        overlay.current?.click();
+      }
+      break handleClick;
+    }
+  };
   return (
     <nav className="drawer-side z-50 lg:z-auto">
       <label
         htmlFor="my-drawer"
         aria-label="close sidebar"
         className="drawer-overlay"
+        ref={overlay}
       />
       <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
         <li>
-          <NavLink to="/app" end>
+          <NavLink to="/app" end onClick={handleClick}>
             <Icon icon="house" /> Inicio
           </NavLink>
         </li>
@@ -213,6 +227,7 @@ const SideBar: FC = () => {
                             <li key={`subchild ${subchild.name}`}>
                               <NavLink
                                 to={`${item.to}/${child.to}/${subchild.to}`}
+                                onClick={handleClick}
                               >
                                 {subchild.name}
                               </NavLink>
@@ -221,7 +236,10 @@ const SideBar: FC = () => {
                         </ul>
                       </>
                     ) : (
-                      <NavLink to={`${item.to}/${child.to}`}>
+                      <NavLink
+                        to={`${item.to}/${child.to}`}
+                        onClick={handleClick}
+                      >
                         <Icon icon={child.icon} /> {child.name}
                       </NavLink>
                     )}
