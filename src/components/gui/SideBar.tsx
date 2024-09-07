@@ -1,10 +1,11 @@
-import { FC, SyntheticEvent, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { FC, SyntheticEvent, useCallback, useMemo, useRef } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Icon from "@components/Icon";
 import { toast } from "react-toastify";
 
 const SideBar: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const userData: {
     auth: {
       nombre: string;
@@ -166,6 +167,27 @@ const SideBar: FC = () => {
       break handleClick;
     }
   };
+
+  const openSummary = useCallback(
+    (routeToCompare: string) => {
+      const visibilityOfDrawer = document
+        .getElementById("my-drawer")
+        ?.checkVisibility({ visibilityProperty: true });
+      if (visibilityOfDrawer) {
+        return true;
+      }
+      if (location.pathname === "/app") {
+        return true;
+      }
+      if (location.pathname.match(/\/app\/([^\/]+)/)?.[1] === routeToCompare) {
+        return true;
+      }
+      return false;
+    },
+    [location.pathname]
+  );
+  console.log(location);
+
   return (
     <nav className="drawer-side z-50 lg:z-auto">
       <label
@@ -208,7 +230,7 @@ const SideBar: FC = () => {
         </li> */}
         {navElements.map((item) => (
           <li key={`parent ${item.name}`}>
-            <details open>
+            <details open={openSummary(item.to)}>
               <summary>
                 <Icon icon={item.icon} />
                 {item.name}
