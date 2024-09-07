@@ -7,7 +7,7 @@ import { TriggerEvent, useContextMenu } from "react-contexify";
 
 const Table: FC<{
   data: any[];
-  columns: { name: string; selector: (prop: any) => string }[];
+  columns: { name: string; selector: (prop: any) => string | number }[];
   setRelativeData?: any;
   contextualMenuItems?: contextItems[];
   hoverable?: boolean;

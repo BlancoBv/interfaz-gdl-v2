@@ -10,9 +10,10 @@ export function useSendData(
     customFn?: (elem?: any) => void;
     onSuccessMsg?: string;
     onErrorMsg?: string;
+    refetchFn: any;
   } = {
     method: "post",
-    customFn: undefined,
+    refetchFn: () => {},
   }
 ) {
   const { mutate, isPending, isSuccess, mutateAsync } = useMutation({
@@ -35,6 +36,7 @@ export function useSendData(
           containerId: config.containerID ? config.containerID : "global",
         }
       );
+      config.refetchFn();
     },
     onError: (err: { msg: string }) => {
       toast.error("Error al enviar los datos", {

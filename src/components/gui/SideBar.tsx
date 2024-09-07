@@ -138,9 +138,7 @@ const SideBar: FC = () => {
       icon: "rectangle-list",
       name: "Administrativo",
       to: "administrativo",
-      links: [
-        { to: "administrativo/usuarios", name: "Usuarios", icon: "users" },
-      ],
+      links: [{ to: "usuarios", name: "Usuarios", icon: "users" }],
     },
     /* { icon: "clipboard-check", name: "Liquidación", to: "liquidacion" },
     { icon: "shop", name: "Tienda", to: "tienda" }, */

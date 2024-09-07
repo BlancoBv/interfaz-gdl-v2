@@ -56,3 +56,8 @@ export interface islasInterface {
   habilitada: boolean;
   gas: gasInterface[];
 }
+
+export interface departamentoInterface {
+  iddepartamento: number;
+  departamento: string;
+}
