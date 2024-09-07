@@ -61,3 +61,12 @@ export interface departamentoInterface {
   iddepartamento: number;
   departamento: string;
 }
+
+export interface controDocumentoInterface {
+  idchecador: number;
+  idempleado: number;
+  nombre_completo: string;
+  iddepartamento: number;
+  estatus: "Contrato" | "Baja";
+  num_documentos: number;
+}

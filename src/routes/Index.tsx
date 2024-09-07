@@ -28,7 +28,8 @@ import CapturarEfectivo from "@pages/preliquidacion/capturar-efectivo/Index";
 import CapturarVales from "@pages/preliquidacion/capturar-vales/Index";
 import Previsualizar from "@pages/preliquidacion/previsualizar/Index";
 import RecursosHumanos from "@pages/app/recursos-humanos/Index";
-import Departamentos from "@pages/app/recursos-humanos/departamentos/Index";
+import Departamentos from "@pages/app/recursos-humanos/empleados/departamentos/Index";
+import Documentos from "@pages/app/recursos-humanos/empleados/documentos/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -110,7 +111,14 @@ const Index: FC = () => {
           path: "recursos-humanos",
           children: [
             { index: true, element: <RecursosHumanos /> },
-            { path: "departamentos", element: <Departamentos /> },
+            {
+              path: "empleados",
+              children: [
+                { index: true, element: <Departamentos /> },
+                { path: "departamentos", element: <Departamentos /> },
+                { path: "documentos", element: <Documentos /> },
+              ],
+            },
           ],
         },
       ],

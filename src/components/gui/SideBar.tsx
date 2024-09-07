@@ -23,7 +23,7 @@ const SideBar: FC = () => {
       name: string;
       show?: boolean;
       icon: string;
-      collapse?: { to: string; name: string; show?: boolean }[];
+      collapse?: { to: string; name: string; show?: boolean; end?: boolean }[];
     }[];
   }[] = [
     {
@@ -132,7 +132,16 @@ const SideBar: FC = () => {
       name: "Recursos humanos",
       to: "recursos-humanos",
       links: [
-        { to: "departamentos", name: "Departamentos", icon: "briefcase" },
+        {
+          to: "empleados",
+          name: "Empleados",
+          icon: "briefcase",
+          collapse: [
+            { to: "departamentos", name: "Departamentos" },
+            { to: "", name: "Lista de empleados", end: true },
+            { to: "documentos", name: "Documentos" },
+          ],
+        },
       ],
     },
     {
@@ -186,7 +195,6 @@ const SideBar: FC = () => {
     },
     [location.pathname]
   );
-  console.log(location);
 
   return (
     <nav className="drawer-side z-50 lg:z-auto">
@@ -236,37 +244,39 @@ const SideBar: FC = () => {
                 {item.name}
               </summary>
               <ul>
-                {item.links?.map((child) => (
-                  <li key={`child ${child.name}`}>
-                    {child.hasOwnProperty("collapse") ? (
-                      <>
-                        <h2 className="menu-title flex gap-2 items-center">
-                          <Icon icon={child.icon} />
-                          {child.name}
-                        </h2>
-                        <ul>
-                          {child.collapse?.map((subchild) => (
-                            <li key={`subchild ${subchild.name}`}>
-                              <NavLink
-                                to={`${item.to}/${child.to}/${subchild.to}`}
-                                onClick={handleClick}
-                              >
-                                {subchild.name}
-                              </NavLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    ) : (
-                      <NavLink
-                        to={`${item.to}/${child.to}`}
-                        onClick={handleClick}
-                      >
-                        <Icon icon={child.icon} /> {child.name}
-                      </NavLink>
-                    )}
-                  </li>
-                ))}
+                {item.hasOwnProperty("links") &&
+                  item.links?.map((child) => (
+                    <li key={`child ${child.name}`}>
+                      {child.hasOwnProperty("collapse") ? (
+                        <>
+                          <h2 className="menu-title flex gap-2 items-center">
+                            <Icon icon={child.icon} />
+                            {child.name}
+                          </h2>
+                          <ul>
+                            {child.collapse?.map((subchild) => (
+                              <li key={`subchild ${subchild.name}`}>
+                                <NavLink
+                                  to={`${item.to}/${child.to}/${subchild.to}`}
+                                  onClick={handleClick}
+                                  end={subchild.end}
+                                >
+                                  {subchild.name}
+                                </NavLink>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <NavLink
+                          to={`${item.to}/${child.to}`}
+                          onClick={handleClick}
+                        >
+                          <Icon icon={child.icon} /> {child.name}
+                        </NavLink>
+                      )}
+                    </li>
+                  ))}
               </ul>
             </details>
           </li>
