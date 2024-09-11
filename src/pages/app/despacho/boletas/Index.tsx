@@ -29,7 +29,7 @@ const Index: FC = () => {
     quincena?: string;
   }>(parsed);
 
-  const { data, isPending, isFetching, refetch, isError } = useGetData(
+  const { data, isPending, refetch, isError } = useGetData(
     `view/boletas/all?year=${body.year}&month=${body.month}&quincena=${body.quincena}`,
     "boletasData"
   );

@@ -45,9 +45,11 @@ export function useGetData(
       : undefined,
   });
 
+  console.log({ isPending, isFetching });
+
   return {
     data,
-    isPending: isPending && isFetching,
+    isPending: isPending || isFetching,
     isError,
     refetch,
   } as const;

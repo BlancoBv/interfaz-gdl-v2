@@ -13,6 +13,7 @@ export const Select: FC<{
   required?: boolean;
   disabled?: boolean;
   children?: ReactNode;
+  options: { label: string; value: any }[];
 }> = ({
   name,
   label,
@@ -21,6 +22,7 @@ export const Select: FC<{
   placeholder,
   disabled,
   required,
+  options,
   children,
 }) => {
   return (
@@ -28,7 +30,7 @@ export const Select: FC<{
       <div className="label">
         <span className="label-text">{label}</span>
       </div>
-      <select
+      {/* <select
         className="select select-bordered"
         name={name}
         onChange={(ev) => {
@@ -43,7 +45,14 @@ export const Select: FC<{
           {placeholder}
         </option>
         {children}
-      </select>
+      </select> */}
+      <ReactSelect
+        options={options}
+        placeholder={placeholder}
+        variable={variable}
+        setVariable={setVariable}
+        name={name}
+      />
     </label>
   );
 };
@@ -385,8 +394,11 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
   const value = useMemo(() => {
     if (variable[name] && options) {
       const indexOfValue = options.findIndex(
-        (el) => el.value === Number(variable[name])
+        (el) => Number(el.value) === Number(variable[name])
       );
+
+      console.log(indexOfValue);
+
       if (multiple) {
         return variable[name].map((el: any) => ({
           label: el[props.labelName],
@@ -460,7 +472,6 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
       value={value}
       tabIndex={tabIndex}
       isMulti={multiple}
-      menuPosition="fixed"
     />
   );
 };

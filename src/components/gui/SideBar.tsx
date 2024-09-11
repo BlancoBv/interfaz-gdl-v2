@@ -138,7 +138,7 @@ const SideBar: FC = () => {
           icon: "briefcase",
           collapse: [
             { to: "departamentos", name: "Departamentos" },
-            { to: "", name: "Lista de empleados", end: true },
+            { to: "", name: "Control de empleados", end: true },
             { to: "documentos", name: "Documentos" },
           ],
         },

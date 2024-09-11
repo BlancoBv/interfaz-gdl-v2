@@ -43,6 +43,9 @@
       "@routes/*": [
         "./src/routes/*"
       ],
+      "@pdf/*": [
+        "./src/pdf/*"
+      ],
     },
     "baseUrl": "."
   },

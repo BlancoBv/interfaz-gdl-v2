@@ -30,6 +30,7 @@ import Previsualizar from "@pages/preliquidacion/previsualizar/Index";
 import RecursosHumanos from "@pages/app/recursos-humanos/Index";
 import Departamentos from "@pages/app/recursos-humanos/empleados/departamentos/Index";
 import Documentos from "@pages/app/recursos-humanos/empleados/documentos/Index";
+import Empleados from "@pages/app/recursos-humanos/empleados/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -114,7 +115,7 @@ const Index: FC = () => {
             {
               path: "empleados",
               children: [
-                { index: true, element: <Departamentos /> },
+                { index: true, element: <Empleados /> },
                 { path: "departamentos", element: <Departamentos /> },
                 { path: "documentos", element: <Documentos /> },
               ],

@@ -44,6 +44,10 @@ const format = {
     const b = a.split("").slice(0, 7).join("");
     return b;
   },
+
+  formatFecha: (fecha: string) => {
+    return moment(fecha).format("L");
+  },
   /* 
   formatMes: (date, type, convert = true) =>
     new Intl.DateTimeFormat("es-MX", {
