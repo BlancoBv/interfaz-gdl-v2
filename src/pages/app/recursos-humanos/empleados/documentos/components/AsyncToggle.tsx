@@ -2,20 +2,25 @@ import { FC, useRef, useState } from "react";
 import { useSendData } from "@hooks/useSendData";
 
 const AsyncToggle: FC<{
-  perm: { permiso: string; idpermiso: number; user: string | null };
-  user: { username: string | null | undefined };
-}> = ({ perm, user }) => {
-  const addPerm = useSendData("auth/registrar/permiso", {
+  iddocumento: number;
+  idempleado: number;
+  documento: string;
+  idControl: number | null;
+  refetch: any;
+}> = ({ iddocumento, idempleado, documento, idControl, refetch }) => {
+  const addDoc = useSendData("control-documento", {
     method: "post",
     containerID: "fromModal",
-    refetchFn: () => {},
+    refetchFn: refetch,
   });
-  const delPerm = useSendData("auth/quitar/permiso", {
+  const delPerm = useSendData("control-documento", {
     method: "put",
     containerID: "fromModal",
-    refetchFn: () => {},
+    refetchFn: refetch,
   });
-  const [checked, setChecked] = useState<boolean>(perm.user ? true : false);
+  const [checked, setChecked] = useState<boolean>(
+    idControl !== null ? true : false
+  );
 
   const ref = useRef<null | HTMLInputElement>(null);
 
@@ -23,12 +28,12 @@ const AsyncToggle: FC<{
     <div className="form-control">
       <label
         className={`label ${
-          delPerm.isPending || addPerm.isPending
+          delPerm.isPending || addDoc.isPending
             ? "cursor-wait"
             : "cursor-pointer"
         }`}
       >
-        <span className="label-text me-2">{perm.permiso}</span>
+        <span className="label-text me-2">{documento}</span>
         <input
           type="checkbox"
           className="toggle"
@@ -36,21 +41,21 @@ const AsyncToggle: FC<{
           onChange={(ev) => {
             const { checked } = ev.currentTarget;
             if (checked) {
-              addPerm.mutate({
-                user: user.username,
-                permiso: [perm.idpermiso],
+              addDoc.mutate({
+                iddocumento,
+                idempleado,
               });
               setChecked(true);
             } else {
               delPerm.mutate({
-                user: user.username,
-                permiso: [perm.idpermiso],
+                iddocumento,
+                idempleado,
               });
               setChecked(false);
             }
           }}
           checked={checked}
-          disabled={addPerm.isPending || delPerm.isPending}
+          disabled={addDoc.isPending || delPerm.isPending}
         />
       </label>
     </div>
