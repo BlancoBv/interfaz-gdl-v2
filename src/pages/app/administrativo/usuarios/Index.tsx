@@ -56,7 +56,7 @@ const Usuarios: FC = () => {
     },
     [body]
   );
-  const { data, isError, isFetching, isPending, refetch } = useGetData(
+  const { data, isError, isPending, refetch } = useGetData(
     "auth/usuarios",
     "usersData",
     { selectFn }
@@ -87,8 +87,8 @@ const Usuarios: FC = () => {
           setVariable={setBody}
         />
       </CintaOpciones>
-      <Loader isFetching={isFetching} isPending={isPending} />
-      {!isPending && !isFetching && !isError && (
+      <Loader isPending={isPending} />
+      {!isPending && !isError && (
         <Success data={data.response} refetch={refetch} />
       )}
     </div>
@@ -130,7 +130,7 @@ const Success: FC<{
     { fetchInURLChange: true }
   );
   const { values } =
-    !permisos.isPending && !permisos.isFetching && !permisos.error
+    !permisos.isPending && !permisos.isError
       ? agruparArr(permisos.data.response, (el: { area: string }) => el.area)
       : { values: [] };
 
@@ -138,12 +138,14 @@ const Success: FC<{
     `auth/eliminar?username=${relativeData.username}`,
     {
       method: "delete",
+      refetchFn: () => {},
     }
   );
 
   const changePassword = useSendData("auth/changePassa", {
     method: "put",
     containerID: "fromModal",
+    refetchFn: () => {},
   });
 
   return (
@@ -189,7 +191,7 @@ const Success: FC<{
         title={`Administrar usuario ${relativeData.username}`}
       >
         <div>
-          {!permisos.isPending && !permisos.isFetching && !permisos.isError && (
+          {!permisos.isPending && !permisos.isError && (
             <div
               role="tablist"
               className="tabs tabs-bordered tabs-xs lg:tabs-sm"

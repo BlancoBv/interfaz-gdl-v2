@@ -1,10 +1,13 @@
 import format from "@assets/format";
 import { empleadoInterface } from "@assets/interfaces";
 import Button from "@components/Button";
+import { Input } from "@components/forms/Input";
 import { Select } from "@components/forms/Select";
 import CintaOpciones from "@components/gui/CintaOpciones";
 import Loader from "@components/gui/Loader";
+import Modal from "@components/gui/Modal";
 import SectionTitle from "@components/gui/SectionTitle";
+import ListaEmpleados from "@components/pdf/recursos-humanos/ListaEmpleados";
 import Table from "@components/Table";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import moment from "moment";
@@ -26,10 +29,83 @@ const Empleados: FC = () => {
     `/solicitudes/estatus/${body.status}`,
     "solicitudesData"
   );
+  const [editEmpleado, setEditEmpleado] = useState<{
+    nombre?: string;
+    apellido_materno?: string;
+    apellido_paterno?: string;
+  }>({});
   console.log({ body, isPending });
 
   return (
     <div>
+      <Modal
+        title={`Modificar empleado ${relativeData.nombre} ${relativeData.apellido_paterno} ${relativeData.apellido_materno}`}
+        id="mod-empleado"
+      >
+        <div role="tablist" className="tabs tabs-bordered w-full">
+          <input
+            type="radio"
+            name="my_tabs_1"
+            role="tab"
+            className="tab flex-auto"
+            aria-label="Datos  del empleado"
+            defaultChecked
+          />
+          <div role="tabpanel" className="tab-content p-10">
+            <form className="w-full ">
+              <div className="flex justify-center gap-4 w-full flex-wrap mb-4">
+                <Input
+                  label="Nombre"
+                  variable={editEmpleado}
+                  setVariable={setEditEmpleado}
+                  name="nombre"
+                />
+                <Input
+                  label="Apellido paterno"
+                  variable={editEmpleado}
+                  setVariable={setEditEmpleado}
+                  name="apellido_paterno"
+                />
+                <Input
+                  label="Apellido Materno"
+                  variable={editEmpleado}
+                  setVariable={setEditEmpleado}
+                  name="apellido_materno"
+                />
+                <Input
+                  label="ID"
+                  variable={editEmpleado}
+                  setVariable={setEditEmpleado}
+                  name="id"
+                />
+              </div>
+              <Button text="Enviar" buttonType="submit" />
+            </form>
+          </div>
+
+          <input
+            type="radio"
+            name="my_tabs_1"
+            role="tab"
+            className="tab min-h-10"
+            aria-label="Fecha de inicio de labores"
+          />
+          <div role="tabpanel" className="tab-content p-10">
+            Tab content 2
+          </div>
+
+          <input
+            type="radio"
+            name="my_tabs_1"
+            role="tab"
+            className="tab min-h-10"
+            aria-label="Fecha de inscripción al imss"
+          />
+          <div role="tabpanel" className="tab-content p-10">
+            Tab content 3
+          </div>
+        </div>
+      </Modal>
       <SectionTitle
         titulo="Control de empleados"
         subtitulo="Recursos humanos"
@@ -55,6 +131,11 @@ const Empleados: FC = () => {
           ]}
         />
         <Button text="Filtrar" buttonType="submit" />
+        <ListaEmpleados
+          data={data}
+          title="Empleados"
+          dataIsPending={isPending}
+        />
       </CintaOpciones>
       <Loader isPending={isPending} />
       {!isError && !isPending && (
@@ -96,7 +177,16 @@ const Empleados: FC = () => {
           ]}
           data={data.response}
           contextualMenuItems={[
-            { name: "Modificar", elementType: "item", icon: "pen-to-square" },
+            {
+              name: "Modificar",
+              elementType: "item",
+              icon: "pen-to-square",
+              onClick: () => {
+                (
+                  document.getElementById("mod-empleado") as HTMLDialogElement
+                ).showModal();
+              },
+            },
             { elementType: "separator" },
             {
               name: "Dar de baja",
