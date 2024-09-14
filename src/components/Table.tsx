@@ -23,6 +23,8 @@ const Table: FC<{
   const { show } = useContextMenu({ id: DEFAULT_ID });
 
   const displayContextMenu = (event: TriggerEvent, element: any) => {
+    console.log({ element });
+
     setRelativeData({ ...element });
     show({ event });
   };

@@ -10,7 +10,8 @@ export interface contextItems {
   onClick?: () => void;
   icon?: string;
   disabled?: boolean;
-  color?: "error";
+  color?: "error" | "success" | "warning";
+  show: boolean;
 }
 
 interface contextualMenuInterface {
@@ -19,13 +20,17 @@ interface contextualMenuInterface {
 }
 
 const ContextualMenu: FC<contextualMenuInterface> = ({ id, items }) => {
-  const colors = { error: "text-error" };
+  const colors = {
+    error: "text-error",
+    success: "text-success",
+    warning: "text-warning",
+  };
   const elements: {
     item: (element: contextItems, index: number) => JSX.Element;
     submenu: (element: contextItems) => JSX.Element;
     separator: () => JSX.Element;
   } = {
-    item: (element, index) => (
+    item: (element) => (
       <Item
         onClick={element.onClick}
         key={`${element.name}-only-item`}
@@ -48,11 +53,17 @@ const ContextualMenu: FC<contextualMenuInterface> = ({ id, items }) => {
   return (
     <Menu id={id ? id : DEFAULT_ID}>
       {items ? (
-        items.map((el, index) => (
-          <Fragment key={`${el.elementType} ${index}`}>
-            {elements[el.elementType](el, index)}
-          </Fragment>
-        ))
+        items.some((el) => el.show && el.elementType !== "separator") ? (
+          items.map((el, index) => (
+            <Fragment key={`${el.elementType} ${index}`}>
+              {el.show && elements[el.elementType](el, index)}
+            </Fragment>
+          ))
+        ) : (
+          <Item>
+            <span className="text-error">Sin acciones</span>
+          </Item>
+        )
       ) : (
         <>
           <Item>Item 1</Item>

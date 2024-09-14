@@ -1,17 +1,21 @@
 import format from "@assets/format";
 import { empleadoInterface } from "@assets/interfaces";
 import Button from "@components/Button";
-import { Input } from "@components/forms/Input";
-import { Select } from "@components/forms/Select";
+import { Input, InputFecha } from "@components/forms/Input";
 import CintaOpciones from "@components/gui/CintaOpciones";
 import Loader from "@components/gui/Loader";
 import Modal from "@components/gui/Modal";
 import SectionTitle from "@components/gui/SectionTitle";
 import ListaEmpleados from "@components/pdf/recursos-humanos/ListaEmpleados";
 import Table from "@components/Table";
+import Tabs from "@components/Tabs";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
-import moment from "moment";
 import { FC, SyntheticEvent, useState } from "react";
+import SelectStatus from "../components/SelecStatus";
+import { SelectDepartamentos } from "@components/forms/Select";
+import { useSendData } from "@hooks/useSendData";
+import TextArea from "@components/forms/TextArea";
+import { toast } from "react-toastify";
 
 type empleadoMod = Omit<
   empleadoInterface,
@@ -31,80 +35,241 @@ const Empleados: FC = () => {
   );
   const [editEmpleado, setEditEmpleado] = useState<{
     nombre?: string;
-    apellido_materno?: string;
-    apellido_paterno?: string;
+    apellidoPaterno?: string;
+    apellidoMaterno?: string;
+    idChecador?: number;
+    estatus?: string;
+    idDepartamento?: number;
   }>({});
-  console.log({ body, isPending });
+
+  const [editBaja, setEditBaja] = useState<{
+    motivo?: string;
+    idChecador?: string;
+  }>({});
+  const [editFecha, setEditFecha] = useState<{ fecha?: string }>({});
+
+  const updateEmpleado = useSendData(`empleado/${relativeData.idempleado}`, {
+    method: "put",
+    refetchFn: () => {
+      refetch();
+    },
+    containerID: "fromModal",
+  });
+  const updateFechaReg = useSendData(
+    `empleado/updateRegistro/${relativeData.idempleado}`,
+    {
+      method: "put",
+      refetchFn: () => {
+        refetch();
+      },
+      containerID: "global",
+    }
+  );
+
+  const altaBajaEmpleado = useSendData(
+    `solicitudes/control/${relativeData.idempleado}`,
+    {
+      method: "put",
+      refetchFn: () => {
+        refetch();
+        if (editBaja.hasOwnProperty("idChecador")) {
+          document.getElementById("modal-motivo-reincorporar");
+        } else {
+          (
+            document.getElementById("modal-motivo-baja") as HTMLDialogElement
+          ).close();
+        }
+        setEditBaja({});
+      },
+    }
+  );
+  console.log(editFecha);
 
   return (
     <div>
       <Modal
+        title={`Motivo de baja de ${relativeData.nombre} ${relativeData.apellido_paterno} ${relativeData.apellido_materno}`}
+        id="modal-motivo-baja"
+        sm
+      >
+        <form
+          className="flex flex-col gap-4 items-center"
+          onSubmit={(ev) => {
+            ev.preventDefault();
+            altaBajaEmpleado.mutate({
+              estatus: 3,
+              motivo: editBaja.motivo,
+              idChecador: relativeData.idchecador,
+            });
+          }}
+        >
+          <TextArea
+            label="Motivo"
+            variable={editBaja}
+            setVariable={setEditBaja}
+            name={"motivo"}
+            required
+          />
+          <Button
+            text="Enviar"
+            buttonType="submit"
+            isPending={altaBajaEmpleado.isPending}
+            block
+          />
+        </form>
+      </Modal>
+      <Modal
+        title={`Reincorporar a ${relativeData.nombre} ${relativeData.apellido_paterno} ${relativeData.apellido_materno}`}
+        id="modal-motivo-reincorporar"
+        sm
+      >
+        <form
+          className="flex flex-col gap-4 items-center"
+          onSubmit={(ev) => {
+            ev.preventDefault();
+            altaBajaEmpleado.mutate({
+              estatus: 1,
+              motivo: editBaja.motivo,
+              idChecador: editBaja.idChecador,
+            });
+          }}
+        >
+          <Input
+            label="ID checador"
+            variable={editBaja}
+            setVariable={setEditBaja}
+            name="idChecador"
+            required
+            inputType="number"
+            step={1}
+          />
+          <TextArea
+            label="Motivo"
+            variable={editBaja}
+            setVariable={setEditBaja}
+            name={"motivo"}
+            required
+          />
+          <Button
+            text="Enviar"
+            buttonType="submit"
+            isPending={altaBajaEmpleado.isPending}
+            block
+          />
+        </form>
+      </Modal>
+      <Modal
         title={`Modificar empleado ${relativeData.nombre} ${relativeData.apellido_paterno} ${relativeData.apellido_materno}`}
         id="mod-empleado"
       >
-        <div role="tablist" className="tabs tabs-bordered w-full">
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab flex-auto"
-            aria-label="Datos  del empleado"
-            defaultChecked
-          />
-          <div role="tabpanel" className="tab-content p-10">
-            <form className="w-full ">
-              <div className="flex justify-center gap-4 w-full flex-wrap mb-4">
-                <Input
-                  label="Nombre"
-                  variable={editEmpleado}
-                  setVariable={setEditEmpleado}
-                  name="nombre"
-                />
-                <Input
-                  label="Apellido paterno"
-                  variable={editEmpleado}
-                  setVariable={setEditEmpleado}
-                  name="apellido_paterno"
-                />
-                <Input
-                  label="Apellido Materno"
-                  variable={editEmpleado}
-                  setVariable={setEditEmpleado}
-                  name="apellido_materno"
-                />
-                <Input
-                  label="ID"
-                  variable={editEmpleado}
-                  setVariable={setEditEmpleado}
-                  name="id"
-                />
-              </div>
-              <Button text="Enviar" buttonType="submit" />
-            </form>
-          </div>
-
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab min-h-10"
-            aria-label="Fecha de inicio de labores"
-          />
-          <div role="tabpanel" className="tab-content p-10">
-            Tab content 2
-          </div>
-
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab min-h-10"
-            aria-label="Fecha de inscripción al imss"
-          />
-          <div role="tabpanel" className="tab-content p-10">
-            Tab content 3
-          </div>
-        </div>
+        <Tabs
+          tabs={[
+            {
+              tabName: "Datos del empleado",
+              show: true,
+              content: (
+                <form
+                  className="w-full"
+                  onSubmit={(ev) => {
+                    ev.preventDefault();
+                    updateEmpleado.mutateAsync(editEmpleado);
+                  }}
+                >
+                  <div className="flex justify-center gap-4 w-full flex-wrap mb-4">
+                    <Input
+                      label="Nombre"
+                      variable={editEmpleado}
+                      setVariable={setEditEmpleado}
+                      name="nombre"
+                      required
+                    />
+                    <Input
+                      label="Apellido paterno"
+                      variable={editEmpleado}
+                      setVariable={setEditEmpleado}
+                      name="apellidoPaterno"
+                      required
+                    />
+                    <Input
+                      label="Apellido Materno"
+                      variable={editEmpleado}
+                      setVariable={setEditEmpleado}
+                      name="apellidoMaterno"
+                      required
+                    />
+                    <Input
+                      label="ID"
+                      variable={editEmpleado}
+                      setVariable={setEditEmpleado}
+                      name="idChecador"
+                      inputType="number"
+                      step={1}
+                      required
+                    />
+                    <SelectStatus
+                      variable={editEmpleado}
+                      setVariable={setEditEmpleado}
+                      name="estatus"
+                      options={[
+                        { value: "Contrato", label: "Contratado" },
+                        { value: "Practica", label: "Practicantes" },
+                        { value: "Pendiente", label: "Pendiente" },
+                        { value: "Rechazado", label: "Rechazados" },
+                      ]}
+                    />{" "}
+                    <SelectDepartamentos
+                      variable={editEmpleado}
+                      setVariable={setEditEmpleado}
+                      name="idDepartamento"
+                    />
+                  </div>
+                  <Button
+                    text="Enviar"
+                    buttonType="submit"
+                    isPending={updateEmpleado.isPending}
+                    block
+                  />
+                </form>
+              ),
+              id: 1,
+            },
+            {
+              tabName: "Fecha de inicio de labores",
+              show: relativeData.estatus === "Contrato",
+              content: (
+                <form
+                  className="flex flex-col gap-4 items-center"
+                  onSubmit={(ev) => {
+                    ev.preventDefault();
+                    updateFechaReg.mutate({ fecha: editFecha.fecha });
+                    toast.success("ola");
+                  }}
+                >
+                  <InputFecha
+                    label="Fecha"
+                    name="fecha"
+                    variable={editFecha}
+                    setVariable={setEditFecha}
+                    todayBtn
+                  />
+                  <Button
+                    text="Enviar"
+                    buttonType="submit"
+                    block
+                    isPending={updateFechaReg.isPending}
+                  />
+                </form>
+              ),
+              id: 2,
+            },
+            {
+              tabName: "Fecha de inscripción al IMSS",
+              show: relativeData.estatus === "Contrato",
+              content: <form></form>,
+              id: 3,
+            },
+          ]}
+        />
       </Modal>
       <SectionTitle
         titulo="Control de empleados"
@@ -116,20 +281,7 @@ const Empleados: FC = () => {
           refetch();
         }}
       >
-        <Select
-          name="status"
-          variable={body}
-          setVariable={setBody}
-          placeholder="Selecciona un estatus"
-          label="Tipo de solicitud o estatus"
-          options={[
-            { value: 1, label: "Contratado" },
-            { value: 2, label: "Practicantes" },
-            { value: 5, label: "Pendiente" },
-            { value: 3, label: "Inactivos" },
-            { value: 4, label: "Rechazados" },
-          ]}
-        />
+        <SelectStatus variable={body} setVariable={setBody} />
         <Button text="Filtrar" buttonType="submit" />
         <ListaEmpleados
           data={data}
@@ -181,18 +333,65 @@ const Empleados: FC = () => {
               name: "Modificar",
               elementType: "item",
               icon: "pen-to-square",
+              show: relativeData.estatus === "Contrato",
               onClick: () => {
+                const {
+                  idchecador: idChecador,
+                  nombre,
+                  apellido_materno: apellidoMaterno,
+                  apellido_paterno: apellidoPaterno,
+                  estatus,
+                  iddepartamento: idDepartamento,
+                } = relativeData;
+                setEditEmpleado({
+                  apellidoPaterno,
+                  nombre,
+                  idChecador,
+                  apellidoMaterno,
+                  estatus,
+                  idDepartamento,
+                });
+                setEditFecha({
+                  fecha: relativeData.fecha_registro
+                    ? format.formatFechaAsDB(relativeData.fecha_registro)
+                    : "",
+                });
+
                 (
                   document.getElementById("mod-empleado") as HTMLDialogElement
-                ).showModal();
+                ).show();
               },
             },
-            { elementType: "separator" },
+            { elementType: "separator", show: true },
             {
               name: "Dar de baja",
               elementType: "item",
               color: "error",
               icon: "arrow-down",
+              show:
+                relativeData.estatus === "Practica" ||
+                relativeData.estatus === "Contrato",
+              onClick: () => {
+                (
+                  document.getElementById(
+                    "modal-motivo-baja"
+                  ) as HTMLDialogElement
+                ).showModal();
+              },
+            },
+            {
+              name: "Reincorporar",
+              elementType: "item",
+              color: "warning",
+              icon: "arrow-up",
+              show: relativeData.estatus === "Despido",
+              onClick: () => {
+                (
+                  document.getElementById(
+                    "modal-motivo-reincorporar"
+                  ) as HTMLDialogElement
+                ).showModal();
+              },
             },
           ]}
           setRelativeData={setRelativeData}

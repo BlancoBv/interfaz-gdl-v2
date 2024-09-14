@@ -23,7 +23,11 @@ const Modal: FC<{
         </div>
         <div className="flex-grow overflow-y-auto"> {children}</div>
       </div>
-      <form method="dialog" className="modal-backdrop">
+      <form
+        method="dialog"
+        className="modal-backdrop"
+        style={{ backgroundColor: "#0006" }}
+      >
         <button>close</button>
       </form>
       <ToastContainer autoClose={800} closeButton containerId="fromModal" />

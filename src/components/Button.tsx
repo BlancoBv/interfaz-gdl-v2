@@ -4,9 +4,13 @@ const Button: FC<{
   text: string;
   buttonType: "submit" | "button";
   isPending?: boolean;
-}> = ({ text, buttonType, isPending }) => {
+  block?: boolean;
+}> = ({ text, buttonType, isPending, block }) => {
   return (
-    <button type={buttonType} className="btn btn-primary">
+    <button
+      type={buttonType}
+      className={`btn btn-primary ${block ? "btn-block" : ""}`}
+    >
       {isPending ? <span className="loading loading-spinner"></span> : text}
     </button>
   );

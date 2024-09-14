@@ -48,6 +48,9 @@ const format = {
   formatFecha: (fecha: string) => {
     return moment(fecha).format("L");
   },
+  formatFechaAsDB: (fecha: string) => {
+    return moment(fecha).format("YYYY-MM-DD");
+  },
   /* 
   formatMes: (date, type, convert = true) =>
     new Intl.DateTimeFormat("es-MX", {

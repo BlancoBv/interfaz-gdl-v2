@@ -1,8 +1,9 @@
 import moment from "moment";
 import { FC, ReactNode, useMemo, useState } from "react";
 import { meses } from "@assets/misc";
-import { useGetData } from "@hooks/useGetData";
+import { getDataInterface, useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
+import { departamentoInterface } from "@assets/interfaces";
 
 export const Select: FC<{
   name: string;
@@ -355,6 +356,39 @@ export const SelectIsla: FC<{
   );
 };
 
+type departamento = Pick<rSelectInterface, "name" | "variable" | "setVariable">;
+interface departamentoData extends getDataInterface {
+  data: { response: departamentoInterface[] };
+}
+export const SelectDepartamentos: FC<departamento> = ({
+  name,
+  variable,
+  setVariable,
+}) => {
+  const { data, isError, isPending }: departamentoData = useGetData(
+    "departamento",
+    "departamentoData"
+  );
+
+  return (
+    <Select
+      label="Departamento"
+      placeholder="Selecciona departamento"
+      name={name}
+      variable={variable}
+      setVariable={setVariable}
+      options={
+        !isError && !isPending
+          ? data.response.map((el) => ({
+              value: el.iddepartamento,
+              label: el.departamento,
+            }))
+          : []
+      }
+    />
+  );
+};
+
 interface rSelectBase {
   options: { value: string | number; label: string }[];
   placeholder: string;
@@ -393,9 +427,12 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
   } = props;
   const value = useMemo(() => {
     if (variable[name] && options) {
-      const indexOfValue = options.findIndex(
-        (el) => Number(el.value) === Number(variable[name])
-      );
+      const indexOfValue = options.findIndex((el) => {
+        if (typeof el.value === "string") {
+          return el.value === variable[name];
+        }
+        return Number(el.value) === Number(variable[name]);
+      });
 
       console.log(indexOfValue);
 
