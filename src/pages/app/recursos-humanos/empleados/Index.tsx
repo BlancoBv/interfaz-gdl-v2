@@ -15,12 +15,16 @@ import SelectStatus from "../components/SelecStatus";
 import { SelectDepartamentos } from "@components/forms/Select";
 import { useSendData } from "@hooks/useSendData";
 import TextArea from "@components/forms/TextArea";
-import { toast } from "react-toastify";
+import { useModal } from "@hooks/useModal";
 
 type empleadoMod = Omit<
   empleadoInterface,
   "nombre_completo" | "departamento"
-> & { departamento: string; update_time_imss: string | null };
+> & {
+  departamento: string;
+  update_time_imss: string | null;
+  idimss: number | null;
+};
 
 interface getEmpleado extends getDataInterface {
   data: { response: empleadoMod[] };
@@ -29,10 +33,6 @@ interface getEmpleado extends getDataInterface {
 const Empleados: FC = () => {
   const [body, setBody] = useState<{ status: number }>({ status: 1 });
   const [relativeData, setRelativeData] = useState<Partial<empleadoMod>>({});
-  const { data, isError, isPending, refetch }: getEmpleado = useGetData(
-    `/solicitudes/estatus/${body.status}`,
-    "solicitudesData"
-  );
   const [editEmpleado, setEditEmpleado] = useState<{
     nombre?: string;
     apellidoPaterno?: string;
@@ -47,6 +47,14 @@ const Empleados: FC = () => {
     idChecador?: string;
   }>({});
   const [editFecha, setEditFecha] = useState<{ fecha?: string }>({});
+  const [editFechaIMMS, setEditFechaIMSS] = useState<{ fecha?: string }>({});
+
+  const modalEmpleado = useModal("mod-empleado");
+
+  const { data, isError, isPending, refetch }: getEmpleado = useGetData(
+    `/solicitudes/estatus/${body.status}`,
+    "solicitudesData"
+  );
 
   const updateEmpleado = useSendData(`empleado/${relativeData.idempleado}`, {
     method: "put",
@@ -66,8 +74,19 @@ const Empleados: FC = () => {
     }
   );
 
+  const updateFechaIMMS = useSendData(
+    `control-documento/updateTime/${relativeData.idimss}`,
+    {
+      method: "put",
+      refetchFn: () => {
+        refetch();
+      },
+      containerID: "global",
+    }
+  );
+
   const altaBajaEmpleado = useSendData(
-    `solicitudes/control/${relativeData.idempleado}`,
+    `solicitudes/control/${relativeData.idchecador}`,
     {
       method: "put",
       refetchFn: () => {
@@ -242,7 +261,6 @@ const Empleados: FC = () => {
                   onSubmit={(ev) => {
                     ev.preventDefault();
                     updateFechaReg.mutate({ fecha: editFecha.fecha });
-                    toast.success("ola");
                   }}
                 >
                   <InputFecha
@@ -265,7 +283,29 @@ const Empleados: FC = () => {
             {
               tabName: "Fecha de inscripción al IMSS",
               show: relativeData.estatus === "Contrato",
-              content: <form></form>,
+              content: (
+                <form
+                  className="flex flex-col gap-4 items-center"
+                  onSubmit={(ev) => {
+                    ev.preventDefault();
+                    updateFechaIMMS.mutate({ fecha: editFechaIMMS.fecha });
+                  }}
+                >
+                  <InputFecha
+                    label="Fecha"
+                    name="fecha"
+                    variable={editFechaIMMS}
+                    setVariable={setEditFechaIMSS}
+                    todayBtn
+                  />
+                  <Button
+                    text="Enviar"
+                    buttonType="submit"
+                    block
+                    isPending={updateFechaIMMS.isPending}
+                  />
+                </form>
+              ),
               id: 3,
             },
           ]}
@@ -356,10 +396,13 @@ const Empleados: FC = () => {
                     ? format.formatFechaAsDB(relativeData.fecha_registro)
                     : "",
                 });
+                setEditFechaIMSS({
+                  fecha: relativeData.update_time_imss
+                    ? format.formatFechaAsDB(relativeData.update_time_imss)
+                    : "",
+                });
 
-                (
-                  document.getElementById("mod-empleado") as HTMLDialogElement
-                ).show();
+                modalEmpleado?.show();
               },
             },
             { elementType: "separator", show: true },
