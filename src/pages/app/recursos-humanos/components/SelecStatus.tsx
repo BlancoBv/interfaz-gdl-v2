@@ -5,7 +5,7 @@ const SelectStatus: FC<{
   variable: any;
   setVariable: any;
   name?: string;
-  options?: { value: string; label: string }[];
+  options?: { value: number | string; label: string }[];
 }> = ({ variable, setVariable, name, options }) => {
   return (
     <Select

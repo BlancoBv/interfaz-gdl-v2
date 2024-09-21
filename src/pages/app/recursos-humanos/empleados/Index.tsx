@@ -48,8 +48,15 @@ const Empleados: FC = () => {
   }>({});
   const [editFecha, setEditFecha] = useState<{ fecha?: string }>({});
   const [editFechaIMMS, setEditFechaIMSS] = useState<{ fecha?: string }>({});
+  const [editAltaEmpleado, setEditAlta] = useState<{
+    estatus?: number;
+    idChecador?: number;
+    motivo?: string;
+  }>({});
 
   const modalEmpleado = useModal("mod-empleado");
+  const modalAlta = useModal("modal-alta");
+  const modalRechazo = useModal("modal-rechazo");
 
   const { data, isError, isPending, refetch }: getEmpleado = useGetData(
     `/solicitudes/estatus/${body.status}`,
@@ -102,7 +109,29 @@ const Empleados: FC = () => {
       },
     }
   );
-  console.log(editFecha);
+
+  const altaPendiente = useSendData(
+    `solicitudes/control/${relativeData.idempleado}`,
+    {
+      method: "put",
+      refetchFn: () => {
+        refetch();
+        setEditAlta({});
+      },
+    }
+  );
+
+  const rechazarPendiente = useSendData(
+    `solicitudes/control/${relativeData.idempleado}`,
+    {
+      method: "put",
+      refetchFn: () => {
+        refetch();
+      },
+    }
+  );
+
+  console.log(editFecha, editAltaEmpleado);
 
   return (
     <div>
@@ -138,6 +167,39 @@ const Empleados: FC = () => {
         </form>
       </Modal>
       <Modal
+        title={`Motivo de rechazo de ${relativeData.nombre} ${relativeData.apellido_paterno} ${relativeData.apellido_materno}`}
+        id="modal-rechazo"
+        sm
+      >
+        <form
+          className="flex flex-col gap-4 items-center"
+          onSubmit={(ev) => {
+            ev.preventDefault();
+            rechazarPendiente.mutate({
+              estatus: 4,
+              motivo: editBaja.motivo,
+              idChecador: null,
+            });
+            modalRechazo.close();
+            setEditAlta({});
+          }}
+        >
+          <TextArea
+            label="Motivo"
+            variable={editAltaEmpleado}
+            setVariable={setEditAlta}
+            name={"motivo"}
+            required
+          />
+          <Button
+            text="Enviar"
+            buttonType="submit"
+            isPending={rechazarPendiente.isPending}
+            block
+          />
+        </form>
+      </Modal>
+      <Modal
         title={`Reincorporar a ${relativeData.nombre} ${relativeData.apellido_paterno} ${relativeData.apellido_materno}`}
         id="modal-motivo-reincorporar"
         sm
@@ -166,6 +228,56 @@ const Empleados: FC = () => {
             label="Motivo"
             variable={editBaja}
             setVariable={setEditBaja}
+            name={"motivo"}
+            required
+          />
+          <Button
+            text="Enviar"
+            buttonType="submit"
+            isPending={altaBajaEmpleado.isPending}
+            block
+          />
+        </form>
+      </Modal>
+      <Modal
+        title={`Dar de alta a ${relativeData.nombre} ${relativeData.apellido_paterno} ${relativeData.apellido_materno}`}
+        id="modal-alta"
+        sm
+      >
+        <form
+          className="flex flex-col gap-4 items-center"
+          onSubmit={(ev) => {
+            ev.preventDefault();
+            altaPendiente.mutate({
+              estatus: editAltaEmpleado.estatus,
+              motivo: editAltaEmpleado.motivo,
+              idChecador: editAltaEmpleado.idChecador,
+            });
+            modalAlta.close();
+          }}
+        >
+          <Input
+            label="ID checador"
+            variable={editAltaEmpleado}
+            setVariable={setEditAlta}
+            name="idChecador"
+            required
+            inputType="number"
+            step={1}
+          />
+          <SelectStatus
+            variable={editAltaEmpleado}
+            setVariable={setEditAlta}
+            name="estatus"
+            options={[
+              { value: 1, label: "Contratado" },
+              { value: 2, label: "Practicantes" },
+            ]}
+          />
+          <TextArea
+            label="Motivo"
+            variable={editAltaEmpleado}
+            setVariable={setEditAlta}
             name={"motivo"}
             required
           />
@@ -434,6 +546,26 @@ const Empleados: FC = () => {
                     "modal-motivo-reincorporar"
                   ) as HTMLDialogElement
                 ).showModal();
+              },
+            },
+            {
+              name: "Dar de alta",
+              elementType: "item",
+              color: "success",
+              icon: "arrow-up",
+              show: relativeData.estatus === "Pendiente",
+              onClick: () => {
+                modalAlta.show();
+              },
+            },
+            {
+              name: "Rechazar",
+              elementType: "item",
+              color: "error",
+              icon: "arrow-down",
+              show: relativeData.estatus === "Pendiente",
+              onClick: () => {
+                modalRechazo.show();
               },
             },
           ]}

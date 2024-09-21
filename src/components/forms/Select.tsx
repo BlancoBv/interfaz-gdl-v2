@@ -53,6 +53,7 @@ export const Select: FC<{
         variable={variable}
         setVariable={setVariable}
         name={name}
+        required={required}
       />
     </label>
   );
@@ -434,8 +435,6 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
         return Number(el.value) === Number(variable[name]);
       });
 
-      console.log(indexOfValue);
-
       if (multiple) {
         return variable[name].map((el: any) => ({
           label: el[props.labelName],
@@ -447,7 +446,7 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
       }
       return options[indexOfValue];
     }
-    return undefined;
+    return null;
   }, [variable, options]);
 
   return (
@@ -488,8 +487,6 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
       isDisabled={disabled}
       isClearable
       onChange={(ev) => {
-        console.log({ ev });
-
         if (multiple) {
           const values = ev.map((el: { value: string; label: string }) => ({
             [props.labelName]: el.label,
