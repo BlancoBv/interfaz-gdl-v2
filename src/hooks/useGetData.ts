@@ -7,7 +7,7 @@ import {
 import Axios from "@assets/Axios";
 
 export interface getDataInterface {
-  data: { response: any[] };
+  data: { response: any[] } | any;
   isPending: boolean;
   isError: boolean;
   refetch: (

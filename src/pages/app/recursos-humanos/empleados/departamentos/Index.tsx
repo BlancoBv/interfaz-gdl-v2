@@ -136,6 +136,7 @@ const Departamentos: FC = () => {
                   document.getElementById("editDepart") as HTMLDialogElement
                 ).showModal();
               },
+              show: true,
             },
             {
               name: "Eliminar",
@@ -149,6 +150,7 @@ const Departamentos: FC = () => {
                   ) as HTMLDialogElement
                 ).showModal();
               },
+              show: true,
             },
           ]}
           setRelativeData={setRelativeData}

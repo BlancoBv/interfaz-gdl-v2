@@ -92,6 +92,7 @@ const Documentos: FC = () => {
                   document.getElementById("edit-docs") as HTMLDialogElement
                 ).showModal();
               },
+              show: true,
             },
           ]}
           setRelativeData={setRelativeData}

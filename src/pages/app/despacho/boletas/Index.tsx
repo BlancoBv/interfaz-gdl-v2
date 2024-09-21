@@ -7,10 +7,14 @@ import calcularTotal from "@assets/calcularTotal";
 import Decimal from "decimal.js-light";
 import Bar from "@components/charts/Bar";
 import { useNavigate } from "react-router-dom";
-import { useGetData } from "@hooks/useGetData";
+import { getDataInterface, useGetData } from "@hooks/useGetData";
 import Loader from "@components/gui/Loader";
 import NoData from "@components/gui/NoData";
 import SectionTitle from "@components/gui/SectionTitle";
+
+interface boleta extends Omit<getDataInterface, "data"> {
+  data: { response: { ck: any[] } };
+}
 
 const Index: FC = () => {
   const date = moment(new Date(Date.now()));
@@ -29,7 +33,7 @@ const Index: FC = () => {
     quincena?: string;
   }>(parsed);
 
-  const { data, isPending, refetch, isError } = useGetData(
+  const { data, isPending, refetch, isError }: boleta = useGetData(
     `view/boletas/all?year=${body.year}&month=${body.month}&quincena=${body.quincena}`,
     "boletasData"
   );
@@ -39,6 +43,8 @@ const Index: FC = () => {
     refetch();
     sessionStorage.setItem("boletasData", JSON.stringify(body));
   };
+
+  console.log(data);
 
   return (
     <div className="flex flex-col">
@@ -54,10 +60,12 @@ const Index: FC = () => {
           variable={body}
           setVariable={setBody}
           required
-        >
-          <option value="1">Primera quincena</option>
-          <option value="2">Segunda quincena</option>
-        </Select>
+          options={[
+            { value: "1", label: "Primera quincena" },
+            { value: "2", label: "Segunda quincena" },
+          ]}
+        />
+
         <SelectMonth
           name="month"
           label="Mes de consulta"
@@ -76,20 +84,16 @@ const Index: FC = () => {
           Filtrar
         </button>
       </CintaOpciones>
-      {!isPending && !isFetching && data.response.ck.length > 0 && (
+      {!isPending && data.response.ck.length > 0 && (
         <Success data={data.response} filtros={body} />
       )}
 
       <NoData
-        isError={
-          isError ||
-          (!isPending && !isFetching && data.response.ck.length === 0)
-        }
-        isFetching={isFetching}
+        isError={isError || (!isPending && data.response.ck.length === 0)}
         isPending={isPending}
       />
 
-      <Loader isFetching={isFetching} isPending={isPending} />
+      <Loader isPending={isPending} />
     </div>
   );
 };

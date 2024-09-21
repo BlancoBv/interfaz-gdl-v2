@@ -159,6 +159,7 @@ const Success: FC<{
             onClick: () => {
               console.log("ola");
             },
+            show: true,
           },
           {
             elementType: "item",
@@ -170,6 +171,7 @@ const Success: FC<{
                 document.getElementById("detallePerm") as HTMLDialogElement
               ).showModal();
             },
+            show: true,
           },
           {
             elementType: "item",
@@ -182,6 +184,7 @@ const Success: FC<{
                 document.getElementById("modal-confirm") as HTMLDialogElement
               ).showModal();
             },
+            show: true,
           },
         ]}
       />
