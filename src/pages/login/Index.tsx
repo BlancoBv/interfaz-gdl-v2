@@ -16,6 +16,7 @@ const Index: FC = () => {
       localStorage.setItem("credentials", JSON.stringify(res.data));
       navigate("/app", { replace: true });
     },
+    refetchFn: () => {},
     onSuccessMsg: "Autenticado correctamente",
   });
   const [body, setBody] = useState<{ user?: string; password?: string }>({});
