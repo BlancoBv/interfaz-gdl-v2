@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import ContextualMenu, {
   contextItems,
   DEFAULT_ID,
@@ -7,7 +7,10 @@ import { TriggerEvent, useContextMenu } from "react-contexify";
 
 const Table: FC<{
   data: any[];
-  columns: { name: string; selector: (prop: any) => string | number }[];
+  columns: {
+    name: string;
+    selector: (prop: any) => string | number | ReactNode;
+  }[];
   setRelativeData?: any;
   contextualMenuItems?: contextItems[];
   hoverable?: boolean;
@@ -23,8 +26,6 @@ const Table: FC<{
   const { show } = useContextMenu({ id: DEFAULT_ID });
 
   const displayContextMenu = (event: TriggerEvent, element: any) => {
-    console.log({ element });
-
     setRelativeData({ ...element });
     show({ event });
   };

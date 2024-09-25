@@ -77,3 +77,14 @@ export interface documentoEmpInterface {
   idcontrol_documento: number | null;
   idempleado: number;
 }
+
+export interface registrosChecklistInterface {
+  idchecklist: number;
+  fecha: string;
+  empleado_entrante: Omit<empleadoInterface, "departamento">;
+  empleado_saliente: Omit<empleadoInterface, "departamento">;
+  isla_limpia: boolean;
+  aceites_completos: boolean;
+  turno: turnoInterface;
+  isla: islasInterface;
+}

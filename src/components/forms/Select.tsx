@@ -68,31 +68,16 @@ export const SelectMonth: FC<{
   disabled?: boolean;
 }> = ({ name, label, variable, setVariable, disabled, required }) => {
   return (
-    <label className="form-control w-full max-w-40 lg:max-w-xs">
-      <div className="label">
-        <span className="label-text">{label}</span>
-      </div>
-      <select
-        className="select select-bordered"
-        name={name}
-        onChange={(ev) => {
-          const { name, value } = ev.currentTarget;
-          setVariable((prev: any) => ({ ...prev, [name]: value }));
-        }}
-        value={variable.hasOwnProperty(name) ? variable[name] : ""}
-        disabled={disabled}
-        required={required}
-      >
-        <option disabled value="">
-          Selecciona un mes
-        </option>
-        {meses.map((mes) => (
-          <option value={mes.id} key={mes.id}>
-            {mes.mes}
-          </option>
-        ))}
-      </select>
-    </label>
+    <Select
+      name={name}
+      label={label}
+      variable={variable}
+      setVariable={setVariable}
+      placeholder="Selecciona un año"
+      options={meses.map((mes) => ({ value: mes.id, label: mes.mes }))}
+      disabled={disabled}
+      required={required}
+    />
   );
 };
 
@@ -105,33 +90,25 @@ export const SelectYear: FC<{
   disabled?: boolean;
 }> = ({ name, label, variable, setVariable, disabled, required }) => {
   const date = moment(new Date(Date.now()));
-  const [actualValue, setActualValue] = useState<number>(date.year());
+  const value: number = variable.hasOwnProperty(name)
+    ? variable[name]
+    : date.year();
 
   return (
-    <label className="form-control w-full max-w-40 lg:max-w-xs">
-      <div className="label">
-        <span className="label-text">{label}</span>
-      </div>
-      <select
-        className="select select-bordered"
-        name={name}
-        onChange={(ev) => {
-          const { name, value } = ev.currentTarget;
-          setActualValue(Number(value));
-          setVariable((prev: any) => ({ ...prev, [name]: value }));
-        }}
-        value={variable.hasOwnProperty(name) ? variable[name] : ""}
-        disabled={disabled}
-        required={required}
-      >
-        <option disabled value="">
-          Selecciona un año
-        </option>
-        <option>{actualValue - 1}</option>
-        <option>{actualValue}</option>
-        <option>{actualValue + 1}</option>
-      </select>
-    </label>
+    <Select
+      name={name}
+      label={label}
+      variable={variable}
+      setVariable={setVariable}
+      placeholder="Selecciona un año"
+      options={[
+        { value: value - 1, label: String(value - 1) },
+        { value, label: String(value) },
+        { value: value + 1, label: String(value + 1) },
+      ]}
+      disabled={disabled}
+      required={required}
+    />
   );
 };
 

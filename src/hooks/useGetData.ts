@@ -25,8 +25,9 @@ export function useGetData(
   const { data, isPending, isFetching, isError, refetch } = useQuery({
     queryKey: config.fetchInURLChange ? [key, url] : [key],
     queryFn: async () => {
-      const { data } = await Axios.get(url);
-      if (data.hasOwnProperty("code")) {
+      const { data, status } = await Axios.get(url);
+
+      if (status === 400 || status === 404) {
         return Promise.reject(data);
       }
       return data;
@@ -44,8 +45,6 @@ export function useGetData(
         }
       : undefined,
   });
-
-  console.log({ isPending, isFetching });
 
   return {
     data,

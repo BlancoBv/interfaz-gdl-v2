@@ -13,9 +13,6 @@ import Login from "@pages/login/Index";
 import App from "@pages/app/Index";
 import Axios from "@assets/Axios";
 import Despacho from "@pages/app/despacho/Index";
-import BoletasDesp from "@pages/app/despacho/boletas/Index";
-import BoletasDespxEmp from "@pages/app/despacho/boletas/idDespachador/Index";
-import ReporteMF from "@pages/app/despacho/monto-faltante/reporte/Index";
 
 //administrativo
 import Usuarios from "@pages/app/administrativo/usuarios/Index";
@@ -31,6 +28,7 @@ import RecursosHumanos from "@pages/app/recursos-humanos/Index";
 import Departamentos from "@pages/app/recursos-humanos/empleados/departamentos/Index";
 import Documentos from "@pages/app/recursos-humanos/empleados/documentos/Index";
 import Empleados from "@pages/app/recursos-humanos/empleados/Index";
+import RegistrosChecklist from "@pages/app/despacho/checklist-bomba/registros";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -67,40 +65,14 @@ const Index: FC = () => {
           children: [
             { index: true, element: <Despacho /> },
             {
-              path: "boletas",
-              children: [
-                { index: true, element: <BoletasDesp /> },
-                {
-                  path: ":idDespachador",
-                  element: <BoletasDespxEmp />,
-                  loader: async ({ params, request }) => {
-                    const url = new URL(request.url);
-                    const { month, year, quincena } = Object.fromEntries(
-                      url.searchParams
-                    );
-                    const res = await Axios.get(
-                      `/view/boletas?idEmpleado=${params.idDespachador}&year=${year}&month=${month}&quincena=${quincena}`
-                    );
-
-                    if (!res.data.response.empleado) {
-                      throw new Response("Not Found", { status: 404 });
-                    }
-                    console.log(res.data.response.empleado);
-                    return {
-                      data: res.data.response,
-                      filtros: { month, year, quincena },
-                    };
-                  },
-                },
-              ],
-            },
-            {
-              path: "monto-faltante",
-              children: [{ path: "reporte", element: <ReporteMF /> }],
-            },
-            {
               path: "checklist-bomba",
-              children: [{ path: "capturar", element: <ReporteMF /> }],
+              children: [
+                {
+                  path: "reporte",
+                  element: <div>Pendiente por error de api</div>,
+                },
+                { path: "registros", element: <RegistrosChecklist /> },
+              ],
             },
           ],
         },
