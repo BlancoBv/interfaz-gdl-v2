@@ -18,24 +18,25 @@ export default {
         },
       ],
     },
+
+    {
+      to: "orden-limpieza-isla",
+      name: "Órden y limpieza isla",
+      icon: "spray-can-sparkles",
+      collapse: [
+        { to: "capturar", name: "Capturar" },
+        /* { to: "despacho/orden-limpieza/reporte", name: "Reporte mensual" },
+        {
+          to: "despacho/orden-limpieza/historial",
+          name: "Historial",
+        },
+        {
+          to: "despacho/orden-limpieza/tendencia",
+          name: "Tendencia",
+        }, */
+      ],
+    },
     /*
-      {
-        to: "orden-limpieza-isla",
-        name: "Órden y limpieza isla",
-        icon: "spray-can-sparkles",
-        collapse: [
-          { to: "despacho/orden-limpieza/capturar", name: "Capturar" },
-          { to: "despacho/orden-limpieza/reporte", name: "Reporte mensual" },
-          {
-            to: "despacho/orden-limpieza/historial",
-            name: "Historial",
-          },
-          {
-            to: "despacho/orden-limpieza/tendencia",
-            name: "Tendencia",
-          },
-        ],
-      },
       {
         to: "evaluacion-uniforme",
         name: "Evaluación de uniforme",

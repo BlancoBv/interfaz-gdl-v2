@@ -109,14 +109,12 @@ export const InputFecha: FC<fecha> = ({
     }));
   };
 
-  console.log(variable);
-
   return (
-    <label className="form-control w-full max-w-40 lg:max-w-xs ">
+    <label className="form-control lg:max-w-xs ">
       <div className="label">
         <span className="label-text">{label}</span>
       </div>
-      <div className="join">
+      <div className="join w-full">
         <input
           ref={ref}
           className="input input-bordered w-full"

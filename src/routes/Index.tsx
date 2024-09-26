@@ -29,6 +29,7 @@ import Departamentos from "@pages/app/recursos-humanos/empleados/departamentos/I
 import Documentos from "@pages/app/recursos-humanos/empleados/documentos/Index";
 import Empleados from "@pages/app/recursos-humanos/empleados/Index";
 import RegistrosChecklist from "@pages/app/despacho/checklist-bomba/registros";
+import CapturarOyL from "@pages/app/despacho/orden-limpieza-isla/capturar";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -70,6 +71,16 @@ const Index: FC = () => {
                 {
                   path: "reporte",
                   element: <div>Pendiente por error de api</div>,
+                },
+                { path: "registros", element: <RegistrosChecklist /> },
+              ],
+            },
+            {
+              path: "orden-limpieza-isla",
+              children: [
+                {
+                  path: "capturar",
+                  element: <CapturarOyL />,
                 },
                 { path: "registros", element: <RegistrosChecklist /> },
               ],
