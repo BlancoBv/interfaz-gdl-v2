@@ -3,7 +3,7 @@ import { FC, ReactNode, useMemo, useState } from "react";
 import { meses } from "@assets/misc";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
-import { departamentoInterface } from "@assets/interfaces";
+import { departamentoInterface, islasInterface } from "@assets/interfaces";
 
 export const Select: FC<{
   name: string;
@@ -272,7 +272,7 @@ export const SelectIsla: FC<{
   setVariable: any;
   required?: boolean;
   disabled?: boolean;
-  estacionServicio?: number;
+  estacionServicio?: number | string;
 }> = ({
   name,
   label,
@@ -329,6 +329,58 @@ export const SelectIsla: FC<{
         multiple
         valueName="idIsla"
         labelName="nIsla"
+      />
+    </label>
+  );
+};
+export const SelectIslaSingle: FC<{
+  name: string;
+  label: string;
+  variable: any;
+  setVariable: any;
+  required?: boolean;
+  disabled?: boolean;
+  estacionServicio?: number | string;
+  targetValue?: "idisla" | "nisla";
+}> = ({
+  name,
+  label,
+  variable,
+  setVariable,
+  disabled,
+  required,
+  estacionServicio,
+  targetValue,
+}) => {
+  const { data, isPending, isError } = useGetData(
+    `liquidacion/islas/${estacionServicio}`,
+    "islaSelectSingleData",
+    { fetchInURLChange: true }
+  );
+
+  return (
+    <label className="form-control w-full max-w-40 lg:max-w-xs">
+      <div className="label">
+        <span className="label-text">{label}</span>
+      </div>
+      <ReactSelect
+        placeholder="Selecciona una o más islas"
+        options={
+          !isPending && !isError
+            ? data.response.map((el: islasInterface) => ({
+                value: targetValue
+                  ? el[targetValue as keyof islasInterface]
+                  : el.idisla,
+                label: `Isla ${el.nisla}`,
+              }))
+            : []
+        }
+        isLoading={isPending}
+        setVariable={setVariable}
+        name={name}
+        variable={variable}
+        disabled={disabled}
+        required={required}
       />
     </label>
   );

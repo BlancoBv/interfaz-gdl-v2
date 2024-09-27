@@ -22,7 +22,7 @@ const TextArea: FC<{
     }
   };
   return (
-    <label className="form-control w-full max-w-40 lg:max-w-xs ">
+    <label className="form-control w-full lg:max-w-xs ">
       <div className="label">
         <span className="label-text">{label}</span>
       </div>
