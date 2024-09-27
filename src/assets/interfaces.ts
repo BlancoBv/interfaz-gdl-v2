@@ -88,3 +88,31 @@ export interface registrosChecklistInterface {
   turno: turnoInterface;
   isla: islasInterface;
 }
+
+export interface reporteOyLInterface {
+  idempleado: number;
+  idchecador: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  totalPuntos: number;
+  evaluaciones: {
+    idoyl: number;
+    fecha: string; // ISO string format
+    isla: number;
+    idestacion_servicio: number;
+    idempleado: number;
+    idoyl_cumplimiento: number;
+    idturno: number;
+    identificador: string;
+    cumple: boolean;
+    incidentes: string | null;
+    cumplimiento: string;
+    idchecador: number;
+    estatus: string;
+    nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
+    estacion: string;
+  }[][];
+}

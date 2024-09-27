@@ -73,7 +73,7 @@ export const SelectMonth: FC<{
       label={label}
       variable={variable}
       setVariable={setVariable}
-      placeholder="Selecciona un año"
+      placeholder="Selecciona un mes"
       options={meses.map((mes) => ({ value: mes.id, label: mes.mes }))}
       disabled={disabled}
       required={required}

@@ -25,6 +25,10 @@ export default {
       icon: "spray-can-sparkles",
       collapse: [
         { to: "capturar", name: "Capturar" },
+        {
+          to: "reporte",
+          name: "Reporte",
+        },
         /* { to: "despacho/orden-limpieza/reporte", name: "Reporte mensual" },
         {
           to: "despacho/orden-limpieza/historial",

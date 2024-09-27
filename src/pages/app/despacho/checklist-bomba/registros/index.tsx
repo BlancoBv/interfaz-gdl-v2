@@ -40,8 +40,8 @@ const RegistrosChecklist: FC = () => {
 
   const filtrar = (ev: SyntheticEvent) => {
     ev.preventDefault();
-    refetch();
     sessionStorage.setItem("regChecklistFiltros", JSON.stringify(filtros));
+    refetch();
   };
   console.log({ isError, isPending });
 
