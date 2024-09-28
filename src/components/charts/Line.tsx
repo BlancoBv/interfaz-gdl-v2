@@ -31,8 +31,6 @@ const Index: FC<line> = ({
     }
   }, []);
 
-  console.log(data);
-
   return (
     <div className="h-96">
       <Line
@@ -69,8 +67,11 @@ const Index: FC<line> = ({
               ticks: {
                 callback(value) {
                   const label = this.getLabelForValue(Number(value)).split(";");
+                  if (label.length > 1) {
+                    return label[1];
+                  }
 
-                  return label[1];
+                  return label[0];
                 },
               },
             },

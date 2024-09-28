@@ -138,3 +138,15 @@ export interface cumplimientosOyLInterface {
   descripcion: string;
   parte: string;
 }
+export interface tendenciaOyLInterface extends empleadoInterface {
+  oyls: {
+    idoyl: number;
+    identificador: string;
+    fecha: string;
+    cumple: boolean;
+    oyl_cumplimiento: Pick<
+      cumplimientosOyLInterface,
+      "cumplimiento" | "idoyl_cumplimiento"
+    >;
+  }[];
+}

@@ -32,6 +32,7 @@ import RegistrosChecklist from "@pages/app/despacho/checklist-bomba/registros";
 import CapturarOyL from "@pages/app/despacho/orden-limpieza-isla/capturar";
 import ReporteOyl from "@pages/app/despacho/orden-limpieza-isla/reporte";
 import ReporteEmpleadoOyL from "@pages/app/despacho/orden-limpieza-isla/reporte/id-empleado";
+import TendenciaOyL from "@pages/app/despacho/orden-limpieza-isla/tendencia/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -95,6 +96,7 @@ const Index: FC = () => {
                     },
                   ],
                 },
+                { path: "tendencia", element: <TendenciaOyL /> },
               ],
             },
           ],

@@ -34,17 +34,17 @@ export const calcularPromedio = (datos: any, propiedad: string) => {
   return promedio;
 };
 
-export const CalcularMeses = (n: number) => {
+export const CalcularMeses = (n?: number | string | undefined) => {
   const fechasAnteriores = [];
   const fechasAnterioresTime = [];
   const fechaActual = new Date();
   const fechaInicial = new Date("2023-03-01 00:00:00"); // Fecha de inicio del sistema GDL
 
   if (n) {
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < Number(n); i++) {
       const fecha = new Date(fechaActual);
       fecha.setMonth(fecha.getMonth() - i);
-      fechasAnteriores.push(moment);
+      fechasAnteriores.push(moment(fecha).format("MMMM YYYY"));
       fechasAnterioresTime.push(fecha.getTime());
     }
   } else {
@@ -54,7 +54,7 @@ export const CalcularMeses = (n: number) => {
     for (let i = 0; i <= cantidadMeses; i++) {
       const fecha = new Date(fechaActual);
       fecha.setMonth(fecha.getMonth() - i);
-      fechasAnteriores.push(moment(fecha).format("YYY-MM"));
+      fechasAnteriores.push(moment(fecha).format("MMMM YYYY"));
       fechasAnterioresTime.push(fecha.getTime());
     }
   }

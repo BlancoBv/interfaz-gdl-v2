@@ -29,6 +29,7 @@ export default {
           to: "reporte",
           name: "Reporte",
         },
+        { to: "tendencia", name: "Tendencia" },
         /* { to: "despacho/orden-limpieza/reporte", name: "Reporte mensual" },
         {
           to: "despacho/orden-limpieza/historial",
