@@ -8,6 +8,8 @@ import Table from "@components/Table";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import moment from "moment";
 import { FC, SyntheticEvent, useState } from "react";
+import Line from "@components/charts/Line";
+import { useNavigate } from "react-router-dom";
 
 interface registros extends getDataInterface {
   data: { response: reporteOyLInterface[] };
@@ -23,13 +25,15 @@ const ReporteOyl: FC = () => {
         year: moment(date).year(),
         quincena: "all",
       };
+
   const [filtros, setFiltros] = useState<{
     quincena?: string;
     mes?: number;
     year?: number;
   }>(parsedFiltros);
+  const navigate = useNavigate();
 
-  const { data, isError, isPending, refetch } = useGetData(
+  const { data, isError, isPending, refetch }: registros = useGetData(
     `ordenLimpieza/${filtros.year}/${filtros.mes}?quincena=${
       filtros.quincena === "all" ? "" : filtros.quincena
     }`,
@@ -75,21 +79,59 @@ const ReporteOyl: FC = () => {
       </CintaOpciones>
       <Loader isPending={isPending} />
       {!isError && !isPending && (
-        <Table
-          data={data.response}
-          columns={[
-            {
-              name: "Despachador",
-              selector: (el: reporteOyLInterface) =>
-                `${el.nombre} ${el.apellido_paterno} ${el.apellido_materno}`,
-            },
-            {
-              name: "Puntos acumulados en las evaluaciones",
-              selector: (el: reporteOyLInterface) => el.totalPuntos,
-            },
-          ]}
-          hoverable
-        />
+        <>
+          <Table
+            data={data.response}
+            columns={[
+              {
+                name: "Despachador",
+                selector: (el: reporteOyLInterface) =>
+                  `${el.nombre} ${el.apellido_paterno} ${el.apellido_materno}`,
+              },
+              {
+                name: "Puntos acumulados en las evaluaciones",
+                selector: (el: reporteOyLInterface) => el.totalPuntos,
+              },
+            ]}
+            hoverable
+            onClick={(data: reporteOyLInterface) => {
+              navigate(`${data.idempleado}`);
+            }}
+          />
+          <Line
+            etiquetaX="Despachadores"
+            etiquetaY="Puntos acumulados"
+            title={`Puntos de orden y limpieza, ${
+              filtros.quincena === "all"
+                ? "mensual"
+                : "quincena " + filtros.quincena
+            }`}
+            data={{
+              datasets: [
+                {
+                  data: data.response.map((el) => ({
+                    x: `${el.idempleado};${el.nombre} ${el.apellido_materno[0]}.`,
+
+                    y: el.totalPuntos,
+                  })),
+                  borderColor: "green",
+                  backgroundColor: "green",
+                  label: "Despachadores",
+                },
+                {
+                  data: data.response.map(() =>
+                    filtros.quincena === "all" ? 18 : 9
+                  ),
+                  backgroundColor: "red",
+                  borderColor: "red",
+                  label: "Puntaje mínimo",
+                },
+              ],
+            }}
+            omitDatalabelOnIndex={1}
+            legend
+          />
+        </>
       )}
     </div>
   );

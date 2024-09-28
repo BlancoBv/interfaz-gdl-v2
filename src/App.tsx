@@ -24,6 +24,12 @@ Chart.defaults.set("plugins.datalabels", {
       color: "#fff",
     },
   },
+  formatter: (value: any) => {
+    if (typeof value === "object") {
+      return value.y;
+    }
+    return value;
+  },
   display: (context: { dataIndex: number; dataset: { data: any[] } }) => {
     return context.dataset.data[context.dataIndex] > 0;
   },

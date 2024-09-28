@@ -1,3 +1,18 @@
+import { ChartData, Point } from "chart.js";
+export type CustomDataPoint = { x: string; y: number } | number | Point | null;
+
+export interface ChartsPropsInterface {
+  data?: ChartData<any>;
+  title?: string;
+  redraw?: boolean;
+  legend?: boolean;
+  onClick?: (dataset: any, element: any) => void;
+  etiquetaX: string;
+  etiquetaY: string;
+  ticksYCallback?: (value: any) => string;
+  xAxeAsCategory?: boolean;
+} // props para las graficas
+
 export interface empleadoInterface {
   nombre_completo: string;
   idempleado: number;
@@ -115,4 +130,11 @@ export interface reporteOyLInterface {
     apellido_materno: string;
     estacion: string;
   }[][];
+}
+
+export interface cumplimientosOyLInterface {
+  idoyl_cumplimiento: number;
+  cumplimiento: string;
+  descripcion: string;
+  parte: string;
 }

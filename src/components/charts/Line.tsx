@@ -1,12 +1,15 @@
-import { ChartsPropsInterface, CustomDataPoint } from "@assets/interfaces";
+import { ChartsPropsInterface, type CustomDataPoint } from "@assets/interfaces";
 import { ChartData } from "chart.js";
 import { FC, useEffect, useRef } from "react";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
-interface bar extends ChartsPropsInterface {
-  data?: ChartData<"bar", CustomDataPoint[]>;
+interface line extends ChartsPropsInterface {
+  data?: ChartData<"line", CustomDataPoint[]>;
+  logaritmic?: boolean;
+  omitDatalabelOnIndex?: number;
 }
-const Index: FC<bar> = ({
+
+const Index: FC<line> = ({
   data,
   title = "Texto de ejemplo",
   redraw,
@@ -15,6 +18,8 @@ const Index: FC<bar> = ({
   etiquetaY,
   onClick,
   ticksYCallback,
+  logaritmic,
+  omitDatalabelOnIndex,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
@@ -26,9 +31,11 @@ const Index: FC<bar> = ({
     }
   }, []);
 
+  console.log(data);
+
   return (
     <div className="h-96">
-      <Bar
+      <Line
         ref={ref}
         data={
           data
@@ -53,17 +60,49 @@ const Index: FC<bar> = ({
           maintainAspectRatio: false,
           scales: {
             y: {
-              type: "logarithmic",
+              ...(logaritmic && { type: "logarithmic" }),
               title: { display: true, text: etiquetaY },
               ticks: { callback: ticksYCallback },
             },
             x: {
               title: { display: true, text: etiquetaX },
+              ticks: {
+                callback(value) {
+                  const label = this.getLabelForValue(Number(value)).split(";");
+
+                  return label[1];
+                },
+              },
             },
           },
           plugins: {
             datalabels: {
-              color: "fffff",
+              labels: {
+                title: {
+                  color: "#000",
+                },
+              },
+              display: function (context) {
+                const value = context.dataset.data[
+                  context.dataIndex
+                ] as CustomDataPoint;
+
+                if (
+                  (typeof value === "object" && value?.y === 0) ||
+                  value === 0
+                ) {
+                  return false;
+                }
+
+                if (
+                  omitDatalabelOnIndex === context.datasetIndex &&
+                  context.dataset.data.length - 1 !== context.dataIndex
+                ) {
+                  return false;
+                }
+
+                return true;
+              },
             },
             title: {
               display: true,
@@ -73,7 +112,7 @@ const Index: FC<bar> = ({
               },
             },
             legend: {
-              position: "right",
+              position: "bottom",
               display: legend,
             },
             tooltip: {

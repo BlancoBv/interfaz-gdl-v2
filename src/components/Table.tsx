@@ -15,6 +15,7 @@ const Table: FC<{
   contextualMenuItems?: contextItems[];
   hoverable?: boolean;
   noDataMsg?: string;
+  onClick?: (data?: any) => void;
 }> = ({
   data,
   columns,
@@ -22,6 +23,7 @@ const Table: FC<{
   contextualMenuItems,
   hoverable,
   noDataMsg,
+  onClick,
 }) => {
   const { show } = useContextMenu({ id: DEFAULT_ID });
 
@@ -50,13 +52,16 @@ const Table: FC<{
           {data.length > 0 &&
             data.map((row: any, rowIndex: number) => (
               <tr
-                className={`text-wrap text-center ${hoverable ? "hover" : ""}`}
+                className={`text-wrap text-center ${hoverable ? "hover" : ""} ${
+                  onClick ? "cursor-pointer" : ""
+                }`}
                 key={`row ${rowIndex}`}
                 onContextMenu={
                   contextualMenuItems
                     ? (ev) => displayContextMenu(ev, row)
                     : undefined
                 }
+                onClick={onClick ? () => onClick(row) : undefined}
               >
                 {columns.map((col, colIndex) => (
                   <td key={`col-data ${rowIndex}${colIndex}`}>

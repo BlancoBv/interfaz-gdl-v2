@@ -8,9 +8,7 @@ export default axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  validateStatus: (status: number) => {
-    console.log(status);
-
+  /* validateStatus: (status: number) => {
     if (status === 401 || status === 403) {
       localStorage.removeItem("credentials");
       localStorage.removeItem("token");
@@ -18,5 +16,5 @@ export default axios.create({
       return false;
     }
     return true;
-  },
+  }, */
 });
