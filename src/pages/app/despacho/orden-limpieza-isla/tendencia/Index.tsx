@@ -13,7 +13,7 @@ import calcularTotal, {
   calcularPromedio,
 } from "@assets/calcularTotal";
 import format from "@assets/format";
-import moment from "moment";
+import Loader from "@components/gui/Loader";
 interface tendencia extends getDataInterface {
   data: {
     response: tendenciaOyLInterface[];
@@ -78,11 +78,7 @@ const TendenciaOyL: FC = () => {
       return results;
     }
     return [];
-  }, [data]);
-
-  const labels = CalcularMeses(
-    filtros.monthBack === "all" ? undefined : filtros.monthBack
-  ).strings;
+  }, [data, isPending]);
 
   /* console.log(
     tendencias.map((el) => ({
@@ -97,7 +93,53 @@ const TendenciaOyL: FC = () => {
     }))
   ); */
 
-  console.log(tendencias);
+  const { datasets, labels } = useMemo(() => {
+    const labels = CalcularMeses(
+      filtros.monthBack === "all" ? undefined : filtros.monthBack
+    );
+    if (filtros.agrupar) {
+      return {
+        datasets: [
+          {
+            label: "Promedio mensual",
+            data: labels.strings.map((mes) => {
+              const promedio = calcularPromedio(
+                tendencias
+                  .filter((emp) => emp.agruparXMes.hasOwnProperty(mes))
+                  .map((emp) =>
+                    calcularPromedio(emp.agruparXMes[String(mes)], "promedio")
+                  ),
+                ""
+              );
+              return promedio;
+            }),
+            backgroundColor: "rgb(25,135,80)",
+            borderColor: "rgb(25,135,80)",
+          },
+          {
+            label: "Puntaje Minimo",
+            data: labels.strings.map(() => 9),
+            backgroundColor: "rgb(237,41,29)",
+            borderColor: "rgb(237,41,29)",
+          },
+        ],
+        labels: labels.strings,
+      };
+    }
+    return {
+      datasets: tendencias.map((emp) => {
+        return {
+          label: emp.empleado, //.nombre_completo,
+          data: labels.strings.map((fecha) => {
+            const datos = emp.agruparXMes[fecha];
+            const total = datos ? calcularPromedio(datos, "promedio") : null;
+            return total;
+          }),
+        };
+      }),
+      labels: labels.strings,
+    };
+  }, [tendencias, filtros.agrupar]);
 
   return (
     <div>
@@ -137,56 +179,19 @@ const TendenciaOyL: FC = () => {
           name="agrupar"
           variable={filtros}
           setVariable={setFiltros}
+          required={false}
         />
         <Button buttonType="submit" text="Filtrar" />
       </CintaOpciones>
+      <Loader isPending={isPending} />
       {!isPending && !isError && (
         <Line
           etiquetaX="Rango de tiempo"
           etiquetaY="Promedio"
           title="Tendencias de orden y limpieza"
           data={{
-            labels: labels,
-            datasets: filtros.agrupar
-              ? tendencias.map((emp, index) => {
-                  return {
-                    label: emp.empleado, //.nombre_completo,
-                    data: labels.map((fecha) => {
-                      const datos = emp.agruparXMes[fecha];
-                      const total = datos
-                        ? calcularPromedio(datos, "promedio")
-                        : null;
-                      return total;
-                    }),
-                  };
-                })
-              : [
-                  {
-                    label: "Promedio mensual",
-                    data: labels.map((mes) => {
-                      const promedio = calcularPromedio(
-                        tendencias
-                          .filter((emp) => emp.agruparXMes.hasOwnProperty(mes))
-                          .map((emp) =>
-                            calcularPromedio(
-                              emp.agruparXMes[String(mes)],
-                              "promedio"
-                            )
-                          ),
-                        ""
-                      );
-                      return promedio;
-                    }),
-                    backgroundColor: "rgb(25,135,80)",
-                    borderColor: "rgb(25,135,80)",
-                  },
-                  {
-                    label: "Puntaje Minimo",
-                    data: [],
-                    backgroundColor: "rgb(237,41,29)",
-                    borderColor: "rgb(237,41,29)",
-                  },
-                ],
+            labels,
+            datasets,
           }}
           legend
         />

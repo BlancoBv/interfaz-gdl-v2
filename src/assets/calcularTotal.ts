@@ -62,6 +62,6 @@ export const CalcularMeses = (n?: number | string | undefined) => {
   return {
     strings: fechasAnteriores.reverse(),
     times: fechasAnterioresTime,
-  };
+  } as const;
 };
 export default calcularTotal;

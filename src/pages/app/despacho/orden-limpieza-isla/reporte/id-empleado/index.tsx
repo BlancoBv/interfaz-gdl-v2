@@ -161,7 +161,7 @@ const ReporteEmpleadoOyL: FC = () => {
           <Line
             etiquetaY="Cantidad de puntos obtenidos"
             etiquetaX="Evaluaciones"
-            title="Tendencia de puntos de orden y limpieza de la isla"
+            title={`Resumen de puntos obtenidos de orden y limpieza de ${data.response.empleado.nombre} `}
             data={{
               datasets: [
                 {
