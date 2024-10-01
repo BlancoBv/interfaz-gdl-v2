@@ -33,6 +33,7 @@ import CapturarOyL from "@pages/app/despacho/orden-limpieza-isla/capturar";
 import ReporteOyl from "@pages/app/despacho/orden-limpieza-isla/reporte";
 import ReporteEmpleadoOyL from "@pages/app/despacho/orden-limpieza-isla/reporte/id-empleado";
 import TendenciaOyL from "@pages/app/despacho/orden-limpieza-isla/tendencia/Index";
+import ReportesChecklist from "@pages/app/despacho/checklist-bomba/reporte/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -73,7 +74,7 @@ const Index: FC = () => {
               children: [
                 {
                   path: "reporte",
-                  element: <div>Pendiente por error de api</div>,
+                  element: <ReportesChecklist />,
                 },
                 { path: "registros", element: <RegistrosChecklist /> },
               ],

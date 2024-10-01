@@ -150,3 +150,13 @@ export interface tendenciaOyLInterface extends empleadoInterface {
     >;
   }[];
 }
+
+export interface reporteChecklistInterface {
+  empleado: empleadoInterface;
+  fechas: {
+    idchecklist_bomba: number | null;
+    idempleado: number;
+    fecha: string;
+    cumple: 1 | 0 | null;
+  }[];
+}

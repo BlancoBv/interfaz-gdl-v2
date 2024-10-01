@@ -9,7 +9,12 @@ const Table: FC<{
   data: any[];
   columns: {
     name: string;
-    selector: (prop: any) => string | number | ReactNode;
+    selector: (
+      prop: any,
+      colIndex?: number,
+      rowIndex?: number
+    ) => string | number | ReactNode;
+    className?: string;
   }[];
   setRelativeData?: any;
   contextualMenuItems?: contextItems[];
@@ -40,7 +45,9 @@ const Table: FC<{
           <tr>
             {columns.map((col) => (
               <th
-                className="text-wrap lg:text-nowrap text-center"
+                className={`text-wrap lg:text-nowrap text-center ${
+                  col.className ? col.className : ""
+                }`}
                 key={`col ${col.name}`}
               >
                 {col.name}
@@ -65,7 +72,7 @@ const Table: FC<{
               >
                 {columns.map((col, colIndex) => (
                   <td key={`col-data ${rowIndex}${colIndex}`}>
-                    {col.selector(row)}
+                    {col.selector(row, colIndex - 1, rowIndex - 1)}
                   </td>
                 ))}
               </tr>

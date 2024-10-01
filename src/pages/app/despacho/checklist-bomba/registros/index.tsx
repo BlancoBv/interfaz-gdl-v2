@@ -43,7 +43,6 @@ const RegistrosChecklist: FC = () => {
     sessionStorage.setItem("regChecklistFiltros", JSON.stringify(filtros));
     refetch();
   };
-  console.log({ isError, isPending });
 
   return (
     <div>
@@ -140,6 +139,7 @@ const RegistrosChecklist: FC = () => {
         titulo="Registros de checklist bomba"
         subtitulo="Despacho"
       />
+      <Loader isPending={isla1.isPending && isla2.isPending} />
       {!isla1.isPending &&
         !isla2.isPending &&
         !isla1.isError &&
