@@ -31,6 +31,8 @@ const Index: FC<line> = ({
     }
   }, []);
 
+  console.log(data);
+
   return (
     <div className="h-96">
       <Line

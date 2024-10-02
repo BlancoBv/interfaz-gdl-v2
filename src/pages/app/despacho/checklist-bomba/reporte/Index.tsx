@@ -11,6 +11,7 @@ import { getDataInterface, useGetData } from "@hooks/useGetData";
 import moment from "moment";
 import { FC, SyntheticEvent, useMemo, useState } from "react";
 import Line from "@components/charts/Line";
+import { useNavigate } from "react-router-dom";
 
 interface reporte extends getDataInterface {
   data: { response: reporteChecklistInterface[] };
@@ -19,6 +20,7 @@ interface reporte extends getDataInterface {
 const ReportesChecklist: FC = () => {
   const date = new Date(Date.now());
   const cacheFiltros = sessionStorage.getItem("reporteCheckFiltros");
+  const navigate = useNavigate();
   const parsedFiltros = cacheFiltros
     ? JSON.parse(cacheFiltros)
     : {
@@ -142,6 +144,11 @@ const ReportesChecklist: FC = () => {
               })),
             ]}
             hoverable
+            onClick={(el: reporteChecklistInterface) => {
+              navigate(
+                `${filtros.year}/${filtros.mes}/${el.empleado.idempleado}`
+              );
+            }}
           />
           <Line
             etiquetaX="Despachador"

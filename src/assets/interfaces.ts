@@ -1,5 +1,9 @@
 import { ChartData, Point } from "chart.js";
 export type CustomDataPoint = { x: string; y: number } | number | Point | null;
+export type Rename<T, K extends keyof T, N extends string> = Pick<
+  T,
+  Exclude<keyof T, K>
+> & { [P in N]: T[K] };
 
 export interface ChartsPropsInterface {
   data?: ChartData<any>;
@@ -159,4 +163,24 @@ export interface reporteChecklistInterface {
     fecha: string;
     cumple: 1 | 0 | null;
   }[];
+}
+export interface dataDetallesChecklistInterface {
+  idchecklist_bomba: number;
+  fecha: string;
+  isla_limpia: boolean;
+  aceites_completos: boolean;
+  turno: boolean;
+  bomba: boolean;
+  estacion_servicio: boolean;
+  idempleado: number;
+  empleado_entrante: boolean;
+  idempleado_saliente: number;
+  fechac: boolean;
+  empleado_saliente: boolean;
+  incidentes: string | null;
+  empSaliente: Omit<empleadoInterface, "nombre_completo">;
+}
+export interface reporteDetalleChecklistInterface {
+  empleado: Omit<empleadoInterface, "nombre_completo">;
+  data: dataDetallesChecklistInterface[];
 }

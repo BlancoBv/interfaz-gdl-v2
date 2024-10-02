@@ -45,7 +45,7 @@ const Table: FC<{
           <tr>
             {columns.map((col) => (
               <th
-                className={`text-wrap lg:text-nowrap text-center ${
+                className={`text-wrap text-center ${
                   col.className ? col.className : ""
                 }`}
                 key={`col ${col.name}`}
