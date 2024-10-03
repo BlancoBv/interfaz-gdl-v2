@@ -20,7 +20,7 @@ export function useSendData(
     mutationFn: async (data?: any) => {
       const res = await Axios[config.method](url, data);
 
-      if (res.status === 400) {
+      if (res.status === 400 || res.status === 404) {
         return Promise.reject(res.data);
       }
 
