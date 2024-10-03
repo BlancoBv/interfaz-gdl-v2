@@ -35,6 +35,7 @@ import ReporteEmpleadoOyL from "@pages/app/despacho/orden-limpieza-isla/reporte/
 import TendenciaOyL from "@pages/app/despacho/orden-limpieza-isla/tendencia/Index";
 import ReportesChecklist from "@pages/app/despacho/checklist-bomba/reporte/Index";
 import ReporteEmpleadoChecklist from "@pages/app/despacho/checklist-bomba/reporte/id-empleado/Index";
+import HistorialOyL from "@pages/app/despacho/orden-limpieza-isla/historial/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -105,6 +106,7 @@ const Index: FC = () => {
                   ],
                 },
                 { path: "tendencia", element: <TendenciaOyL /> },
+                { path: "historial", element: <HistorialOyL /> },
               ],
             },
           ],

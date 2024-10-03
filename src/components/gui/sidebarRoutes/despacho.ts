@@ -14,7 +14,7 @@ export default {
         },
         {
           to: "registros",
-          name: "Registros checklist",
+          name: "Registros",
         },
       ],
     },
@@ -30,15 +30,7 @@ export default {
           name: "Reporte",
         },
         { to: "tendencia", name: "Tendencia" },
-        /* { to: "despacho/orden-limpieza/reporte", name: "Reporte mensual" },
-        {
-          to: "despacho/orden-limpieza/historial",
-          name: "Historial",
-        },
-        {
-          to: "despacho/orden-limpieza/tendencia",
-          name: "Tendencia",
-        }, */
+        { to: "historial", name: "Historial" },
       ],
     },
     /*
