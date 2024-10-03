@@ -10,7 +10,7 @@ export default {
       collapse: [
         {
           to: "reporte",
-          name: "Reporte (pendiente por errores)",
+          name: "Reporte",
         },
         {
           to: "registros",

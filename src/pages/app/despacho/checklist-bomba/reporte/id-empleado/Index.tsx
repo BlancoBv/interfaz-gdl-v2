@@ -45,14 +45,20 @@ const ReporteEmpleadoChecklist: FC = () => {
   const [relativeData, setRelativeData] = useState<
     Partial<dataDetallesChecklistInterface>
   >({});
-  const [bodyUpdate, setBodyUpdate] = useState<
-    Partial<
-      Omit<dataDetallesChecklistInterface, "idempleado" | "idempleado_saliente">
-    > & {
-      idEmpleado?: number;
-      idEmpleadoSaliente?: number;
-    }
-  >({});
+  const [bodyUpdate, setBodyUpdate] = useState<{
+    aceitesCompletos?: boolean;
+    bomba?: boolean;
+    empleadoEntrante?: boolean;
+    empleadoSaliente?: boolean;
+    estacionServicio?: boolean;
+    fecha?: string;
+    fechac?: boolean;
+    idEmpleado?: number;
+    idEmpleadoSaliente?: number;
+    incidentes?: null | string;
+    islaLimpia?: boolean;
+    turno?: boolean;
+  }>({});
 
   const modalConfirm = useModal("confirmDelCheck");
   const modalEdit = useModal("editCheck");
@@ -93,7 +99,6 @@ const ReporteEmpleadoChecklist: FC = () => {
         refetch();
         checklistGral.refetch();
       },
-      containerID: "fromModal",
     }
   );
 
@@ -125,7 +130,6 @@ const ReporteEmpleadoChecklist: FC = () => {
     }
     return [];
   }, [isPending, idDespachador, checklistGral.isPending]);
-  console.log(bodyUpdate);
 
   if (!isPending && isError && !checklistGral.isPending) {
     return <Navigate to={"/404"} replace />;
@@ -147,10 +151,11 @@ const ReporteEmpleadoChecklist: FC = () => {
         )}`}
       >
         <form
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 p-2"
           onSubmit={(ev) => {
             ev.preventDefault();
             updateCheck.mutate(bodyUpdate);
+            modalEdit.close();
           }}
         >
           <span>Fecha : {relativeData.fecha}</span>
@@ -162,7 +167,7 @@ const ReporteEmpleadoChecklist: FC = () => {
           />
           <Toggle
             label="Estación de servicio"
-            name="estacion_servicio"
+            name="estacionServicio"
             variable={bodyUpdate}
             setVariable={setBodyUpdate}
           />
@@ -180,25 +185,25 @@ const ReporteEmpleadoChecklist: FC = () => {
           />
           <Toggle
             label="Isla limpia"
-            name="isla_limpia"
+            name="islaLimpia"
             variable={bodyUpdate}
             setVariable={setBodyUpdate}
           />
           <Toggle
             label="Aceites completos"
-            name="aceites_completos"
+            name="aceitesCompletos"
             variable={bodyUpdate}
             setVariable={setBodyUpdate}
           />
           <Toggle
             label="Empleado entrante"
-            name="empleado_entrante"
+            name="empleadoEntrante"
             variable={bodyUpdate}
             setVariable={setBodyUpdate}
           />
           <Toggle
             label="Empleado saliente"
-            name="empleado_saliente"
+            name="empleadoSaliente"
             variable={bodyUpdate}
             setVariable={setBodyUpdate}
           />
@@ -443,15 +448,32 @@ const ReporteEmpleadoChecklist: FC = () => {
                 icon: "pen-to-square",
                 onClick: () => {
                   const {
-                    incidentes,
+                    aceites_completos: aceitesCompletos,
+                    bomba,
+                    empleado_entrante: empleadoEntrante,
+                    empleado_saliente: empleadoSaliente,
+                    estacion_servicio: estacionServicio,
+                    fecha,
+                    fechac,
                     idempleado: idEmpleado,
                     idempleado_saliente: idEmpleadoSaliente,
+                    incidentes,
+                    isla_limpia: islaLimpia,
+                    turno,
                   } = relativeData;
                   setBodyUpdate({
-                    ...relativeData,
+                    aceitesCompletos,
+                    bomba,
+                    empleadoEntrante,
                     incidentes: incidentes ? incidentes : "",
                     idEmpleado,
                     idEmpleadoSaliente,
+                    empleadoSaliente,
+                    islaLimpia,
+                    turno,
+                    fecha: format.formatFechaAsDB(fecha ? fecha : ""),
+                    fechac,
+                    estacionServicio,
                   });
                   modalEdit.show();
                 },
