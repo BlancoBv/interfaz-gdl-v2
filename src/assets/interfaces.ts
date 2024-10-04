@@ -206,3 +206,9 @@ export interface reporteDetalleChecklistInterface {
   empleado: Omit<empleadoInterface, "nombre_completo">;
   data: dataDetallesChecklistInterface[];
 }
+
+export interface evaluacionesUniformeInterface {
+  idcumplimiento_uniforme: number;
+  cumplimiento: string;
+  vigente: number;
+}

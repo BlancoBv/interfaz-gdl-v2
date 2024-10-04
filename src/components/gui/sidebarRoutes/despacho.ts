@@ -33,27 +33,26 @@ export default {
         { to: "historial", name: "Historial" },
       ],
     },
-    /*
-      {
-        to: "evaluacion-uniforme",
-        name: "Evaluación de uniforme",
-        icon: "shirt",
-        collapse: [
-          { to: "despacho/evaluacion-uniforme/capturar", name: "Capturar" },
-          {
-            to: "despacho/evaluacion-uniforme/capturarreporte",
-            name: "Reporte mensual",
-          },
-          {
-            to: "despacho/evaluacion-uniforme/capturarhistorial",
-            name: "Historial",
-          },
-          {
-            to: "despacho/evaluacion-uniforme/capturartendencia",
-            name: "Tendencias",
-          },
-        ],
-      },
+    {
+      to: "evaluacion-uniforme",
+      name: "Evaluación de uniforme",
+      icon: "shirt",
+      collapse: [
+        { to: "capturar", name: "Capturar" },
+        /* {
+          to: "despacho/evaluacion-uniforme/capturarreporte",
+          name: "Reporte mensual",
+        },
+        {
+          to: "despacho/evaluacion-uniforme/capturarhistorial",
+          name: "Historial",
+        },
+        {
+          to: "despacho/evaluacion-uniforme/capturartendencia",
+          name: "Tendencias",
+        }, */
+      ],
+    } /*
       {
         to: "pasos-despachar",
         name: "Pasos de despacho",
@@ -70,6 +69,6 @@ export default {
             name: "Tendencia",
           },
         ],
-      }, */
+      }, */,
   ],
 };
