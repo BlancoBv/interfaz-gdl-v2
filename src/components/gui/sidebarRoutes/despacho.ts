@@ -52,23 +52,24 @@ export default {
           name: "Tendencias",
         }, */
       ],
-    } /*
-      {
-        to: "pasos-despachar",
-        name: "Pasos de despacho",
-        icon: "list-check",
-        collapse: [
-          { to: "despacho/pasos-despachar/capturar", name: "Capturar" },
-          { to: "despacho/pasos-despachar/reporte", name: "Reporte mensual" },
-          {
-            to: "despacho/pasos-despachar/historial",
-            name: "Historial",
-          },
-          {
-            to: "despacho/pasos-despachar/tendencia",
-            name: "Tendencia",
-          },
-        ],
-      }, */,
+    },
+    {
+      to: "pasos-despachar",
+      name: "Pasos de despacho",
+      icon: "list-check",
+      collapse: [
+        { to: "capturar", name: "Capturar" },
+        /* { to: "despacho/pasos-despachar/reporte", name: "Reporte mensual" },
+        {
+          to: "despacho/pasos-despachar/historial",
+          name: "Historial",
+        },
+        {
+          to: "despacho/pasos-despachar/tendencia",
+          name: "Tendencia",
+        }, */
+      ],
+    },
+    ,
   ],
 };

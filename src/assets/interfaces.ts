@@ -212,3 +212,8 @@ export interface evaluacionesUniformeInterface {
   cumplimiento: string;
   vigente: number;
 }
+
+export interface evaluacionesPasosDespacharInterface {
+  idpaso_despachar: number;
+  paso: string;
+}

@@ -8,7 +8,7 @@ const CintaOpciones: FC<{
   return (
     <div
       className={`flex flex-col sticky ${
-        zeroTop ? "top-0" : "top-16"
+        zeroTop ? "top-0" : "top-28"
       } bg-base-100/80 backdrop-blur-sm z-30 w-full`}
     >
       <form
