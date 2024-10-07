@@ -212,6 +212,37 @@ export interface evaluacionesUniformeInterface {
   cumplimiento: string;
   vigente: number;
 }
+export interface reporteUniformeInterface
+  extends Pick<
+    empleadoInterface,
+    | "apellido_materno"
+    | "apellido_paterno"
+    | "nombre"
+    | "idchecador"
+    | "idempleado"
+  > {
+  evaluaciones: {
+    idevaluacion_uniforme: number;
+    fecha: string;
+    idempleado: number;
+    idcumplimiento_uniforme: number;
+    idpuntaje_minimo: number;
+    cumple: boolean;
+    identificador: string;
+    cumpliento: string;
+    nombre: string;
+    apellido_paterno: string;
+    apellido_materno: string;
+  }[][];
+  cantidad: {
+    idcumplimiento_uniforme: number;
+    cumplimiento: string;
+    totalBuena: number;
+    totalMalas: number;
+    total: number;
+  }[];
+  promedio: number;
+}
 
 export interface evaluacionesPasosDespacharInterface {
   idpaso_despachar: number;

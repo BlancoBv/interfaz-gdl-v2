@@ -1,5 +1,6 @@
 //import agruparArr from "./agrupar";
 
+import Decimal from "decimal.js-light";
 import moment from "moment";
 
 const format = {
@@ -53,6 +54,11 @@ const format = {
   },
   obtenerMesyYear: (fecha: string) => {
     return moment(fecha).format("MMMM YYYY");
+  },
+  formatDecimal: (number: string | number, decimalPlaces?: number) => {
+    return new Decimal(Number(number)).toFixed(
+      decimalPlaces ? decimalPlaces : 2
+    );
   },
   /* 
   formatMes: (date, type, convert = true) =>

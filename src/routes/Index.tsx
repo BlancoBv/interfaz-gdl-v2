@@ -125,7 +125,7 @@ const Index: FC = () => {
                   children: [
                     { index: true, element: <ReporteEvUniforme /> },
                     {
-                      path: ":idDespachador",
+                      path: ":year/:mes/:idDespachador",
                       element: <ReporteEmpleadoOyL />,
                     },
                   ],
