@@ -29,7 +29,11 @@ const Button: FC<{
       onClick={onClick}
       disabled={disabled}
     >
-      {isPending ? <span className="loading loading-spinner"></span> : text}
+      {isPending ? (
+        <span className="loading loading-spinner loading-xs"></span>
+      ) : (
+        text
+      )}
     </button>
   );
 };

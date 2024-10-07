@@ -11,6 +11,9 @@ import Table from "@components/Table";
 import { reporteUniformeInterface } from "@assets/interfaces";
 import format from "@assets/format";
 import Line from "@components/charts/Line";
+import ButtonPDF from "@components/ButtonPDF";
+import PDFGraficas from "@components/pdf/PDFGraficas";
+import { renderToStaticMarkup } from "react-dom/server";
 
 interface reporte extends getDataInterface {
   data: { response: reporteUniformeInterface[] };
@@ -83,12 +86,45 @@ const ReporteEvUniforme: FC = () => {
           setVariable={setFiltros}
           required
         />
+
+        <ButtonPDF
+          isPending={false}
+          doc={PDFGraficas(
+            {
+              tablas: [
+                !isPending &&
+                  !isError &&
+                  renderToStaticMarkup(
+                    <Table
+                      id="tablaR"
+                      data={data.response}
+                      columns={[
+                        {
+                          name: "Empleado",
+                          selector: (el: reporteUniformeInterface) =>
+                            `${el.nombre} ${el.apellido_paterno} ${el.apellido_materno}`,
+                        },
+                        {
+                          name: "Promedio mensual de evaluación de uniforme",
+                          selector: (el: reporteUniformeInterface) =>
+                            format.formatDecimal(el.promedio),
+                        },
+                      ]}
+                      hoverable
+                    />
+                  ),
+              ],
+            },
+            "sdad"
+          )}
+        />
         <Button buttonType="submit" text="Filtrar" />
       </CintaOpciones>
       <Loader isPending={isPending} />
       {!isPending && !isError && (
         <>
           <Table
+            id="tablaR"
             data={data.response}
             columns={[
               {
