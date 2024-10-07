@@ -22,16 +22,17 @@ interface cumplimientos extends getDataInterface {
   data: { response: cumplimientosOyLInterface[] };
 }
 const ReporteEmpleadoOyL: FC = () => {
-  const date = new Date(Date.now());
+  const { idDespachador, year, mes } = useParams();
+  //const date = new Date(Date.now());
   const [filtros, setFiltros] = useState<{ mes?: number; year?: number }>({
-    mes: moment(date).month() + 1,
-    year: moment(date).year(),
+    mes: Number(mes),
+    year: Number(year),
   });
-  const { idDespachador } = useParams();
+
   const { data, isError, isPending, refetch }: reporteoyl = useGetData(
     `ordenLimpieza/${filtros.year}/${filtros.mes}/${idDespachador}`,
     "reportEmpleadoOyL",
-    { fetchInURLChange: true, fetchTrigger: idDespachador }
+    { fetchInURLChange: true }
   );
 
   const cumplimientos: cumplimientos = useGetData(

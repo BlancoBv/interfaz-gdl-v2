@@ -95,7 +95,7 @@ const ReporteOyl: FC = () => {
             ]}
             hoverable
             onClick={(data: reporteOyLInterface) => {
-              navigate(`${data.idempleado}`);
+              navigate(`${filtros.year}/${filtros.mes}/${data.idempleado}`);
             }}
           />
           <Line
