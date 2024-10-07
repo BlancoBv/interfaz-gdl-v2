@@ -23,17 +23,19 @@ interface tendencia extends getDataInterface {
 
 const TendenciaOyL: FC = () => {
   const [filtros, setFiltros] = useState<{
-    idEmpleado: string;
+    idEmpleado: { nombre: string; id: number }[];
     monthBack: string;
     agrupar: boolean;
   }>({
-    idEmpleado: "",
+    idEmpleado: [],
     monthBack: "3",
     agrupar: true,
   });
   const { data, isError, isPending, refetch }: tendencia = useGetData(
-    `ordenLimpieza/historial?idEmpleado=${
-      !filtros.idEmpleado ? "" : filtros.idEmpleado
+    `ordenLimpieza/historial?${
+      filtros.idEmpleado.length === 0
+        ? "idEmpleado="
+        : filtros.idEmpleado.map((el) => `idEmpleado=${el.id}`).join("&")
     }&monthBack=${filtros.monthBack === "all" ? "" : filtros.monthBack}`,
     "tendenciaOyLData"
   );
@@ -141,6 +143,8 @@ const TendenciaOyL: FC = () => {
     };
   }, [tendencias, filtros.agrupar]);
 
+  console.log(filtros);
+
   return (
     <div>
       <SectionTitle
@@ -160,6 +164,9 @@ const TendenciaOyL: FC = () => {
           departamento="1"
           variable={filtros}
           setVariable={setFiltros}
+          multiple
+          labelName="nombre"
+          valueName="id"
         />
         <Select
           label="Periodo de consulta"
