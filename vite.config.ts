@@ -17,4 +17,11 @@ export default defineConfig({
       "@pdf": path.resolve(__dirname, "./src/pdf"),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler", // or "modern"
+      },
+    },
+  },
 });
