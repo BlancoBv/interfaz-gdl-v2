@@ -38,6 +38,9 @@ import ReporteEmpleadoOyL from "@pages/app/despacho/orden-limpieza-isla/reporte/
 import TendenciaOyL from "@pages/app/despacho/orden-limpieza-isla/tendencia/Index";
 import ReportesChecklist from "@pages/app/despacho/checklist-bomba/reporte/Index";
 import ReporteEmpleadoChecklist from "@pages/app/despacho/checklist-bomba/reporte/id-empleado/Index";
+import HistorialOyL from "@pages/app/despacho/orden-limpieza-isla/historial/Index";
+import CapturarEvUniforme from "@pages/app/despacho/evaluacion-uniforme/capturar/Index";
+import CapturarPasosDespachar from "@pages/app/despacho/pasos-despachar/capturar/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -101,12 +104,57 @@ const Index: FC = () => {
                   children: [
                     { index: true, element: <ReporteOyl /> },
                     {
+                      path: ":year/:mes/:idDespachador",
+                      element: <ReporteEmpleadoOyL />,
+                    },
+                  ],
+                },
+                { path: "tendencia", element: <TendenciaOyL /> },
+                { path: "historial", element: <HistorialOyL /> },
+              ],
+            },
+            {
+              path: "evaluacion-uniforme",
+              children: [
+                {
+                  path: "capturar",
+                  element: <CapturarEvUniforme />,
+                },
+                {
+                  path: "reporte",
+
+                  children: [
+                    { index: true, element: <ReporteOyl /> },
+                    {
                       path: ":idDespachador",
                       element: <ReporteEmpleadoOyL />,
                     },
                   ],
                 },
                 { path: "tendencia", element: <TendenciaOyL /> },
+                { path: "historial", element: <HistorialOyL /> },
+              ],
+            },
+            {
+              path: "pasos-despachar",
+              children: [
+                {
+                  path: "capturar",
+                  element: <CapturarPasosDespachar />,
+                },
+                {
+                  path: "reporte",
+
+                  children: [
+                    { index: true, element: <ReporteOyl /> },
+                    {
+                      path: ":idDespachador",
+                      element: <ReporteEmpleadoOyL />,
+                    },
+                  ],
+                },
+                { path: "tendencia", element: <TendenciaOyL /> },
+                { path: "historial", element: <HistorialOyL /> },
               ],
             },
           ],

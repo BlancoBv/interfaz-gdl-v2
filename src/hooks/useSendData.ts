@@ -1,6 +1,18 @@
-import { useMutation } from "@tanstack/react-query";
+import {
+  UseMutateAsyncFunction,
+  UseMutateFunction,
+  useMutation,
+} from "@tanstack/react-query";
 import Axios from "@assets/Axios";
 import { toast } from "react-toastify";
+
+export interface sendDataInterface {
+  data: any | { response: any[] };
+  mutate: UseMutateFunction<any, { msg: string }, any, unknown>;
+  isPending: boolean;
+  isSuccess: boolean;
+  mutateAsync: UseMutateAsyncFunction<any, { msg: string }, any, unknown>;
+}
 
 export function useSendData(
   url: string,
@@ -15,16 +27,16 @@ export function useSendData(
     method: "post",
     refetchFn: () => {},
   }
-) {
-  const { mutate, isPending, isSuccess, mutateAsync } = useMutation({
+): sendDataInterface {
+  const { mutate, isPending, isSuccess, mutateAsync, data } = useMutation({
     mutationFn: async (data?: any) => {
       const res = await Axios[config.method](url, data);
 
-      if (res.status === 400) {
+      if (res.status === 400 || res.status === 404) {
         return Promise.reject(res.data);
       }
 
-      return res;
+      return res.data;
     },
     onSuccess: (data) => {
       if (config.customFn) {
@@ -38,11 +50,11 @@ export function useSendData(
       );
       config.refetchFn();
     },
-    onError: (err: { msg: string }) => {
+    onError: (_err: { msg: string }) => {
       toast.error("Error al enviar los datos", {
         containerId: config.containerID ? config.containerID : "global",
       });
     },
   });
-  return { mutate, isPending, isSuccess, mutateAsync } as const;
+  return { mutate, isPending, isSuccess, mutateAsync, data } as const;
 }

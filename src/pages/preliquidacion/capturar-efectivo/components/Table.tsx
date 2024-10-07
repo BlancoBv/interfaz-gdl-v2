@@ -46,13 +46,15 @@ const TablaEV: FC<{
                 document.getElementById("edit-monto") as HTMLDialogElement
               ).showModal();
             },
+            show: true,
           },
-          { elementType: "separator" },
+          { elementType: "separator", show: true },
           {
             name: "Eliminar",
             elementType: "item",
             icon: "trash",
             color: "error",
+            show: true,
             onClick: () => deleteElement(relativeData.index),
           },
         ]}

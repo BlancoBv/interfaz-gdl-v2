@@ -5,7 +5,11 @@ import {
   reporteDetalleChecklistInterface,
 } from "@assets/interfaces";
 import Button from "@components/Button";
-import { SelectMonth, SelectYear } from "@components/forms/Select";
+import {
+  SelectEmpleado,
+  SelectMonth,
+  SelectYear,
+} from "@components/forms/Select";
 import CintaOpciones from "@components/gui/CintaOpciones";
 import Loader from "@components/gui/Loader";
 import SectionTitle from "@components/gui/SectionTitle";
@@ -15,6 +19,11 @@ import { getDataInterface, useGetData } from "@hooks/useGetData";
 import Line from "@components/charts/Line";
 import { FC, SyntheticEvent, useMemo, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { useSendData } from "@hooks/useSendData";
+import Modal, { ModalConfirmNoMutate } from "@components/gui/Modal";
+import { useModal } from "@hooks/useModal";
+import TextArea from "@components/forms/TextArea";
+import Toggle from "@components/forms/Toggle";
 
 interface reporteDetalles extends getDataInterface {
   data: {
@@ -33,6 +42,26 @@ const ReporteEmpleadoChecklist: FC = () => {
     year: Number(year),
     mes: Number(mes),
   });
+  const [relativeData, setRelativeData] = useState<
+    Partial<dataDetallesChecklistInterface>
+  >({});
+  const [bodyUpdate, setBodyUpdate] = useState<{
+    aceitesCompletos?: boolean;
+    bomba?: boolean;
+    empleadoEntrante?: boolean;
+    empleadoSaliente?: boolean;
+    estacionServicio?: boolean;
+    fecha?: string;
+    fechac?: boolean;
+    idEmpleado?: number;
+    idEmpleadoSaliente?: number;
+    incidentes?: null | string;
+    islaLimpia?: boolean;
+    turno?: boolean;
+  }>({});
+
+  const modalConfirm = useModal("confirmDelCheck");
+  const modalEdit = useModal("editCheck");
 
   const { data, isError, isPending, refetch }: reporteDetalles = useGetData(
     `bomba-check/findCheck/${filtros.year}/${filtros.mes}/${idDespachador}`,
@@ -49,6 +78,30 @@ const ReporteEmpleadoChecklist: FC = () => {
     ev.preventDefault();
     refetch();
   };
+  const deleteCheck = useSendData(
+    `bomba-check/${relativeData.idchecklist_bomba}`,
+    {
+      method: "delete",
+      refetchFn: () => {
+        setRelativeData({});
+        refetch();
+        checklistGral.refetch();
+      },
+    }
+  );
+  const updateCheck = useSendData(
+    `bomba-check/${relativeData.idchecklist_bomba}`,
+    {
+      method: "put",
+      refetchFn: () => {
+        setRelativeData({});
+        setBodyUpdate({});
+        refetch();
+        checklistGral.refetch();
+      },
+    }
+  );
+
   const datasets = useMemo(() => {
     if (
       !isPending &&
@@ -84,6 +137,108 @@ const ReporteEmpleadoChecklist: FC = () => {
 
   return (
     <div>
+      <ModalConfirmNoMutate
+        customID="confirmDelCheck"
+        action={() => {
+          deleteCheck.mutate({});
+        }}
+        msg="¿Desea eliminar este elemento?"
+      />
+      <Modal
+        id="editCheck"
+        title={`Editar checklist del día ${format.formatFecha(
+          relativeData.fecha ? relativeData.fecha : ""
+        )}`}
+      >
+        <form
+          className="flex flex-col gap-4 p-2"
+          onSubmit={(ev) => {
+            ev.preventDefault();
+            updateCheck.mutate(bodyUpdate);
+            modalEdit.close();
+          }}
+        >
+          <span>Fecha : {relativeData.fecha}</span>
+          <Toggle
+            label="Fecha"
+            name="fechac"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <Toggle
+            label="Estación de servicio"
+            name="estacionServicio"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <Toggle
+            label="Turno"
+            name="turno"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <Toggle
+            label="Bomba"
+            name="bomba"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <Toggle
+            label="Isla limpia"
+            name="islaLimpia"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <Toggle
+            label="Aceites completos"
+            name="aceitesCompletos"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <Toggle
+            label="Empleado entrante"
+            name="empleadoEntrante"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <Toggle
+            label="Empleado saliente"
+            name="empleadoSaliente"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <TextArea
+            label="Incidentes"
+            name="incidentes"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+          />
+          <SelectEmpleado
+            label="Empleado entrante"
+            name="idEmpleado"
+            estatus={[]}
+            departamento="all"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+            required
+          />
+          <SelectEmpleado
+            label="Empleado saliente"
+            name="idEmpleadoSaliente"
+            estatus={[]}
+            departamento="all"
+            variable={bodyUpdate}
+            setVariable={setBodyUpdate}
+            required
+          />
+          <Button
+            buttonType="submit"
+            text="Enviar"
+            block
+            isPending={updateCheck.isPending}
+          />
+        </form>
+      </Modal>
       <SectionTitle
         titulo="Detalles de reporte mensual checklist bomba"
         subtitulo="Despacho"
@@ -284,6 +439,57 @@ const ReporteEmpleadoChecklist: FC = () => {
                   `${el.empSaliente.nombre} ${el.empSaliente.apellido_paterno} ${el.empSaliente.apellido_materno}`,
               },
             ]}
+            hoverable
+            contextualMenuItems={[
+              {
+                name: "Editar",
+                show: true,
+                elementType: "item",
+                icon: "pen-to-square",
+                onClick: () => {
+                  const {
+                    aceites_completos: aceitesCompletos,
+                    bomba,
+                    empleado_entrante: empleadoEntrante,
+                    empleado_saliente: empleadoSaliente,
+                    estacion_servicio: estacionServicio,
+                    fecha,
+                    fechac,
+                    idempleado: idEmpleado,
+                    idempleado_saliente: idEmpleadoSaliente,
+                    incidentes,
+                    isla_limpia: islaLimpia,
+                    turno,
+                  } = relativeData;
+                  setBodyUpdate({
+                    aceitesCompletos,
+                    bomba,
+                    empleadoEntrante,
+                    incidentes: incidentes ? incidentes : "",
+                    idEmpleado,
+                    idEmpleadoSaliente,
+                    empleadoSaliente,
+                    islaLimpia,
+                    turno,
+                    fecha: format.formatFechaAsDB(fecha ? fecha : ""),
+                    fechac,
+                    estacionServicio,
+                  });
+                  modalEdit.show();
+                },
+              },
+              {
+                name: "Eliminar",
+                show: true,
+                elementType: "item",
+                icon: "trash",
+                color: "error",
+                onClick: () => {
+                  modalConfirm.show();
+                },
+              },
+            ]}
+            setRelativeData={setRelativeData}
           />
           <Line
             title="Checklist correctos"

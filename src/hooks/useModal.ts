@@ -1,8 +1,8 @@
 type hook = Pick<HTMLDialogElement, "show" | "showModal" | "close">;
 
 export function useModal(
-  id: string,
-  config: { useShowModal?: boolean } = { useShowModal: false }
+  id: string
+  //config: { useShowModal?: boolean } = { useShowModal: false }
 ) {
   const dialog: hook = document.getElementById(id) as HTMLDialogElement;
   if (!dialog) {

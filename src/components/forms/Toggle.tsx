@@ -7,14 +7,7 @@ const Toggle: FC<{
   setVariable: any;
   required?: boolean;
   disabled?: boolean;
-}> = ({
-  label,
-  name,
-  variable,
-  setVariable,
-  disabled = false,
-  required = true,
-}) => {
+}> = ({ label, name, variable, setVariable, disabled = false, required }) => {
   return (
     <div className="form-control">
       <label className="label cursor-pointer">
@@ -23,7 +16,7 @@ const Toggle: FC<{
           type="checkbox"
           className="toggle"
           name={name}
-          required={required}
+          required={required ? required : undefined}
           disabled={disabled}
           onChange={(ev) => {
             const { checked, name } = ev.currentTarget;

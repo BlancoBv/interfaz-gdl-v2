@@ -133,7 +133,11 @@ export const SelectEmpleado: FC<{
     | "9"
     | "10"
     | "11"
-    | "12";
+    | "12"
+    | "all";
+  multiple?: boolean;
+  labelName?: string;
+  valueName?: string;
 }> = ({
   name,
   label,
@@ -143,12 +147,16 @@ export const SelectEmpleado: FC<{
   required,
   estatus,
   departamento,
+  multiple,
+  labelName,
+  valueName,
 }) => {
   const { data, isPending, isError } = useGetData(
     `empleado?departamento=${
-      departamento ? departamento : "1"
+      departamento === "all" ? "" : departamento
     }&auth=false&estatus=${estatus ? estatus.join("&estatus=") : ""}`,
-    "empledoSelectData"
+    "empledoSelectData",
+    { fetchInURLChange: true, fetchTrigger: departamento }
   );
 
   return (
@@ -174,6 +182,9 @@ export const SelectEmpleado: FC<{
         variable={variable}
         disabled={disabled}
         required={required}
+        multiple={multiple}
+        labelName={labelName ? labelName : ""}
+        valueName={valueName ? valueName : ""}
       />
     </label>
   );

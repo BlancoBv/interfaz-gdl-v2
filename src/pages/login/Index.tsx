@@ -10,10 +10,11 @@ const Index: FC = () => {
   const navigate = useNavigate();
   const { isPending, mutate } = useSendData("auth/login", {
     method: "post",
-    customFn: (res: { data: { token: { token: string } } }) => {
-      console.log(res, "ola");
-      setToken(res.data.token.token);
-      localStorage.setItem("credentials", JSON.stringify(res.data));
+    customFn: (res: { token: { token: string } }) => {
+      console.log(res, "res");
+
+      setToken(res.token.token);
+      localStorage.setItem("credentials", JSON.stringify(res));
       navigate("/app", { replace: true });
     },
     refetchFn: () => {},

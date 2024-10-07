@@ -6,9 +6,10 @@ const Modal: FC<{
   title?: string;
   children?: ReactNode;
   sm?: boolean;
-}> = ({ id, title = "Titulo de ejemplo", children, sm }) => {
+  onClose?: () => void;
+}> = ({ id, title = "Titulo de ejemplo", children, sm, onClose }) => {
   return (
-    <dialog id={id} className="modal">
+    <dialog id={id} className="modal" onClose={onClose}>
       <div
         className={`modal-box ${sm ? "" : "w-11/12 max-w-5xl"} flex flex-col`}
       >
