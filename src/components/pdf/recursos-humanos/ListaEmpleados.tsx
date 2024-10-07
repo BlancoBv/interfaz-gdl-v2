@@ -1,6 +1,4 @@
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import { FC } from "react";
-import BlobProvider from "../BlobProvider";
 import { empleadoInterface } from "@assets/interfaces";
 
 type empleadoMod = Omit<
@@ -8,13 +6,7 @@ type empleadoMod = Omit<
   "nombre_completo" | "departamento"
 > & { departamento: string; update_time_imss: string | null };
 
-const ListaEmpleados: FC<{
-  data: { response: empleadoMod[] };
-  title: string;
-  dataIsPending: boolean;
-}> = ({ data, title, dataIsPending }) => {
-  //Font.register({ family: "calibriN", src: calibriN });
-
+const ListaEmpleados = (data: empleadoMod[], title: string) => {
   const styles = StyleSheet.create({
     page: {
       // flexDirection: "row",
@@ -22,6 +14,7 @@ const ListaEmpleados: FC<{
       backgroundColor: "#fff",
       padding: "50px",
       width: "100%",
+      position: "relative",
     },
     tableContainer: {
       flexDirection: "row",
@@ -112,10 +105,13 @@ const ListaEmpleados: FC<{
       fontSize: "20pt",
     },
     legendTime: {
-      marginTop: 8,
+      //    marginBottom: 8,
       flexDirection: "row",
       alignItems: "center",
       marginHorizontal: "auto",
+      position: "absolute",
+      top: 10,
+      left: 10,
     },
   });
 
@@ -134,16 +130,18 @@ const ListaEmpleados: FC<{
   const Tbody = ({ data }: { data: empleadoMod }) => {
     return (
       <View style={styles.theaderRowItems}>
-        <Text style={styles.tbodyId}>{data.idchecador || "--"}</Text>
-        <Text style={styles.tbodyNombre}>{data.nombre}</Text>
-        <Text style={styles.tbodyApellidoP}>{data.apellido_paterno}</Text>
-        <Text style={styles.tbodyApellidoM}>{data.apellido_materno}</Text>
-        <Text style={styles.tbodyDepartamento}>{data.departamento}</Text>
+        <>
+          <Text style={styles.tbodyId}>{data.idchecador || "--"}</Text>
+          <Text style={styles.tbodyNombre}>{data.nombre}</Text>
+          <Text style={styles.tbodyApellidoP}>{data.apellido_paterno}</Text>
+          <Text style={styles.tbodyApellidoM}>{data.apellido_materno}</Text>
+          <Text style={styles.tbodyDepartamento}>{data.departamento}</Text>
+        </>
       </View>
     );
   };
 
-  const Mydoc = (data: empleadoMod[]) => (
+  return (
     <Document title="Control de empleados">
       <Page size="LETTER" style={styles.page}>
         <View style={styles.title}>
@@ -152,10 +150,15 @@ const ListaEmpleados: FC<{
 
         <View style={styles.tableContainer} wrap>
           <Theader />
-          {data.map((el) => (
-            <Tbody key={el.idempleado} data={el} />
-          ))}
+
+          {data && data.map((el) => <Tbody key={el.idempleado} data={el} />)}
         </View>
+        <Text
+          render={({ pageNumber, totalPages }) =>
+            `Página ${pageNumber} de ${totalPages}.`
+          }
+          fixed
+        />
         <View style={styles.legendTime}>
           <Text>Impreso el </Text>
           <Text>
@@ -165,24 +168,8 @@ const ListaEmpleados: FC<{
             }).format(new Date())}
           </Text>
         </View>
-        <Text
-          render={({ pageNumber, totalPages }) =>
-            `Página ${pageNumber} de ${totalPages}.`
-          }
-          fixed
-        />
       </Page>
     </Document>
-  );
-  return (
-    <div>
-      {
-        <BlobProvider
-          doc={!dataIsPending && Mydoc(data.response)}
-          dataIsPending={dataIsPending}
-        />
-      }
-    </div>
   );
 };
 
