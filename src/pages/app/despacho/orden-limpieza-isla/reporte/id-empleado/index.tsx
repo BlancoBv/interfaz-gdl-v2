@@ -10,7 +10,6 @@ import Loader from "@components/gui/Loader";
 import SectionTitle from "@components/gui/SectionTitle";
 import Icon from "@components/Icon";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
-import moment from "moment";
 import { FC, SyntheticEvent, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Line from "@components/charts/Line";

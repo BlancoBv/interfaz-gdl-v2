@@ -38,6 +38,7 @@ import ReporteEmpleadoChecklist from "@pages/app/despacho/checklist-bomba/report
 import HistorialOyL from "@pages/app/despacho/orden-limpieza-isla/historial/Index";
 import CapturarEvUniforme from "@pages/app/despacho/evaluacion-uniforme/capturar/Index";
 import CapturarPasosDespachar from "@pages/app/despacho/pasos-despachar/capturar/Index";
+import ReporteEvUniforme from "@pages/app/despacho/evaluacion-uniforme/reporte/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -122,7 +123,7 @@ const Index: FC = () => {
                   path: "reporte",
 
                   children: [
-                    { index: true, element: <ReporteOyl /> },
+                    { index: true, element: <ReporteEvUniforme /> },
                     {
                       path: ":idDespachador",
                       element: <ReporteEmpleadoOyL />,

@@ -39,10 +39,11 @@ export default {
       icon: "shirt",
       collapse: [
         { to: "capturar", name: "Capturar" },
-        /* {
-          to: "despacho/evaluacion-uniforme/capturarreporte",
-          name: "Reporte mensual",
+        {
+          to: "reporte",
+          name: "Reporte",
         },
+        /*
         {
           to: "despacho/evaluacion-uniforme/capturarhistorial",
           name: "Historial",
@@ -70,6 +71,5 @@ export default {
         }, */
       ],
     },
-    ,
   ],
 };
