@@ -1,10 +1,8 @@
 import "../assets/styles/styles.scss";
 import { FC } from "react";
 import { Color } from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import { FontSize } from "../assets/extension/FontSize";
-import Text from "@tiptap/extension-text";
 import { EditorProvider } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Heading from "@tiptap/extension-heading";
@@ -12,9 +10,8 @@ import MenuEditor from "./MenuEditor";
 
 const extensions = [
   FontSize,
-  Text,
   TextStyle,
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
+  Color.configure({ types: [TextStyle.name] }),
   Heading.configure({}),
   StarterKit.configure({
     bulletList: {
