@@ -16,6 +16,7 @@ import { SelectDepartamentos } from "@components/forms/Select";
 import { useSendData } from "@hooks/useSendData";
 import TextArea from "@components/forms/TextArea";
 import { useModal } from "@hooks/useModal";
+import ButtonPDF from "@components/ButtonPDF";
 
 type empleadoMod = Omit<
   empleadoInterface,
@@ -435,10 +436,14 @@ const Empleados: FC = () => {
       >
         <SelectStatus variable={body} setVariable={setBody} />
         <Button text="Filtrar" buttonType="submit" />
-        <ListaEmpleados
+        {/* <ListaEmpleados
           data={data}
           title="Empleados"
           dataIsPending={isPending}
+        /> */}
+        <ButtonPDF
+          doc={ListaEmpleados(data?.response, "Empleados")}
+          isPending={isPending}
         />
       </CintaOpciones>
       <Loader isPending={isPending} />

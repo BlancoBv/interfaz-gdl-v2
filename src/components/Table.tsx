@@ -6,6 +6,7 @@ import ContextualMenu, {
 import { TriggerEvent, useContextMenu } from "react-contexify";
 
 const Table: FC<{
+  id?: string;
   data: any[];
   columns: {
     name: string;
@@ -22,6 +23,7 @@ const Table: FC<{
   noDataMsg?: string;
   onClick?: (data?: any) => void;
 }> = ({
+  id,
   data,
   columns,
   setRelativeData,
@@ -40,7 +42,10 @@ const Table: FC<{
   return (
     <>
       <ContextualMenu items={contextualMenuItems} />
-      <table className="table table-fixed table-xs lg:table-md not-prose">
+      <table
+        className="table table-fixed table-xs lg:table-md not-prose"
+        id={id}
+      >
         <thead>
           <tr>
             {columns.map((col) => (

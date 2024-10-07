@@ -11,7 +11,6 @@ import Layout from "@layout/Layout";
 
 import Login from "@pages/login/Index";
 import App from "@pages/app/Index";
-import Axios from "@assets/Axios";
 import Despacho from "@pages/app/despacho/Index";
 
 //administrativo
@@ -127,7 +126,7 @@ const Index: FC = () => {
                   children: [
                     { index: true, element: <ReporteEvUniforme /> },
                     {
-                      path: ":idDespachador",
+                      path: ":year/:mes/:idDespachador",
                       element: <ReporteEmpleadoOyL />,
                     },
                   ],
