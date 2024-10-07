@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Icon from "@components/Icon";
 import { toast } from "react-toastify";
 import despacho from "./sidebarRoutes/despacho";
+import salidaNoConforme from "./sidebarRoutes/salida-no-conforme";
 
 const SideBar: FC = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const SideBar: FC = () => {
     }[];
   }[] = [
     despacho,
+    salidaNoConforme,
     /* {
       icon: "thumbs-down",
       name: "Salidas no conformes",

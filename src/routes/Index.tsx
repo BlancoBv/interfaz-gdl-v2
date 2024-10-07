@@ -17,6 +17,9 @@ import Despacho from "@pages/app/despacho/Index";
 //administrativo
 import Usuarios from "@pages/app/administrativo/usuarios/Index";
 
+//Salidas no conformes
+import SncRoutes from "@routes/snc.routes";
+
 //preliquidacion
 import Preliquidacion from "@pages/preliquidacion/Index";
 import ConfigurarPrecios from "@pages/preliquidacion/configurar-precios/Index";
@@ -67,7 +70,6 @@ const Index: FC = () => {
         },
         {
           path: "despacho",
-
           children: [
             { index: true, element: <Despacho /> },
             {
@@ -141,6 +143,7 @@ const Index: FC = () => {
         { path: "previsualizar", element: <Previsualizar /> },
       ],
     },
+    SncRoutes,
   ]);
 
   return <RouterProvider router={router} />;
