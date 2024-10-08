@@ -1,12 +1,16 @@
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { empleadoInterface } from "@assets/interfaces";
+import { FC } from "react";
 
 type empleadoMod = Omit<
   empleadoInterface,
   "nombre_completo" | "departamento"
 > & { departamento: string; update_time_imss: string | null };
 
-const ListaEmpleados = (data: empleadoMod[], title: string) => {
+const ListaEmpleados: FC<{ data: empleadoMod[]; title: string }> = ({
+  data,
+  title,
+}) => {
   const styles = StyleSheet.create({
     page: {
       // flexDirection: "row",

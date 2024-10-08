@@ -89,34 +89,36 @@ const ReporteEvUniforme: FC = () => {
 
         <ButtonPDF
           isPending={false}
-          doc={PDFGraficas(
-            {
-              tablas: [
-                !isPending &&
-                  !isError &&
-                  renderToStaticMarkup(
-                    <Table
-                      id="tablaR"
-                      data={data.response}
-                      columns={[
-                        {
-                          name: "Empleado",
-                          selector: (el: reporteUniformeInterface) =>
-                            `${el.nombre} ${el.apellido_paterno} ${el.apellido_materno}`,
-                        },
-                        {
-                          name: "Promedio mensual de evaluación de uniforme",
-                          selector: (el: reporteUniformeInterface) =>
-                            format.formatDecimal(el.promedio),
-                        },
-                      ]}
-                      hoverable
-                    />
-                  ),
-              ],
-            },
-            "sdad"
-          )}
+          doc={
+            <PDFGraficas
+              title="Evaluación uniforme"
+              elementos={{
+                tablas: [
+                  !isPending &&
+                    !isError &&
+                    renderToStaticMarkup(
+                      <Table
+                        id="tablaR"
+                        data={data.response}
+                        columns={[
+                          {
+                            name: "Empleado",
+                            selector: (el: reporteUniformeInterface) =>
+                              `${el.nombre} ${el.apellido_paterno} ${el.apellido_materno}`,
+                          },
+                          {
+                            name: "Promedio mensual de evaluación de uniforme",
+                            selector: (el: reporteUniformeInterface) =>
+                              format.formatDecimal(el.promedio),
+                          },
+                        ]}
+                        hoverable
+                      />
+                    ),
+                ],
+              }}
+            />
+          }
         />
         <Button buttonType="submit" text="Filtrar" />
       </CintaOpciones>

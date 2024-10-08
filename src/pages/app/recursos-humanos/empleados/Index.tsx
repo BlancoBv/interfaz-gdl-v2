@@ -442,7 +442,7 @@ const Empleados: FC = () => {
           dataIsPending={isPending}
         /> */}
         <ButtonPDF
-          doc={ListaEmpleados(data?.response, "Empleados")}
+          doc={<ListaEmpleados data={data?.response} title="Empleados" />}
           isPending={isPending}
         />
       </CintaOpciones>

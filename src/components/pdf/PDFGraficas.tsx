@@ -1,5 +1,5 @@
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import HTML from "react-pdf-html";
 
 interface elementos {
@@ -7,7 +7,10 @@ interface elementos {
   graficas?: any[];
 }
 
-const PDFGraficas = (elementos: elementos, title: string) => {
+const PDFGraficas: FC<{ elementos: elementos; title: string }> = ({
+  elementos,
+  title,
+}) => {
   const styles = StyleSheet.create({
     page: {
       // flexDirection: "row",
@@ -115,12 +118,6 @@ const PDFGraficas = (elementos: elementos, title: string) => {
       left: 10,
     },
   });
-
-  const tablas = useMemo(() => {
-    return elementos.tablas;
-  }, [elementos]);
-
-  console.log(tablas);
 
   return (
     <Document title="Control de empleados">
