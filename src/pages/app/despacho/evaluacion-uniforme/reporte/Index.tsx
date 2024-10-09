@@ -12,7 +12,7 @@ import { reporteUniformeInterface } from "@assets/interfaces";
 import format from "@assets/format";
 import Line from "@components/charts/Line";
 import ButtonPDF from "@components/ButtonPDF";
-import PDFGraficas from "@components/pdf/PDFGraficas";
+import PDFReportes from "@components/pdf/PDFReportes";
 
 interface reporte extends getDataInterface {
   data: { response: reporteUniformeInterface[] };
@@ -89,7 +89,7 @@ const ReporteEvUniforme: FC = () => {
         <ButtonPDF
           isPending={false}
           doc={
-            <PDFGraficas
+            <PDFReportes
               title="Evaluación uniforme"
               elementos={{
                 tablas: ["tablaR"],
