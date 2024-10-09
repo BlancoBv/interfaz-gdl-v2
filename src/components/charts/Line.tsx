@@ -20,6 +20,7 @@ const Index: FC<line> = ({
   ticksYCallback,
   logaritmic,
   omitDatalabelOnIndex,
+  id,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
@@ -34,6 +35,7 @@ const Index: FC<line> = ({
   return (
     <div className="h-96">
       <Line
+        id={id}
         ref={ref}
         data={
           data

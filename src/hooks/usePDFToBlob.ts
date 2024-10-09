@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 
 export function usePDFToBlob(doc: any) {
   const [pending, setPending] = useState<boolean>(false);
-  const pdfDoc = pdf(doc);
 
   const getBlob = () => {
+    const pdfDoc = pdf(doc);
+
     setPending(true);
     pdfDoc
       .toBlob()

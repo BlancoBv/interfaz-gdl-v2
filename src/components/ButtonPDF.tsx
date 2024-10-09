@@ -14,7 +14,9 @@ const ButtonPDF: FC<{ doc?: any; isPending: boolean }> = ({
       buttonType="button"
       text={<Icon icon="file-pdf" />}
       variant="error"
-      onClick={getBlob}
+      onClick={() => {
+        getBlob();
+      }}
       isPending={pending || isPending}
       disabled={isPending}
     />

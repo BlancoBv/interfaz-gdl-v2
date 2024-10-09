@@ -1,6 +1,14 @@
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import { FC, useMemo } from "react";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
+import { FC } from "react";
 import HTML from "react-pdf-html";
+import html2canvas from "html2canvas-pro";
 
 interface elementos {
   tablas?: any[];
@@ -119,6 +127,24 @@ const PDFGraficas: FC<{ elementos: elementos; title: string }> = ({
     },
   });
 
+  const chartToImage = async (id: string) => {
+    const element = document.getElementById(id) as HTMLCanvasElement;
+    console.log({ element });
+
+    const img = html2canvas(element, {
+      allowTaint: true,
+      scale: 2,
+      logging: false,
+    }).then((canvas) => {
+      const result = canvas.toDataURL("image/PNG");
+      return result;
+    });
+
+    return img;
+  };
+
+  console.log(document.getElementById("tablaR"));
+
   return (
     <Document title="Control de empleados">
       <Page size="LETTER" style={styles.page}>
@@ -194,7 +220,25 @@ const PDFGraficas: FC<{ elementos: elementos; title: string }> = ({
   </body>
 </html>
 `}</HTML> */}
-        <HTML>{`${elementos.tablas?.[0]}`}</HTML>
+        <HTML>
+          {`
+        <style>
+            table {
+              border: 1px solid black;
+              font-size: 12pt;
+              text-align: center;
+              margin-top: 10px;
+              margin-bottom: 10px;
+            }
+        </style> 
+        ${elementos.tablas?.map(
+          (el) => document.getElementById(el)?.outerHTML
+        )}`}
+        </HTML>
+
+        {elementos.graficas?.map((el, index) => (
+          <Image source={chartToImage(el)} key={`${index}-grafica`} />
+        ))}
 
         <Text
           render={({ pageNumber, totalPages }) =>

@@ -15,6 +15,7 @@ export interface ChartsPropsInterface {
   etiquetaY: string;
   ticksYCallback?: (value: any) => string;
   xAxeAsCategory?: boolean;
+  id?: string;
 } // props para las graficas
 
 export interface empleadoInterface {

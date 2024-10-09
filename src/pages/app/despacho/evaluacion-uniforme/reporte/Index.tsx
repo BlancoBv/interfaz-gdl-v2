@@ -13,7 +13,6 @@ import format from "@assets/format";
 import Line from "@components/charts/Line";
 import ButtonPDF from "@components/ButtonPDF";
 import PDFGraficas from "@components/pdf/PDFGraficas";
-import { renderToStaticMarkup } from "react-dom/server";
 
 interface reporte extends getDataInterface {
   data: { response: reporteUniformeInterface[] };
@@ -93,29 +92,8 @@ const ReporteEvUniforme: FC = () => {
             <PDFGraficas
               title="Evaluación uniforme"
               elementos={{
-                tablas: [
-                  !isPending &&
-                    !isError &&
-                    renderToStaticMarkup(
-                      <Table
-                        id="tablaR"
-                        data={data.response}
-                        columns={[
-                          {
-                            name: "Empleado",
-                            selector: (el: reporteUniformeInterface) =>
-                              `${el.nombre} ${el.apellido_paterno} ${el.apellido_materno}`,
-                          },
-                          {
-                            name: "Promedio mensual de evaluación de uniforme",
-                            selector: (el: reporteUniformeInterface) =>
-                              format.formatDecimal(el.promedio),
-                          },
-                        ]}
-                        hoverable
-                      />
-                    ),
-                ],
+                tablas: ["tablaR"],
+                graficas: ["prueba"],
               }}
             />
           }
@@ -143,6 +121,7 @@ const ReporteEvUniforme: FC = () => {
             hoverable
           />
           <Line
+            id="prueba"
             etiquetaX="Despachador"
             etiquetaY="Promedio"
             data={{
