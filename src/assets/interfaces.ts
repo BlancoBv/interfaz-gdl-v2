@@ -213,6 +213,24 @@ export interface evaluacionesUniformeInterface {
   cumplimiento: string;
   vigente: number;
 }
+
+export interface historialUniformeInterface {
+  idevaluacion_uniforme: number;
+  fecha: string;
+  idempleado: number;
+  idcumplimiento_uniforme: number;
+  idpuntaje_minimo: number;
+  cumple: boolean;
+  identificador: string;
+  cumplimiento: string;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  quincena: number;
+  total_evaluacion: number;
+  nombre_completo: string;
+}
+
 export interface reporteUniformeInterface
   extends Pick<
     empleadoInterface,
@@ -222,19 +240,10 @@ export interface reporteUniformeInterface
     | "idchecador"
     | "idempleado"
   > {
-  evaluaciones: {
-    idevaluacion_uniforme: number;
-    fecha: string;
-    idempleado: number;
-    idcumplimiento_uniforme: number;
-    idpuntaje_minimo: number;
-    cumple: boolean;
-    identificador: string;
-    cumpliento: string;
-    nombre: string;
-    apellido_paterno: string;
-    apellido_materno: string;
-  }[][];
+  evaluaciones: Omit<
+    historialUniformeInterface,
+    "quincena" | "total_evaluacion" | "nombre_completo"
+  >[][];
   cantidad: {
     idcumplimiento_uniforme: number;
     cumplimiento: string;

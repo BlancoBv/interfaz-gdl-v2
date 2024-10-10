@@ -5,6 +5,7 @@ import { Bar } from "react-chartjs-2";
 
 interface bar extends ChartsPropsInterface {
   data?: ChartData<"bar", CustomDataPoint[]>;
+  id?: string;
 }
 const Index: FC<bar> = ({
   data,
@@ -15,6 +16,7 @@ const Index: FC<bar> = ({
   etiquetaY,
   onClick,
   ticksYCallback,
+  id,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
@@ -29,6 +31,7 @@ const Index: FC<bar> = ({
   return (
     <div className="h-96">
       <Bar
+        id={id}
         ref={ref}
         data={
           data
@@ -63,7 +66,22 @@ const Index: FC<bar> = ({
           },
           plugins: {
             datalabels: {
-              color: "fffff",
+              labels: {
+                title: { color: "#000" },
+              },
+              display(context) {
+                const value = context.dataset.data[
+                  context.dataIndex
+                ] as CustomDataPoint;
+
+                if (value === 0) {
+                  return false;
+                }
+                if (typeof value === "object" && value?.y === 0) {
+                  return false;
+                }
+                return true;
+              },
             },
             title: {
               display: true,

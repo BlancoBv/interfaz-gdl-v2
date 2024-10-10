@@ -1,6 +1,6 @@
 import Decimal from "decimal.js-light";
 import moment from "moment";
-const calcularTotal = (datos: any[], propiedad: string) => {
+const calcularTotal = (datos: any[], propiedad?: string) => {
   if (typeof propiedad === "function") {
     const cantidad =
       datos.length > 0

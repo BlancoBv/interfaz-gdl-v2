@@ -41,6 +41,8 @@ import HistorialOyL from "@pages/app/despacho/orden-limpieza-isla/historial/Inde
 import CapturarEvUniforme from "@pages/app/despacho/evaluacion-uniforme/capturar/Index";
 import CapturarPasosDespachar from "@pages/app/despacho/pasos-despachar/capturar/Index";
 import ReporteEvUniforme from "@pages/app/despacho/evaluacion-uniforme/reporte/Index";
+import ReporteEmpleadoEvUniforme from "@pages/app/despacho/evaluacion-uniforme/reporte/id-empleado/Index";
+import HistorialEvUniforme from "@pages/app/despacho/evaluacion-uniforme/historial/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -127,12 +129,12 @@ const Index: FC = () => {
                     { index: true, element: <ReporteEvUniforme /> },
                     {
                       path: ":year/:mes/:idDespachador",
-                      element: <ReporteEmpleadoOyL />,
+                      element: <ReporteEmpleadoEvUniforme />,
                     },
                   ],
                 },
                 { path: "tendencia", element: <TendenciaOyL /> },
-                { path: "historial", element: <HistorialOyL /> },
+                { path: "historial", element: <HistorialEvUniforme /> },
               ],
             },
             {

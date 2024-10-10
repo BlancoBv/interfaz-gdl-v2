@@ -43,15 +43,14 @@ export default {
           to: "reporte",
           name: "Reporte",
         },
-        /*
         {
-          to: "despacho/evaluacion-uniforme/capturarhistorial",
+          to: "historial",
           name: "Historial",
         },
         {
           to: "despacho/evaluacion-uniforme/capturartendencia",
           name: "Tendencias",
-        }, */
+        },
       ],
     },
     {

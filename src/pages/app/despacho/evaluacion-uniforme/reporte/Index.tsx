@@ -13,6 +13,7 @@ import format from "@assets/format";
 import Line from "@components/charts/Line";
 import ButtonPDF from "@components/ButtonPDF";
 import PDFReportes from "@components/pdf/PDFReportes";
+import { useNavigate } from "react-router-dom";
 
 interface reporte extends getDataInterface {
   data: { response: reporteUniformeInterface[] };
@@ -28,6 +29,8 @@ const ReporteEvUniforme: FC = () => {
         year: moment(date).year(),
         quincena: "all",
       };
+
+  const navigate = useNavigate();
 
   const [filtros, setFiltros] = useState<{
     quincena?: string;
@@ -93,7 +96,7 @@ const ReporteEvUniforme: FC = () => {
               title="Evaluación uniforme"
               elementos={{
                 tablas: ["tablaR"],
-                graficas: ["prueba"],
+                graficas: ["chart-1"],
               }}
             />
           }
@@ -119,9 +122,12 @@ const ReporteEvUniforme: FC = () => {
               },
             ]}
             hoverable
+            onClick={(data: reporteUniformeInterface) =>
+              navigate(`${filtros.year}/${filtros.mes}/${data.idempleado}`)
+            }
           />
           <Line
-            id="prueba"
+            id="chart-1"
             etiquetaX="Despachador"
             etiquetaY="Promedio"
             data={{

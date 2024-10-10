@@ -63,6 +63,7 @@ const Index: FC<line> = ({
               ...(logaritmic && { type: "logarithmic" }),
               title: { display: true, text: etiquetaY },
               ticks: { callback: ticksYCallback },
+              min: 0,
             },
             x: {
               title: { display: true, text: etiquetaX },
