@@ -44,12 +44,12 @@ export default {
           name: "Reporte",
         },
         {
-          to: "historial",
-          name: "Historial",
+          to: "tendencia",
+          name: "Tendencia",
         },
         {
-          to: "despacho/evaluacion-uniforme/capturartendencia",
-          name: "Tendencias",
+          to: "historial",
+          name: "Historial",
         },
       ],
     },

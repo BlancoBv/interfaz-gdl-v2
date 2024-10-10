@@ -1,28 +1,28 @@
-import Button from "@components/Button";
-import { Select, SelectEmpleado } from "@components/forms/Select";
-import Toggle from "@components/forms/Toggle";
-import CintaOpciones from "@components/gui/CintaOpciones";
-import SectionTitle from "@components/gui/SectionTitle";
-import { getDataInterface, useGetData } from "@hooks/useGetData";
-import { FC, SyntheticEvent, useMemo, useState } from "react";
-import Line from "@components/charts/Line";
-import { tendenciaOyLInterface } from "@assets/interfaces";
 import agruparArr from "@assets/agruparArr";
 import calcularTotal, {
   CalcularMeses,
   calcularPromedio,
 } from "@assets/calcularTotal";
 import format from "@assets/format";
+import Button from "@components/Button";
+import { Select, SelectEmpleado } from "@components/forms/Select";
+import Toggle from "@components/forms/Toggle";
+import CintaOpciones from "@components/gui/CintaOpciones";
 import Loader from "@components/gui/Loader";
+import SectionTitle from "@components/gui/SectionTitle";
+import { getDataInterface, useGetData } from "@hooks/useGetData";
+import { FC, SyntheticEvent, useMemo, useState } from "react";
+import Line from "@components/charts/Line";
+import { tendenciaEvUniformeInterface } from "@assets/interfaces";
 
 interface tendencia extends getDataInterface {
   data: {
-    response: tendenciaOyLInterface[];
+    response: tendenciaEvUniformeInterface[];
     puntajeMinimo: { fecha: string; cantidad: string }[];
   };
 }
 
-const TendenciaOyL: FC = () => {
+const TendenciaEvUniforme: FC = () => {
   const [filtros, setFiltros] = useState<{
     idEmpleado: { nombre: string; id: number }[];
     monthBack: string;
@@ -32,13 +32,14 @@ const TendenciaOyL: FC = () => {
     monthBack: "3",
     agrupar: true,
   });
+
   const { data, isError, isPending, refetch }: tendencia = useGetData(
-    `ordenLimpieza/historial?${
+    `evaluacion-uniforme/historial?${
       filtros.idEmpleado.length === 0
         ? "idEmpleado="
         : filtros.idEmpleado.map((el) => `idEmpleado=${el.id}`).join("&")
     }&monthBack=${filtros.monthBack === "all" ? "" : filtros.monthBack}`,
-    "tendenciaOyLData"
+    "tendenciaEvUniformeData"
   );
 
   const tendencias = useMemo(() => {
@@ -46,7 +47,7 @@ const TendenciaOyL: FC = () => {
       const puntajeMinimo = Number(data.puntajeMinimo[0].cantidad);
 
       const results = data.response.map((el) => {
-        const evaluaciones = el.oyls.map((evaluacion) => ({
+        const evaluaciones = el.evaluacion_uniformes.map((evaluacion) => ({
           ...evaluacion,
           cumple: evaluacion.cumple ? 1 : 0,
         }));
@@ -111,7 +112,7 @@ const TendenciaOyL: FC = () => {
             data: labels.strings.map(() =>
               !isPending && !isError
                 ? Number(data.puntajeMinimo[0].cantidad)
-                : 9
+                : 8
             ),
             backgroundColor: "rgb(237,41,29)",
             borderColor: "rgb(237,41,29)",
@@ -138,7 +139,7 @@ const TendenciaOyL: FC = () => {
   return (
     <div>
       <SectionTitle
-        titulo="Tendencias de orden y limpieza"
+        titulo="Tendencias de evaluación de uniforme"
         subtitulo="Despacho"
       />
       <CintaOpciones
@@ -157,6 +158,7 @@ const TendenciaOyL: FC = () => {
           multiple
           labelName="nombre"
           valueName="id"
+          required
         />
         <Select
           label="Periodo de consulta"
@@ -170,6 +172,7 @@ const TendenciaOyL: FC = () => {
             { value: "9", label: "9 meses" },
             { value: "all", label: "Historico" },
           ]}
+          required
         />
         <Toggle
           label="Agrupar"
@@ -185,7 +188,7 @@ const TendenciaOyL: FC = () => {
         <Line
           etiquetaX="Rango de tiempo"
           etiquetaY="Promedio"
-          title="Tendencias de orden y limpieza"
+          title="Tendencias de evaluación uniforme"
           data={{
             labels,
             datasets,
@@ -196,4 +199,4 @@ const TendenciaOyL: FC = () => {
     </div>
   );
 };
-export default TendenciaOyL;
+export default TendenciaEvUniforme;

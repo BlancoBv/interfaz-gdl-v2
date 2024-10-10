@@ -254,6 +254,19 @@ export interface reporteUniformeInterface
   promedio: number;
 }
 
+export interface tendenciaEvUniformeInterface extends empleadoInterface {
+  evaluacion_uniformes: {
+    idevaluacion_uniforme: number;
+    identificador: string;
+    fecha: string;
+    cumple: boolean;
+    oyl_cumplimiento: Pick<
+      evaluacionesUniformeInterface,
+      "cumplimiento" | "idcumplimiento_uniforme"
+    >;
+  }[];
+}
+
 export interface evaluacionesPasosDespacharInterface {
   idpaso_despachar: number;
   paso: string;

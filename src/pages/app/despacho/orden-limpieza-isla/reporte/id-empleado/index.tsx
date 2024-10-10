@@ -31,7 +31,7 @@ const ReporteEmpleadoOyL: FC = () => {
   const { data, isError, isPending, refetch }: reporteoyl = useGetData(
     `ordenLimpieza/${filtros.year}/${filtros.mes}/${idDespachador}`,
     "reportEmpleadoOyL",
-    { fetchInURLChange: true, fetchTrigger: idDespachador }
+    { fetchInURLChange: true, fetchTrigger: [idDespachador, year, mes] }
   );
 
   const cumplimientos: cumplimientos = useGetData(

@@ -66,7 +66,7 @@ const ReporteEmpleadoChecklist: FC = () => {
   const { data, isError, isPending, refetch }: reporteDetalles = useGetData(
     `bomba-check/findCheck/${filtros.year}/${filtros.mes}/${idDespachador}`,
     "reporteDetalleChecklistData",
-    { fetchInURLChange: true, fetchTrigger: idDespachador }
+    { fetchInURLChange: true, fetchTrigger: [idDespachador, year, mes] }
   );
 
   const checklistGral: reporte = useGetData(
