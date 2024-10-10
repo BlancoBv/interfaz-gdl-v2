@@ -22,38 +22,50 @@ const Toggle: FC<{
           onChange={(ev) => {
             const { checked, name } = ev.currentTarget;
             if (checked) {
-              setVariable((prev: any) => ({
-                ...prev,
-                evaluaciones: [
-                  ...prev.evaluaciones,
-                  { cumple: 1, idEvaluacionUniforme: Number(name) },
-                ],
-              }));
+              const indexOfElement = variable.evaluaciones.findIndex(
+                (el) => Number(el.idEvaluacionUniforme) === Number(name)
+              );
+
+              if (indexOfElement >= 0) {
+                const newValues = [...variable.evaluaciones];
+                newValues[indexOfElement].cumple = 1;
+                setVariable((prev: any) => ({
+                  ...prev,
+                  evaluaciones: [...newValues],
+                }));
+              } else {
+                setVariable((prev: any) => ({
+                  ...prev,
+                  evaluaciones: [
+                    ...prev.evaluaciones,
+                    { cumple: 1, idEvaluacionUniforme: Number(name) },
+                  ],
+                }));
+              }
+
               setChecked(true);
             } else {
               const indexOfElement = variable.evaluaciones.findIndex(
                 (el) => Number(el.idEvaluacionUniforme) === Number(name)
               );
 
-              /* if (indexOfElement >= 0) {
-                const fGroup = variable.evaluaciones.slice(0, indexOfElement);
-                const lGroup = variable.evaluaciones.slice(indexOfElement + 1);
+              if (indexOfElement >= 0) {
+                const newValues = [...variable.evaluaciones];
+                newValues[indexOfElement].cumple = 0;
+                setVariable((prev: any) => ({
+                  ...prev,
+                  evaluaciones: [...newValues],
+                }));
+              } else {
                 setVariable((prev: any) => ({
                   ...prev,
                   evaluaciones: [
-                    ...fGroup,
+                    ...prev.evaluaciones,
                     { cumple: 0, idEvaluacionUniforme: Number(name) },
-                    ...lGroup,
                   ],
                 }));
-              } */
-              setVariable((prev: any) => ({
-                ...prev,
-                evaluaciones: [
-                  ...prev.evaluaciones,
-                  { cumple: 0, idEvaluacionUniforme: Number(name) },
-                ],
-              }));
+              }
+
               setChecked(false);
             }
             //setVariable((prev: any) => ({ ...prev, [name]: checked }));
