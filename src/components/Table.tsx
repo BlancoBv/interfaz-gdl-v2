@@ -83,8 +83,10 @@ const Table: FC<{
               </tr>
             ))}
           {data.length <= 0 && (
-            <tr className="text-wrap text-center ">
-              <td>{noDataMsg ? noDataMsg : "Sin datos"}</td>
+            <tr className="text-wrap text-center font-bold">
+              <td colSpan={columns.length}>
+                {noDataMsg ? noDataMsg : "Sin datos"}
+              </td>
             </tr>
           )}
         </tbody>

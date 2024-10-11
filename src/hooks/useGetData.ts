@@ -10,6 +10,7 @@ export interface getDataInterface {
   data: { response: any[] } | any;
   isPending: boolean;
   isError: boolean;
+  error: any;
   refetch: (
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<any, Error>>;
@@ -26,7 +27,7 @@ export function useGetData(
     fetchInURLChange: false,
   }
 ): getDataInterface {
-  const { data, isPending, isFetching, isError, refetch } = useQuery({
+  const { data, isPending, isFetching, isError, refetch, error } = useQuery({
     queryKey: config.fetchInURLChange
       ? [key, config.fetchTrigger ? config.fetchTrigger : url]
       : [key],
@@ -57,5 +58,6 @@ export function useGetData(
     isPending: isPending || isFetching,
     isError,
     refetch,
+    error,
   } as const;
 }

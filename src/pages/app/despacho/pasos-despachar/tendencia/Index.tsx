@@ -1,28 +1,28 @@
-import Button from "@components/Button";
-import { Select, SelectEmpleado } from "@components/forms/Select";
-import Toggle from "@components/forms/Toggle";
-import CintaOpciones from "@components/gui/CintaOpciones";
-import SectionTitle from "@components/gui/SectionTitle";
-import { getDataInterface, useGetData } from "@hooks/useGetData";
-import { FC, SyntheticEvent, useMemo, useState } from "react";
-import Line from "@components/charts/Line";
-import { tendenciaOyLInterface } from "@assets/interfaces";
 import agruparArr from "@assets/agruparArr";
 import calcularTotal, {
   CalcularMeses,
   calcularPromedio,
 } from "@assets/calcularTotal";
 import format from "@assets/format";
+import Button from "@components/Button";
+import { Select, SelectEmpleado } from "@components/forms/Select";
+import Toggle from "@components/forms/Toggle";
+import CintaOpciones from "@components/gui/CintaOpciones";
 import Loader from "@components/gui/Loader";
+import SectionTitle from "@components/gui/SectionTitle";
+import { getDataInterface, useGetData } from "@hooks/useGetData";
+import { FC, SyntheticEvent, useMemo, useState } from "react";
+import Line from "@components/charts/Line";
+import { tendenciaPasosDespacharInterface } from "@assets/interfaces";
 
 interface tendencia extends getDataInterface {
   data: {
-    response: tendenciaOyLInterface[];
+    response: tendenciaPasosDespacharInterface[];
     puntajeMinimo: { fecha: string; cantidad: string }[];
   };
 }
 
-const TendenciaOyL: FC = () => {
+const TendenciaPasosDespacho: FC = () => {
   const [filtros, setFiltros] = useState<{
     idEmpleado: { nombre: string; id: number }[];
     monthBack: string;
@@ -32,13 +32,14 @@ const TendenciaOyL: FC = () => {
     monthBack: "3",
     agrupar: true,
   });
+
   const { data, isError, isPending, refetch }: tendencia = useGetData(
-    `ordenLimpieza/historial?${
+    `pasos-despachar/historial?${
       filtros.idEmpleado.length === 0
         ? "idEmpleado="
         : filtros.idEmpleado.map((el) => `idEmpleado=${el.id}`).join("&")
     }&monthBack=${filtros.monthBack === "all" ? "" : filtros.monthBack}`,
-    "tendenciaOyLData"
+    "tendenciaPasosDespachoData"
   );
 
   const tendencias = useMemo(() => {
@@ -46,9 +47,9 @@ const TendenciaOyL: FC = () => {
       const puntajeMinimo = Number(data.puntajeMinimo[0].cantidad);
 
       const results = data.response.map((el) => {
-        const evaluaciones = el.oyls.map((evaluacion) => ({
+        const evaluaciones = el.evaluacion_despachars.map((evaluacion) => ({
           ...evaluacion,
-          cumple: evaluacion.cumple ? 1 : 0,
+          cumple: evaluacion.evaluacion ? 1 : 0,
         }));
 
         const { values: agruparXEv } = agruparArr(
@@ -111,7 +112,7 @@ const TendenciaOyL: FC = () => {
             data: labels.strings.map(() =>
               !isPending && !isError
                 ? Number(data.puntajeMinimo[0].cantidad)
-                : 9
+                : 8
             ),
             backgroundColor: "rgb(237,41,29)",
             borderColor: "rgb(237,41,29)",
@@ -135,10 +136,12 @@ const TendenciaOyL: FC = () => {
     };
   }, [tendencias, filtros.agrupar]);
 
+  console.log(data);
+
   return (
     <div>
       <SectionTitle
-        titulo="Tendencias de orden y limpieza"
+        titulo="Tendencias de pasos para despachar"
         subtitulo="Despacho"
       />
       <CintaOpciones
@@ -186,7 +189,7 @@ const TendenciaOyL: FC = () => {
         <Line
           etiquetaX="Rango de tiempo"
           etiquetaY="Promedio"
-          title="Tendencias de orden y limpieza"
+          title="Tendencias de pasos para despachar"
           data={{
             labels,
             datasets,
@@ -197,4 +200,4 @@ const TendenciaOyL: FC = () => {
     </div>
   );
 };
-export default TendenciaOyL;
+export default TendenciaPasosDespacho;

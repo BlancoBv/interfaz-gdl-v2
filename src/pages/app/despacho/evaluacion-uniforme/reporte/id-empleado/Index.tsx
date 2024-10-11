@@ -14,6 +14,7 @@ import Button from "@components/Button";
 import ButtonPDF from "@components/ButtonPDF";
 import PDFReportes from "@components/pdf/PDFReportes";
 import { SelectMonth, SelectYear } from "@components/forms/Select";
+import Loader from "@components/gui/Loader";
 
 interface detalles extends getDataInterface {
   data: { response: reporteUniformeInterface[] };
@@ -129,6 +130,7 @@ const ReporteEmpleadoEvUniforme: FC = () => {
         />
         <Button buttonType="submit" text="Filtrar" />
       </CintaOpciones>
+      <Loader isPending={isPending} />
       {!isPending && !isError && (
         <>
           <div className="stats shadow w-full stats-vertical lg:stats-horizontal mb-4">

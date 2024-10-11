@@ -1,5 +1,9 @@
 import { ChartData, Point } from "chart.js";
-export type CustomDataPoint = { x: string; y: number } | number | Point | null;
+export type CustomDataPoint =
+  | { x: string; y: number | string }
+  | number
+  | Point
+  | null;
 export type Rename<T, K extends keyof T, N extends string> = Pick<
   T,
   Exclude<keyof T, K>
@@ -270,4 +274,26 @@ export interface tendenciaEvUniformeInterface extends empleadoInterface {
 export interface evaluacionesPasosDespacharInterface {
   idpaso_despachar: number;
   paso: string;
+}
+
+export interface reportePasosDespacharInterface {
+  promedio: string;
+  nombre: string;
+  idempleado: number;
+}
+
+export interface reporteDetallePasosDespacharInterface {
+  total: number;
+  promedio: number;
+  qna: number;
+  data: { evaluacion: boolean }[];
+}
+export interface tendenciaPasosDespacharInterface extends empleadoInterface {
+  evaluacion_despachars: {
+    idevaluacion_uniforme: number;
+    identificador: string;
+    fecha: string;
+    evaluacion: boolean;
+    oyl_cumplimiento: evaluacionesPasosDespacharInterface;
+  }[];
 }

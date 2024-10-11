@@ -26,13 +26,14 @@ import CapturarLecturas from "@pages/preliquidacion/capturar-lecturas/Index";
 import CapturarEfectivo from "@pages/preliquidacion/capturar-efectivo/Index";
 import CapturarVales from "@pages/preliquidacion/capturar-vales/Index";
 import Previsualizar from "@pages/preliquidacion/previsualizar/Index";
+//recursos humanos
 import RecursosHumanos from "@pages/app/recursos-humanos/Index";
 import Departamentos from "@pages/app/recursos-humanos/empleados/departamentos/Index";
 import Documentos from "@pages/app/recursos-humanos/empleados/documentos/Index";
 import Empleados from "@pages/app/recursos-humanos/empleados/Index";
 import RegistrosChecklist from "@pages/app/despacho/checklist-bomba/registros";
-import CapturarOyL from "@pages/app/despacho/orden-limpieza-isla/capturar";
-import ReporteOyl from "@pages/app/despacho/orden-limpieza-isla/reporte";
+import CapturarOyL from "@pages/app/despacho/orden-limpieza-isla/capturar/Index";
+import ReporteOyl from "@pages/app/despacho/orden-limpieza-isla/reporte/Index";
 import ReporteEmpleadoOyL from "@pages/app/despacho/orden-limpieza-isla/reporte/id-empleado";
 import TendenciaOyL from "@pages/app/despacho/orden-limpieza-isla/tendencia/Index";
 import ReportesChecklist from "@pages/app/despacho/checklist-bomba/reporte/Index";
@@ -44,6 +45,9 @@ import ReporteEvUniforme from "@pages/app/despacho/evaluacion-uniforme/reporte/I
 import ReporteEmpleadoEvUniforme from "@pages/app/despacho/evaluacion-uniforme/reporte/id-empleado/Index";
 import HistorialEvUniforme from "@pages/app/despacho/evaluacion-uniforme/historial/Index";
 import TendenciaEvUniforme from "@pages/app/despacho/evaluacion-uniforme/tendencia/Index";
+import TendenciaPasosDespacho from "@pages/app/despacho/pasos-despachar/tendencia/Index";
+import ReportePasosDespacho from "@pages/app/despacho/pasos-despachar/reporte/Index";
+import ReporteEmpleadoPasosDespacho from "@pages/app/despacho/pasos-despachar/reporte/id-empleado/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -149,14 +153,14 @@ const Index: FC = () => {
                   path: "reporte",
 
                   children: [
-                    { index: true, element: <ReporteOyl /> },
+                    { index: true, element: <ReportePasosDespacho /> },
                     {
-                      path: ":idDespachador",
-                      element: <ReporteEmpleadoOyL />,
+                      path: ":year/:mes/:idDespachador",
+                      element: <ReporteEmpleadoPasosDespacho />,
                     },
                   ],
                 },
-                { path: "tendencia", element: <TendenciaOyL /> },
+                { path: "tendencia", element: <TendenciaPasosDespacho /> },
                 { path: "historial", element: <HistorialOyL /> },
               ],
             },

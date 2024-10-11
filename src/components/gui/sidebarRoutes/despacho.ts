@@ -59,15 +59,15 @@ export default {
       icon: "list-check",
       collapse: [
         { to: "capturar", name: "Capturar" },
-        /* { to: "despacho/pasos-despachar/reporte", name: "Reporte mensual" },
+        { to: "reporte", name: "Reporte" },
         {
-          to: "despacho/pasos-despachar/historial",
-          name: "Historial",
+          to: "tendencia",
+          name: "Tendencia",
         },
         {
-          to: "despacho/pasos-despachar/tendencia",
-          name: "Tendencia",
-        }, */
+          to: "/dd/historial",
+          name: "Historial",
+        },
       ],
     },
   ],

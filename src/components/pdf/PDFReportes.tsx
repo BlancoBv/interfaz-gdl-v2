@@ -37,7 +37,9 @@ const PDFReportes: FC<{ elementos: elementos; title: string }> = ({
     },
     legendTime: {
       //    marginBottom: 8,
+      display: "flex",
       flexDirection: "row",
+      gap: "20px",
       alignItems: "center",
       marginHorizontal: "auto",
       position: "absolute",
@@ -92,21 +94,18 @@ const PDFReportes: FC<{ elementos: elementos; title: string }> = ({
         {elementos.graficas?.map((el, index) => (
           <Image source={chartToImage(el)} key={`${index}-grafica`} />
         ))}
-
-        <Text
-          render={({ pageNumber, totalPages }) =>
-            `Página ${pageNumber} de ${totalPages}.`
-          }
-          fixed
-        />
-        <View style={styles.legendTime}>
-          <Text>Impreso el </Text>
+        <View style={styles.legendTime} fixed>
           <Text>
-            {new Intl.DateTimeFormat("es-MX", {
+            {`Impreso el ${new Intl.DateTimeFormat("es-MX", {
               dateStyle: "full",
               timeStyle: "short",
-            }).format(new Date())}
+            }).format(new Date())}`}
           </Text>
+          <Text
+            render={({ pageNumber, totalPages }) =>
+              `Página ${pageNumber} de ${totalPages}.`
+            }
+          />
         </View>
       </Page>
     </Document>

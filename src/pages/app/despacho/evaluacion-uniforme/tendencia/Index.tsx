@@ -158,7 +158,6 @@ const TendenciaEvUniforme: FC = () => {
           multiple
           labelName="nombre"
           valueName="id"
-          required
         />
         <Select
           label="Periodo de consulta"

@@ -6,7 +6,7 @@ export interface agruparArrInterface {
 
 const agruparArr = (
   arr: any[],
-  callback: (elemen: any) => string,
+  callback: (elemen: any) => string | number,
   options?: any
 ): agruparArrInterface => {
   const { groupd, forceEqual } = options || {};
