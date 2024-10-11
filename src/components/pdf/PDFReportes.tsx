@@ -9,16 +9,25 @@ import {
 import { FC } from "react";
 import HTML from "react-pdf-html";
 import html2canvas from "html2canvas-pro";
+import DateAndPages from "./components/DateAndPages";
+import { meses } from "@assets/misc";
+import EncabezadosEtiquetas from "./components/EncabezadosEtiquetas";
 
 interface elementos {
   tablas?: string[];
   graficas?: string[];
 }
 
-const PDFReportes: FC<{ elementos: elementos; title: string }> = ({
-  elementos,
-  title,
-}) => {
+const PDFReportes: FC<{
+  elementos: elementos;
+  title: string;
+  encabezados?: {
+    mes: number;
+    year: number;
+    quincena?: string | number;
+    empleado?: string;
+  };
+}> = ({ elementos, title, encabezados }) => {
   const styles = StyleSheet.create({
     page: {
       // flexDirection: "row",
@@ -46,6 +55,11 @@ const PDFReportes: FC<{ elementos: elementos; title: string }> = ({
       top: 10,
       left: 10,
     },
+    encabezados: {
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "wrap",
+    },
   });
 
   const chartToImage = async (id: string) => {
@@ -64,14 +78,35 @@ const PDFReportes: FC<{ elementos: elementos; title: string }> = ({
     return img;
   };
 
-  console.log(document.getElementById("tablaR"));
+  const mesesC = meses.map((el) => el.mes);
+  console.log(encabezados);
 
   return (
     <Document title={title}>
       <Page size="LETTER" style={styles.page}>
-        <View style={styles.title}>
-          <Text>{`Reporte de información de ${title}`}</Text>
+        <DateAndPages />
+        <View>
+          <Text>GASOLINERIA DON LALO S.A. DE C.V.</Text>
         </View>
+        <View style={styles.title}>
+          <Text>{`Reporte de ${title}`}</Text>
+        </View>
+        <View style={styles.encabezados}>
+          <EncabezadosEtiquetas
+            label="Mes"
+            value={encabezados?.mes ? mesesC[encabezados?.mes] : undefined}
+          />
+          <EncabezadosEtiquetas label="Año" value={encabezados?.year} />
+          <EncabezadosEtiquetas
+            label="Quincena"
+            value={encabezados?.quincena}
+          />
+          <EncabezadosEtiquetas
+            label="Empleado"
+            value={encabezados?.empleado}
+          />
+        </View>
+
         <HTML>
           {`
         <style>
@@ -94,7 +129,7 @@ const PDFReportes: FC<{ elementos: elementos; title: string }> = ({
         {elementos.graficas?.map((el, index) => (
           <Image source={chartToImage(el)} key={`${index}-grafica`} />
         ))}
-        <View style={styles.legendTime} fixed>
+        {/* <View style={styles.legendTime} fixed>
           <Text>
             {`Impreso el ${new Intl.DateTimeFormat("es-MX", {
               dateStyle: "full",
@@ -106,7 +141,7 @@ const PDFReportes: FC<{ elementos: elementos; title: string }> = ({
               `Página ${pageNumber} de ${totalPages}.`
             }
           />
-        </View>
+        </View> */}
       </Page>
     </Document>
   );

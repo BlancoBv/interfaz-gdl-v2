@@ -126,6 +126,11 @@ const ReporteEmpleadoPasosDespacho: FC = () => {
                 graficas: ["chart-1", "chart-2"],
               }}
               title="Detalles evaluación uniforme"
+              encabezados={{
+                mes: filtros.mes,
+                year: filtros.year,
+                empleado: idDespachador,
+              }}
             />
           }
           isPending={false}
