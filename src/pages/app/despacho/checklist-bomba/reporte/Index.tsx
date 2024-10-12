@@ -125,14 +125,16 @@ const ReportesChecklist: FC = () => {
               ...data.response[0].fechas.map((fecha) => ({
                 name: format.obtenerDiaMes(fecha.fecha).toString(),
                 selector: (sel: reporteChecklistInterface, colIndex: any) => {
-                  if (sel.fechas[colIndex].cumple === 1) {
+                  console.log(colIndex);
+
+                  if (sel.fechas[colIndex - 1].cumple === 1) {
                     return (
                       <span className="text-success">
                         <Icon icon="check" />
                       </span>
                     );
                   }
-                  if (sel.fechas[colIndex].cumple === 0) {
+                  if (sel.fechas[colIndex - 1].cumple === 0) {
                     return (
                       <span className="text-error">
                         <Icon icon="xmark" />

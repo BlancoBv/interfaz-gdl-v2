@@ -282,6 +282,15 @@ export interface reportePasosDespacharInterface {
   idempleado: number;
 }
 
+export interface historialPasosDespacharInterface
+  extends Pick<empleadoInterface, "idempleado" | "estatus" | "nombre_completo">,
+    evaluacionesPasosDespacharInterface {
+  identificador: string;
+  evaluacion: boolean;
+  quincena: number;
+  fecha: string;
+}
+
 export interface reporteDetallePasosDespacharInterface {
   total: number;
   promedio: number;

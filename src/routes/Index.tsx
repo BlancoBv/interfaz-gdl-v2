@@ -48,6 +48,7 @@ import TendenciaEvUniforme from "@pages/app/despacho/evaluacion-uniforme/tendenc
 import TendenciaPasosDespacho from "@pages/app/despacho/pasos-despachar/tendencia/Index";
 import ReportePasosDespacho from "@pages/app/despacho/pasos-despachar/reporte/Index";
 import ReporteEmpleadoPasosDespacho from "@pages/app/despacho/pasos-despachar/reporte/id-empleado/Index";
+import HistorialPasosDespachar from "@pages/app/despacho/pasos-despachar/historial/Index";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -161,7 +162,7 @@ const Index: FC = () => {
                   ],
                 },
                 { path: "tendencia", element: <TendenciaPasosDespacho /> },
-                { path: "historial", element: <HistorialOyL /> },
+                { path: "historial", element: <HistorialPasosDespachar /> },
               ],
             },
           ],

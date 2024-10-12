@@ -65,7 +65,7 @@ export default {
           name: "Tendencia",
         },
         {
-          to: "/dd/historial",
+          to: "historial",
           name: "Historial",
         },
       ],

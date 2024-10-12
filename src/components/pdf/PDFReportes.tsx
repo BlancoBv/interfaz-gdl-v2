@@ -120,6 +120,9 @@ const PDFReportes: FC<{
             table tbody {
               font-size: 10pt;
             }
+            svg {
+              height: 10px;
+            }
         </style> 
         ${elementos.tablas?.map(
           (el) => document.getElementById(el)?.outerHTML
