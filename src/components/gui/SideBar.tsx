@@ -181,11 +181,11 @@ const SideBar: FC = () => {
             <div className="avatar placeholder flex justify-evenly items-center">
               <div className="bg-neutral text-neutral-content size-14 rounded-full">
                 <span className="text-3xl">
-                  {userData.auth.nombre.charAt(0)}
+                  {userData?.auth.nombre.charAt(0)}
                 </span>
               </div>
             </div>
-            <p className="text-center">{`${userData.auth.nombre} ${userData.auth.apellido_paterno} ${userData.auth.apellido_materno}`}</p>
+            <p className="text-center">{`${userData?.auth.nombre} ${userData?.auth.apellido_paterno} ${userData?.auth.apellido_materno}`}</p>
           </div>
 
           <button
