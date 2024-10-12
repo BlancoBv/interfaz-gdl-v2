@@ -9,6 +9,20 @@ export type Rename<T, K extends keyof T, N extends string> = Pick<
   Exclude<keyof T, K>
 > & { [P in N]: T[K] };
 
+export interface sideBarItems {
+  icon: string;
+  name: string;
+  to: string;
+  show: boolean;
+  links?: {
+    to: string;
+    name: string;
+    show?: boolean;
+    icon: string;
+    collapse?: { to: string; name: string; show: boolean; end?: boolean }[];
+  }[];
+}
+
 export interface ChartsPropsInterface {
   data?: ChartData<any>;
   title?: string;
