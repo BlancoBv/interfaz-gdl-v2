@@ -73,8 +73,6 @@ const HistorialEvUniforme: FC = () => {
     },
   });
 
-  console.log(bodyUpdate);
-
   return (
     <div>
       <SectionTitle

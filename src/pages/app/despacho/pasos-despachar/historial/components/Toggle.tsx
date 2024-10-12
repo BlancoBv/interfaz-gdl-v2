@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useMemo } from "react";
 
 const Toggle: FC<{
   label: string;
@@ -10,7 +10,18 @@ const Toggle: FC<{
   name: number;
   isChecked: boolean;
 }> = ({ label, variable, setVariable, name, isChecked }) => {
-  const [checked, setChecked] = useState<boolean>(isChecked);
+  const value = useMemo(() => {
+    const indexOfElement = variable.evaluaciones.findIndex(
+      (el) => el.idEvaluacionPaso === name
+    );
+
+    if (indexOfElement >= 0) {
+      return variable.evaluaciones[indexOfElement].evaluacion === 1
+        ? true
+        : false;
+    }
+    return isChecked;
+  }, [variable]);
   return (
     <div className="form-control">
       <label className="label cursor-pointer">
@@ -34,16 +45,7 @@ const Toggle: FC<{
                   ...prev,
                   evaluaciones: [...newValues],
                 }));
-              } else {
-                setVariable((prev: any) => ({
-                  ...prev,
-                  evaluaciones: [
-                    ...prev.evaluaciones,
-                    { evaluacion: 1, idEvaluacionPaso: Number(name) },
-                  ],
-                }));
               }
-              setChecked(true);
             } else {
               const indexOfElement = variable.evaluaciones.findIndex(
                 (el) => Number(el.idEvaluacionPaso) === Number(name)
@@ -57,20 +59,10 @@ const Toggle: FC<{
                   ...prev,
                   evaluaciones: [...newValues],
                 }));
-              } else {
-                setVariable((prev: any) => ({
-                  ...prev,
-                  evaluaciones: [
-                    ...prev.evaluaciones,
-                    { evaluacion: 0, idEvaluacionPaso: Number(name) },
-                  ],
-                }));
               }
-              setChecked(false);
             }
-            //setVariable((prev: any) => ({ ...prev, [name]: checked }));
           }}
-          checked={checked}
+          checked={value}
         />
       </label>
     </div>

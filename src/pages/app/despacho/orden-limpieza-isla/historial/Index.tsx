@@ -43,7 +43,6 @@ const HistorialOyL: FC = () => {
     method: "put",
     refetchFn: () => {
       modalEdit.close();
-      setBodyUpdate({ evaluaciones: [] });
       mutate({});
     },
   });
@@ -77,8 +76,6 @@ const HistorialOyL: FC = () => {
     }
     return [];
   }, [data]);
-
-  console.log(bodyUpdate);
 
   return (
     <div>

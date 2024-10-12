@@ -15,8 +15,6 @@ export function Per(id: number) {
   }
 
   return true;
-
-  //return datos[0].permisos.some((el) => el[0] === 1 || el[0] === id);
 }
 
 export function Dep(id: number) {

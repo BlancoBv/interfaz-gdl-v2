@@ -107,8 +107,6 @@ const HistorialPasosDespachar: FC = () => {
     return [];
   }, [data, isPending]);
 
-  console.log(bodyUpdate);
-
   return (
     <div>
       <SectionTitle
@@ -399,6 +397,13 @@ const HistorialPasosDespachar: FC = () => {
                 onClick: () => {
                   setBodyUpdate((prev) => ({
                     ...prev,
+                    ...(!singleEv.isPending &&
+                      !singleEv.isError && {
+                        evaluaciones: singleEv.data.response.map((el) => ({
+                          evaluacion: el.evaluacion ? 1 : 0,
+                          idEvaluacionPaso: el.idevaluacion_despachar,
+                        })),
+                      }),
                     idEmpleado: relativeData[0]?.idempleado,
                   }));
                   modalEdit.show();

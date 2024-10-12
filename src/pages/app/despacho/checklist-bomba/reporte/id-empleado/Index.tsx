@@ -96,7 +96,6 @@ const ReporteEmpleadoChecklist: FC = () => {
       method: "put",
       refetchFn: () => {
         setRelativeData({});
-        setBodyUpdate({});
         refetch();
         checklistGral.refetch();
       },
@@ -150,6 +149,7 @@ const ReporteEmpleadoChecklist: FC = () => {
         title={`Editar checklist del día ${format.formatFecha(
           relativeData.fecha ? relativeData.fecha : ""
         )}`}
+        onClose={() => setBodyUpdate({})}
       >
         <form
           className="flex flex-col gap-4 p-2"
