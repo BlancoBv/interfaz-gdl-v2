@@ -51,7 +51,6 @@ const EditorTipTap: FC<Props> = ({ disabled, ...props }: Props) => {
     onUpdate: ({ editor }) => {
       //Guardar la informacion del
       const html = editor.getHTML();
-      console.log(html);
       props.onChange({ target: { value: html, name: props.name } });
     },
   });
