@@ -3,7 +3,11 @@ import { FC, ReactNode, useMemo, useState } from "react";
 import { meses } from "@assets/misc";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
-import { departamentoInterface, islasInterface } from "@assets/interfaces";
+import {
+  departamentoInterface,
+  incumplimientoInterface,
+  islasInterface,
+} from "@assets/interfaces";
 
 export const Select: FC<{
   name: string;
@@ -426,6 +430,44 @@ export const SelectDepartamentos: FC<departamento> = ({
             }))
           : []
       }
+    />
+  );
+};
+
+type incumplimiento = Pick<
+  rSelectInterface,
+  "name" | "variable" | "setVariable" | "required"
+>;
+interface incumplimientoData extends getDataInterface {
+  data: { response: incumplimientoInterface[] };
+}
+export const SelectIncumplimientos: FC<incumplimiento> = ({
+  name,
+  variable,
+  setVariable,
+  required,
+}) => {
+  const { data, isError, isPending }: incumplimientoData = useGetData(
+    "incumplimiento",
+    "departamentoData"
+  );
+
+  return (
+    <Select
+      label="Incumplimiento"
+      placeholder="Selecciona incumplimiento"
+      name={name}
+      variable={variable}
+      setVariable={setVariable}
+      options={
+        !isError && !isPending
+          ? data.response.map((el) => ({
+              value: el.idincumplimiento,
+              label: el.incumplimiento,
+            }))
+          : []
+      }
+      required={required}
     />
   );
 };
