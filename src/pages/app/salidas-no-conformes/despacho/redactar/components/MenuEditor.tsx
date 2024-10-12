@@ -1,11 +1,23 @@
 import Icon from "@components/Icon";
-import { useCurrentEditor } from "@tiptap/react";
-import { FC } from "react";
+import { Editor } from "@tiptap/react";
+import { FC, useEffect } from "react";
 import SelectFontSize from "./SelectFontSize";
 import SelectColors from "./SelectColors";
 
-const MenuEditor: FC = () => {
-  const { editor } = useCurrentEditor();
+interface Props {
+  value?: string;
+  editor: Editor | null;
+}
+
+const MenuEditor: FC<Props> = (props: Props) => {
+  const { editor } = props;
+
+  useEffect(() => {
+    if (editor) {
+      // editor
+      // editor.commands.onD
+    }
+  }, [editor, props.value]);
 
   if (!editor) {
     return null;
@@ -92,16 +104,6 @@ const MenuEditor: FC = () => {
           }
         >
           <Icon icon="list-ol" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setColor("#958DF1").run()}
-          className={
-            editor.isActive("textStyle", { color: "#958DF1" })
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
-              : "btn btn-sm rounded p-1 btn-light"
-          }
-        >
-          Purple
         </button>
         <div className="min-w-max">
           <SelectFontSize editor={editor} />

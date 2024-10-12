@@ -20,7 +20,7 @@ const SelectColors: FC<Props> = ({ editor }: Props) => {
       <button
         tabIndex={0}
         role="button"
-        className="btn btn-sm bg-zinc-200 m-1 h-auto m-0 rounded font-bold underline underline-offset-2"
+        className="btn btn-sm bg-zinc-200 h-auto m-0 rounded font-bold underline underline-offset-2"
       >
         A
       </button>
