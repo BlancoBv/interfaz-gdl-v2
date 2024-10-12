@@ -1,5 +1,5 @@
 import "../assets/styles/styles.scss";
-import { FC, useMemo } from "react";
+import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 import { Color } from "@tiptap/extension-color";
 import TextStyle from "@tiptap/extension-text-style";
 import { FontSize } from "../assets/extension/FontSize";
@@ -24,7 +24,14 @@ interface Props {
   onChange: (event: TypeEventChange) => void;
 }
 
-const EditorTipTap: FC<Props> = ({ disabled, ...props }: Props) => {
+export interface RefMethods {
+  clean: () => void;
+  setContent: (content: string) => void;
+  disabled: (t: boolean) => void;
+}
+
+const EditorTipTap = forwardRef<RefMethods, Props>((props: Props, ref) => {
+  const [disabled, setDisabled] = useState<boolean>(false);
   const extensions = useMemo(() => {
     return [
       FontSize,
@@ -55,6 +62,20 @@ const EditorTipTap: FC<Props> = ({ disabled, ...props }: Props) => {
     },
   });
 
+  useImperativeHandle(ref, () => ({
+    clean() {
+      editor?.commands.setContent("<p></p>");
+    },
+    setContent(content) {
+      editor?.commands.setContent(content);
+    },
+    disabled(t) {
+      setDisabled(t);
+    },
+  }));
+
+  console.log(disabled, props.name);
+
   return (
     <div className="relative">
       {disabled && (
@@ -64,6 +85,6 @@ const EditorTipTap: FC<Props> = ({ disabled, ...props }: Props) => {
       <EditorContent editor={editor} />
     </div>
   );
-};
+});
 
 export default EditorTipTap;

@@ -12,13 +12,6 @@ interface Props {
 const MenuEditor: FC<Props> = (props: Props) => {
   const { editor } = props;
 
-  useEffect(() => {
-    if (editor) {
-      // editor
-      // editor.commands.onD
-    }
-  }, [editor, props.value]);
-
   if (!editor) {
     return null;
   }
