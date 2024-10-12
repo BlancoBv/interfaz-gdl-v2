@@ -3,7 +3,7 @@ const permisos: { permisos: number[][] } = JSON.parse(
 );
 
 export function Per(id: number) {
-  const indexOfElement = permisos.permisos.findIndex(
+  const indexOfElement = permisos.permisos?.findIndex(
     (el) => el[0] === id || el[0] === 1
   );
 
@@ -15,7 +15,7 @@ export function Per(id: number) {
 }
 
 export function Dep(id: number) {
-  const indexOfElement = permisos.permisos.findIndex(
+  const indexOfElement = permisos.permisos?.findIndex(
     (el) => el[1] === id || el[1] === 1
   );
 
