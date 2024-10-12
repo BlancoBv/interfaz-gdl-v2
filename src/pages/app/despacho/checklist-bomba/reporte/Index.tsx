@@ -12,6 +12,8 @@ import moment from "moment";
 import { FC, SyntheticEvent, useMemo, useState } from "react";
 import Line from "@components/charts/Line";
 import { useNavigate } from "react-router-dom";
+import ButtonPDF from "@components/ButtonPDF";
+import PDFReportes from "@components/pdf/PDFReportes";
 
 interface reporte extends getDataInterface {
   data: { response: reporteChecklistInterface[] };
@@ -106,12 +108,25 @@ const ReportesChecklist: FC = () => {
           setVariable={setFiltros}
           required
         />
+        <ButtonPDF
+          doc={
+            <PDFReportes
+              elementos={{
+                tablas: ["tablaR"],
+                graficas: ["chart-1"],
+              }}
+              title="Detalles evaluación uniforme"
+            />
+          }
+          isPending={isPending}
+        />
         <Button buttonType="submit" text="Filtrar" />
       </CintaOpciones>
       <Loader isPending={isPending} />
       {!isPending && !isError && (
         <>
           <Table
+            id="tablaR"
             data={data.response}
             columns={[
               {
@@ -153,6 +168,7 @@ const ReportesChecklist: FC = () => {
             }}
           />
           <Line
+            id="chart-1"
             etiquetaX="Despachador"
             etiquetaY="Checklist realizados"
             data={{ datasets }}

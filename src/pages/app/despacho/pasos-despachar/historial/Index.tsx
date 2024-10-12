@@ -16,6 +16,7 @@ import Modal, { ModalConfirmNoMutate } from "@components/gui/Modal";
 import { useModal } from "@hooks/useModal";
 import Toggle from "./components/Toggle";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
+import { Per } from "@assets/auth";
 
 interface historial extends sendDataInterface {
   data: { response: historialPasosDespacharInterface[][] };
@@ -394,7 +395,7 @@ const HistorialPasosDespachar: FC = () => {
                 name: "Editar",
                 icon: "pen-to-square",
                 elementType: "item",
-                show: true,
+                show: Per(15),
                 onClick: () => {
                   setBodyUpdate((prev) => ({
                     ...prev,
@@ -407,7 +408,7 @@ const HistorialPasosDespachar: FC = () => {
                 name: "Eliminar",
                 icon: "trash",
                 elementType: "item",
-                show: true,
+                show: Per(16),
                 color: "error",
                 onClick: () => modalDel.show(),
               },

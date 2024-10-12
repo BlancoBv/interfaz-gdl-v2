@@ -14,6 +14,7 @@ import Modal, { ModalConfirmNoMutate } from "@components/gui/Modal";
 import { useModal } from "@hooks/useModal";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import Toggle from "./components/Toggle";
+import { Per } from "@assets/auth";
 
 interface historial extends sendDataInterface {
   data: { response: historialOyLInterface[] };
@@ -199,7 +200,7 @@ const HistorialOyL: FC = () => {
               {
                 name: "Editar",
                 elementType: "item",
-                show: true,
+                show: Per(18),
                 icon: "pen-to-square",
                 onClick: () => {
                   setBodyUpdate((prev) => ({
@@ -218,7 +219,7 @@ const HistorialOyL: FC = () => {
               },
               {
                 name: "Eliminar",
-                show: true,
+                show: Per(19),
                 elementType: "item",
                 icon: "trash",
                 color: "error",

@@ -18,7 +18,7 @@ const ButtonPDF: FC<{ doc?: any; isPending?: boolean }> = ({
         getBlob();
       }}
       isPending={pending || isPending}
-      disabled={isPending}
+      disabled={pending || isPending}
     />
   );
 };

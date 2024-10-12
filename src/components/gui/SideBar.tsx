@@ -119,6 +119,9 @@ const SideBar: FC = () => {
           </details>
         </li> */}
         {navElements.map((item) => {
+          if (!item.show) {
+            return null;
+          }
           return (
             <li key={`parent ${item.name}`}>
               <details open={openSummary(item.to)}>

@@ -21,13 +21,14 @@ interface elementos {
 const PDFReportes: FC<{
   elementos: elementos;
   title: string;
+  orientacion?: "landscape" | "portrait";
   encabezados?: {
     mes: number;
     year: number;
     quincena?: string | number;
     empleado?: string;
   };
-}> = ({ elementos, title, encabezados }) => {
+}> = ({ elementos, title, encabezados, orientacion }) => {
   const styles = StyleSheet.create({
     page: {
       // flexDirection: "row",
@@ -67,9 +68,10 @@ const PDFReportes: FC<{
     console.log({ element });
 
     const img = html2canvas(element, {
-      allowTaint: true,
+      //allowTaint: true,
       scale: 2,
       logging: false,
+      removeContainer: true,
     }).then((canvas) => {
       const result = canvas.toDataURL("image/PNG");
       return result;
@@ -83,7 +85,11 @@ const PDFReportes: FC<{
 
   return (
     <Document title={title}>
-      <Page size="LETTER" style={styles.page}>
+      <Page
+        size="LETTER"
+        style={styles.page}
+        orientation={orientacion ?? orientacion}
+      >
         <DateAndPages />
         <View>
           <Text>GASOLINERIA DON LALO S.A. DE C.V.</Text>
