@@ -2,7 +2,6 @@ import { InputFecha } from "@components/forms/Input";
 import {
   SelectEmpleado,
   SelectEstacion,
-  SelectIsla,
   SelectIslaSingle,
   SelectTurno,
 } from "@components/forms/Select";

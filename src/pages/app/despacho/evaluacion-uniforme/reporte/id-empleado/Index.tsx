@@ -7,7 +7,7 @@ import Icon from "@components/Icon";
 import Table from "@components/Table";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import { FC, SyntheticEvent, useState } from "react";
-import { Navigate, useLocation, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import Bar from "@components/charts/Bar";
 import CintaOpciones from "@components/gui/CintaOpciones";
 import Button from "@components/Button";

@@ -1,6 +1,3 @@
-import { AuthContext } from "@hooks/useAuth";
-import { useContext } from "react";
-
 const permisos: { permisos: number[][] } = JSON.parse(
   localStorage.getItem("credentials") ?? "{}"
 );

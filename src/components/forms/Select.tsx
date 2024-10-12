@@ -1,5 +1,5 @@
 import moment from "moment";
-import { FC, ReactNode, useMemo, useState } from "react";
+import { FC, ReactNode, useMemo } from "react";
 import { meses } from "@assets/misc";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
@@ -24,7 +24,6 @@ export const Select: FC<{
   disabled,
   required,
   options,
-  children,
 }) => {
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs">
@@ -54,6 +53,7 @@ export const Select: FC<{
         setVariable={setVariable}
         name={name}
         required={required}
+        disabled={disabled}
       />
     </label>
   );

@@ -1,5 +1,5 @@
 import { usePDFToBlob } from "@hooks/usePDFToBlob";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 const BlobProvider: FC<{ doc: any; dataIsPending: boolean }> = ({
   doc,
