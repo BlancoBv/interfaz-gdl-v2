@@ -17,13 +17,22 @@ const Toggle: FC<{
     }[];
     ref.current?.classList.remove("bg-green-500", "bg-red-500");
     if (checked) {
-      setVariable((prev: any) => ({
-        ...prev,
-        evaluaciones: [
-          ...prev.evaluaciones,
-          { idcumplimiento: Number(name), cumple: 1 },
-        ],
-      }));
+      const indexOfValue = cumplimientosContainer.findIndex(
+        (el) => el.idcumplimiento === Number(name)
+      );
+      if (indexOfValue >= 0) {
+        const newValues = cumplimientosContainer;
+        newValues[indexOfValue] = { ...newValues[indexOfValue], cumple: 0 };
+        setVariable((prev: any) => ({ ...prev, evaluaciones: [...newValues] }));
+      } else {
+        setVariable((prev: any) => ({
+          ...prev,
+          evaluaciones: [
+            ...prev.evaluaciones,
+            { idcumplimiento: Number(name), cumple: 1 },
+          ],
+        }));
+      }
       ref.current?.classList.add("toggle-success");
       setValue(true);
     } else {
@@ -44,6 +53,36 @@ const Toggle: FC<{
       setValue(false);
     }
   }, [variable]);
+
+  useEffect(() => {
+    if (disabled) {
+      setVariable((prev: any) => ({
+        ...prev,
+        evaluaciones: [
+          ...prev.evaluaciones,
+          { idcumplimiento: idCumplimiento, cumple: 1 },
+        ],
+      }));
+    } else {
+      const cumplimientosContainer = variable.evaluaciones as {
+        idcumplimiento: number;
+        cumple: 1 | 0;
+      }[];
+      const indexOfValue = cumplimientosContainer.findIndex(
+        (el) => el.idcumplimiento === idCumplimiento
+      );
+
+      if (indexOfValue >= 0) {
+        const newValues = cumplimientosContainer;
+
+        newValues.splice(indexOfValue, 1);
+        setVariable((prev: any) => ({
+          ...prev,
+          evaluaciones: [...newValues],
+        }));
+      }
+    }
+  }, [disabled]);
   return (
     <div className="form-control">
       <label className={`label cursor-pointer ${disabled ? "bg-warning" : ""}`}>

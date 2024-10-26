@@ -80,6 +80,8 @@ const CapturarOyL: FC = () => {
     },
   });
 
+  console.log(body);
+
   return (
     <div className="w-full">
       <SectionTitle
@@ -143,8 +145,7 @@ const CapturarOyL: FC = () => {
               variable={body}
               setVariable={setBody}
               disabled={
-                el.idCumplimiento === 5 &&
-                (Number(body?.isla ?? 0) === 5 || Number(body?.isla ?? 0) === 8)
+                el.idCumplimiento === 5 && Number(body?.isla ?? 0) === 9
               }
             />
           ))}
