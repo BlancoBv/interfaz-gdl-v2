@@ -115,7 +115,8 @@ const ReportesChecklist: FC = () => {
                 tablas: ["tablaR"],
                 graficas: ["chart-1"],
               }}
-              title="Detalles evaluación uniforme"
+              title="Checklist bomba mensual"
+              orientacion="landscape"
             />
           }
           isPending={isPending}

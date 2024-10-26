@@ -76,7 +76,10 @@ const Table: FC<{
                 onClick={onClick ? () => onClick(row) : undefined}
               >
                 {columns.map((col, colIndex) => (
-                  <td key={`col-data ${rowIndex}${colIndex}`}>
+                  <td
+                    key={`col-data ${rowIndex}${colIndex}`}
+                    className={col.className ?? ""}
+                  >
                     {col.selector(row, colIndex, rowIndex)}
                   </td>
                 ))}

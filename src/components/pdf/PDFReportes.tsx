@@ -129,6 +129,12 @@ const PDFReportes: FC<{
             svg {
               height: 10px;
             }
+            thead .w-48{
+              width: 190px
+            }
+            tbody .w-48{
+              width: 190px
+            }
         </style> 
         ${elementos.tablas?.map(
           (el) => document.getElementById(el)?.outerHTML
