@@ -142,6 +142,10 @@ const CapturarOyL: FC = () => {
               idCumplimiento={el.idCumplimiento}
               variable={body}
               setVariable={setBody}
+              disabled={
+                el.idCumplimiento === 5 &&
+                (Number(body?.isla ?? 0) === 5 || Number(body?.isla ?? 0) === 8)
+              }
             />
           ))}
         </div>

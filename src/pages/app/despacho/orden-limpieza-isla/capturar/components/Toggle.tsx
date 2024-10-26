@@ -5,7 +5,8 @@ const Toggle: FC<{
   idCumplimiento: number;
   setVariable: any;
   variable: any;
-}> = ({ text, idCumplimiento, setVariable, variable }) => {
+  disabled?: boolean;
+}> = ({ text, idCumplimiento, setVariable, variable, disabled }) => {
   const [value, setValue] = useState<boolean>(false);
   const ref = useRef<HTMLInputElement>(null);
   const handle = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +46,7 @@ const Toggle: FC<{
   }, [variable]);
   return (
     <div className="form-control">
-      <label className="label cursor-pointer">
+      <label className={`label cursor-pointer ${disabled ? "bg-warning" : ""}`}>
         <span className="label-text">{text}</span>
         <input
           type="checkbox"
@@ -54,6 +55,7 @@ const Toggle: FC<{
           checked={value}
           onChange={handle}
           ref={ref}
+          disabled={disabled}
         />
       </label>
     </div>
