@@ -24,6 +24,7 @@ import Modal, { ModalConfirmNoMutate } from "@components/gui/Modal";
 import { useModal } from "@hooks/useModal";
 import TextArea from "@components/forms/TextArea";
 import Toggle from "@components/forms/Toggle";
+import { Per } from "@assets/auth";
 
 interface reporteDetalles extends getDataInterface {
   data: {
@@ -95,7 +96,6 @@ const ReporteEmpleadoChecklist: FC = () => {
       method: "put",
       refetchFn: () => {
         setRelativeData({});
-        setBodyUpdate({});
         refetch();
         checklistGral.refetch();
       },
@@ -149,6 +149,7 @@ const ReporteEmpleadoChecklist: FC = () => {
         title={`Editar checklist del día ${format.formatFecha(
           relativeData.fecha ? relativeData.fecha : ""
         )}`}
+        onClose={() => setBodyUpdate({})}
       >
         <form
           className="flex flex-col gap-4 p-2"
@@ -443,7 +444,7 @@ const ReporteEmpleadoChecklist: FC = () => {
             contextualMenuItems={[
               {
                 name: "Editar",
-                show: true,
+                show: Per(6),
                 elementType: "item",
                 icon: "pen-to-square",
                 onClick: () => {
@@ -480,7 +481,7 @@ const ReporteEmpleadoChecklist: FC = () => {
               },
               {
                 name: "Eliminar",
-                show: true,
+                show: Per(7),
                 elementType: "item",
                 icon: "trash",
                 color: "error",

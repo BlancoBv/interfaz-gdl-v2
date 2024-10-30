@@ -3,22 +3,22 @@ import { FC, useMemo } from "react";
 const Toggle: FC<{
   label: string;
   variable: {
-    evaluaciones: { cumple: 1 | 0; idEvaluacionUniforme: number }[];
-    empleado?: number;
+    evaluaciones: { evaluacion: 1 | 0; idEvaluacionPaso: number }[];
+    idEmpleado?: number;
   };
   setVariable: any;
   name: number;
   isChecked: boolean;
 }> = ({ label, variable, setVariable, name, isChecked }) => {
-  //const [checked, setChecked] = useState<boolean>(isChecked);
-
   const value = useMemo(() => {
     const indexOfElement = variable.evaluaciones.findIndex(
-      (el) => el.idEvaluacionUniforme === name
+      (el) => el.idEvaluacionPaso === name
     );
 
     if (indexOfElement >= 0) {
-      return variable.evaluaciones[indexOfElement].cumple === 1 ? true : false;
+      return variable.evaluaciones[indexOfElement].evaluacion === 1
+        ? true
+        : false;
     }
     return isChecked;
   }, [variable]);
@@ -34,36 +34,33 @@ const Toggle: FC<{
             const { checked, name } = ev.currentTarget;
             if (checked) {
               const indexOfElement = variable.evaluaciones.findIndex(
-                (el) => Number(el.idEvaluacionUniforme) === Number(name)
+                (el) => Number(el.idEvaluacionPaso) === Number(name)
               );
 
               if (indexOfElement >= 0) {
                 const newValues = [...variable.evaluaciones];
-                newValues[indexOfElement].cumple = 1;
+                newValues[indexOfElement].evaluacion = 1;
+
                 setVariable((prev: any) => ({
                   ...prev,
                   evaluaciones: [...newValues],
                 }));
               }
-
-              //setChecked(true);
             } else {
               const indexOfElement = variable.evaluaciones.findIndex(
-                (el) => Number(el.idEvaluacionUniforme) === Number(name)
+                (el) => Number(el.idEvaluacionPaso) === Number(name)
               );
 
               if (indexOfElement >= 0) {
                 const newValues = [...variable.evaluaciones];
-                newValues[indexOfElement].cumple = 0;
+                newValues[indexOfElement].evaluacion = 0;
+
                 setVariable((prev: any) => ({
                   ...prev,
                   evaluaciones: [...newValues],
                 }));
               }
-
-              //setChecked(false);
             }
-            //setVariable((prev: any) => ({ ...prev, [name]: checked }));
           }}
           checked={value}
         />

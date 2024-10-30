@@ -34,6 +34,7 @@ const Previsualizar: FC = () => {
   const sendPreliq = useSendData("pdf/sendFile", {
     customFn: cleanAll,
     method: "post",
+    refetchFn: () => {},
   });
 
   const handleSend = () => {

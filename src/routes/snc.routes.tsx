@@ -1,5 +1,5 @@
 import App from "@pages/app/Index";
-import { redirect } from "react-router-dom";
+import { redirect, RouteObject } from "react-router-dom";
 import Layout from "@layout/Layout";
 import RedactarSNC from "@pages/app/salidas-no-conformes/despacho/redactar/RedactarSNC";
 
@@ -30,4 +30,4 @@ export default {
       ],
     },
   ],
-};
+} satisfies RouteObject;

@@ -126,6 +126,11 @@ const ReporteEmpleadoPasosDespacho: FC = () => {
                 graficas: ["chart-1", "chart-2"],
               }}
               title="Detalles evaluación uniforme"
+              encabezados={{
+                mes: filtros.mes,
+                year: filtros.year,
+                empleado: idDespachador,
+              }}
             />
           }
           isPending={false}
@@ -148,7 +153,7 @@ const ReporteEmpleadoPasosDespacho: FC = () => {
                   _col,
                   row
                 ) => {
-                  if (row && row + 1 === 2) {
+                  if (row && row === 2) {
                     return "Promedio";
                   }
                   if (el) {
@@ -169,7 +174,7 @@ const ReporteEmpleadoPasosDespacho: FC = () => {
                     return "---";
                   }
 
-                  if (rowIndex && rowIndex + 1 === 2) {
+                  if (rowIndex && rowIndex === 2) {
                     return String(paso[index]);
                   }
 
@@ -189,7 +194,7 @@ const ReporteEmpleadoPasosDespacho: FC = () => {
                   _col,
                   row
                 ) => {
-                  if (row && row + 1 === 2 && promedio) {
+                  if (row && row === 2 && promedio) {
                     return format.formatDecimal(
                       promedio?.reduce((a, b) => Number(a) + Number(b), 0) /
                         promedio?.length

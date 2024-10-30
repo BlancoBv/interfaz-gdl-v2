@@ -41,13 +41,13 @@ export interface valesInterface {
   type: "vales";
   cantidad: string[];
 }
-interface totalesInterface {
+/* interface totalesInterface {
   totalEntregar: number;
   totalVales: number;
   totalEfectivo: number;
   totalEntregado: number;
   diferencia: string;
-}
+} */
 
 export const ContextPreliq = createContext<{
   infoGeneral: {

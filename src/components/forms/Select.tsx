@@ -1,5 +1,5 @@
 import moment from "moment";
-import { FC, ReactNode, useMemo, useState } from "react";
+import { FC, ReactNode, useEffect, useMemo } from "react";
 import { meses } from "@assets/misc";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
@@ -28,7 +28,6 @@ export const Select: FC<{
   disabled,
   required,
   options,
-  children,
 }) => {
   return (
     <label className="form-control w-full lg:max-w-xs">
@@ -58,6 +57,7 @@ export const Select: FC<{
         setVariable={setVariable}
         name={name}
         required={required}
+        disabled={disabled}
       />
     </label>
   );
@@ -258,7 +258,7 @@ export const SelectEstacion: FC<{
         <span className="label-text">{label}</span>
       </div>
       <ReactSelect
-        placeholder="Selecciona un turno"
+        placeholder="Selecciona una estación"
         options={
           !isPending && !isError
             ? data.response.map(
@@ -373,13 +373,20 @@ export const SelectIslaSingle: FC<{
     { fetchInURLChange: true }
   );
 
+  useEffect(() => {
+    setVariable((prev: any) => ({
+      ...prev,
+      [name]: null,
+    }));
+  }, [estacionServicio]);
+
   return (
     <label className="form-control w-full max-w-40 lg:max-w-xs">
       <div className="label">
         <span className="label-text">{label}</span>
       </div>
       <ReactSelect
-        placeholder="Selecciona una o más islas"
+        placeholder="Selecciona una isla"
         options={
           !isPending && !isError
             ? data.response.map((el: islasInterface) => ({

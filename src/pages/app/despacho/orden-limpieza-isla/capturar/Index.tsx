@@ -2,7 +2,6 @@ import { InputFecha } from "@components/forms/Input";
 import {
   SelectEmpleado,
   SelectEstacion,
-  SelectIsla,
   SelectIslaSingle,
   SelectTurno,
 } from "@components/forms/Select";
@@ -81,6 +80,8 @@ const CapturarOyL: FC = () => {
     },
   });
 
+  console.log(body);
+
   return (
     <div className="w-full">
       <SectionTitle
@@ -143,6 +144,9 @@ const CapturarOyL: FC = () => {
               idCumplimiento={el.idCumplimiento}
               variable={body}
               setVariable={setBody}
+              disabled={
+                el.idCumplimiento === 5 && Number(body?.isla ?? 0) === 9
+              }
             />
           ))}
         </div>

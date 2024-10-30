@@ -9,6 +9,20 @@ export type Rename<T, K extends keyof T, N extends string> = Pick<
   Exclude<keyof T, K>
 > & { [P in N]: T[K] };
 
+export interface sideBarItems {
+  icon: string;
+  name: string;
+  to: string;
+  show: boolean;
+  links?: {
+    to: string;
+    name: string;
+    show?: boolean;
+    icon: string;
+    collapse?: { to: string; name: string; show: boolean; end?: boolean }[];
+  }[];
+}
+
 export interface ChartsPropsInterface {
   data?: ChartData<any>;
   title?: string;
@@ -285,6 +299,15 @@ export interface reportePasosDespacharInterface {
   promedio: string;
   nombre: string;
   idempleado: number;
+}
+
+export interface historialPasosDespacharInterface
+  extends Pick<empleadoInterface, "idempleado" | "estatus" | "nombre_completo">,
+    evaluacionesPasosDespacharInterface {
+  identificador: string;
+  evaluacion: boolean;
+  quincena: number;
+  fecha: string;
 }
 
 export interface reporteDetallePasosDespacharInterface {

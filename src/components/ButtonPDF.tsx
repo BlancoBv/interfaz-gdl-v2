@@ -3,9 +3,10 @@ import Button from "./Button";
 import Icon from "./Icon";
 import { usePDFToBlob } from "@hooks/usePDFToBlob";
 
-const ButtonPDF: FC<{ doc?: any; isPending?: boolean }> = ({
+const ButtonPDF: FC<{ doc?: any; isPending?: boolean; disabled?: boolean }> = ({
   doc,
   isPending,
+  disabled,
 }) => {
   const { pending, getBlob } = usePDFToBlob(doc);
 
@@ -18,7 +19,7 @@ const ButtonPDF: FC<{ doc?: any; isPending?: boolean }> = ({
         getBlob();
       }}
       isPending={pending || isPending}
-      disabled={isPending}
+      disabled={pending || disabled || isPending}
     />
   );
 };

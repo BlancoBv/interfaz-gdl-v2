@@ -1,7 +1,11 @@
+import { Dep } from "@assets/auth";
+import { sideBarItems } from "@assets/interfaces";
+
 export default {
   icon: "thumbs-down",
   name: "Salidas no conformes",
   to: "salidas-no-conformes",
+  show: Dep(3),
   links: [
     {
       to: "redactar",
@@ -24,12 +28,13 @@ export default {
       name: "Órden y limpieza isla",
       icon: "spray-can-sparkles",
       collapse: [
-        { to: "capturar", name: "Capturar" },
+        { to: "capturar", name: "Capturar", show: true },
         {
           to: "reporte",
           name: "Reporte",
+          show: true,
         },
-        { to: "tendencia", name: "Tendencia" },
+        { to: "tendencia", name: "Tendencia", show: true },
         /* { to: "despacho/orden-limpieza/reporte", name: "Reporte mensual" },
         {
           to: "despacho/orden-limpieza/historial",
@@ -80,4 +85,4 @@ export default {
         ],
       }, */
   ],
-};
+} satisfies sideBarItems;

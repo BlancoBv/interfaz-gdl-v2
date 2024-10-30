@@ -35,7 +35,7 @@ const Table: FC<{
   const { show } = useContextMenu({ id: DEFAULT_ID });
 
   const displayContextMenu = (event: TriggerEvent, element: any) => {
-    setRelativeData({ ...element });
+    setRelativeData(element);
     show({ event });
   };
 
@@ -76,8 +76,11 @@ const Table: FC<{
                 onClick={onClick ? () => onClick(row) : undefined}
               >
                 {columns.map((col, colIndex) => (
-                  <td key={`col-data ${rowIndex}${colIndex}`}>
-                    {col.selector(row, colIndex - 1, rowIndex - 1)}
+                  <td
+                    key={`col-data ${rowIndex}${colIndex}`}
+                    className={col.className ?? ""}
+                  >
+                    {col.selector(row, colIndex, rowIndex)}
                   </td>
                 ))}
               </tr>

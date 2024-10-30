@@ -54,11 +54,16 @@ const ContextualMenu: FC<contextualMenuInterface> = ({ id, items }) => {
     <Menu id={id ? id : DEFAULT_ID}>
       {items ? (
         items.some((el) => el.show && el.elementType !== "separator") ? (
-          items.map((el, index) => (
-            <Fragment key={`${el.elementType} ${index}`}>
-              {el.show && elements[el.elementType](el, index)}
-            </Fragment>
-          ))
+          items.map((el, index) => {
+            if (!el.show) {
+              return null;
+            }
+            return (
+              <Fragment key={`${el.elementType} ${index}`}>
+                {el.show && elements[el.elementType](el, index)}
+              </Fragment>
+            );
+          })
         ) : (
           <Item>
             <span className="text-error">Sin acciones</span>

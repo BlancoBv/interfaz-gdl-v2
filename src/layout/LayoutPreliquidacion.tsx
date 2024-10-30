@@ -7,7 +7,6 @@ import { ModalConfirmNoMutate } from "@components/gui/Modal";
 import {
   ContextPreliq,
   efectivoInterface,
-  islasInterface,
   manguerasInterface,
   preciosInterface,
   valesInterface,
@@ -99,7 +98,7 @@ const LayoutPreliquidacion: FC = () => {
 
     if (!estacionServicio.isPending) {
       const indexOfValue = estacionServicio.data.response.findIndex(
-        (el) => el.idestacion_servicio === infoGeneral.estacion
+        (el: any) => el.idestacion_servicio === infoGeneral.estacion
       );
 
       if (indexOfValue >= 0) {

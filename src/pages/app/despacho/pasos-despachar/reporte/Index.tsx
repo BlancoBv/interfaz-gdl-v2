@@ -12,6 +12,7 @@ import moment from "moment";
 import { FC, SyntheticEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Line from "@components/charts/Line";
+import NoData from "@components/gui/NoData";
 
 interface reporte extends getDataInterface {
   data: { response: reportePasosDespacharInterface[] };
@@ -87,7 +88,8 @@ const ReportePasosDespacho: FC = () => {
         />
 
         <ButtonPDF
-          isPending={false}
+          isPending={isPending}
+          disabled={isError}
           doc={
             <PDFReportes
               title="Evaluación uniforme"
@@ -153,6 +155,7 @@ const ReportePasosDespacho: FC = () => {
           />
         </>
       )}
+      <NoData isPending={isPending} isError={isError} />
     </div>
   );
 };

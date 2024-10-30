@@ -1,9 +1,12 @@
-import { FC, SyntheticEvent, useCallback, useMemo, useRef } from "react";
+import { FC, useCallback, useRef } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Icon from "@components/Icon";
 import { toast } from "react-toastify";
 import despacho from "./sidebarRoutes/despacho";
-import salidaNoConforme from "./sidebarRoutes/salida-no-conforme";
+import administrativo from "./sidebarRoutes/administrativo";
+import { sideBarItems } from "@assets/interfaces";
+//import salidaNoConforme from "./sidebarRoutes/salida-no-conforme";
+//import recursosHumanos from "./sidebarRoutes/recursos-humanos";
 
 const SideBar: FC = () => {
   const navigate = useNavigate();
@@ -16,20 +19,11 @@ const SideBar: FC = () => {
     };
   } = JSON.parse(String(localStorage.getItem("credentials")));
   const overlay = useRef<HTMLLabelElement>(null);
-  const navElements: {
-    icon: string;
-    name: string;
-    to: string;
-    links?: {
-      to: string;
-      name: string;
-      show?: boolean;
-      icon: string;
-      collapse?: { to: string; name: string; show?: boolean; end?: boolean }[];
-    }[];
-  }[] = [
+  const navElements: sideBarItems[] = [
     despacho,
-    salidaNoConforme,
+    //salidaNoConforme,
+    //recursosHumanos,
+    administrativo,
     /* {
       icon: "thumbs-down",
       name: "Salidas no conformes",
@@ -37,29 +31,7 @@ const SideBar: FC = () => {
     },
     { icon: "screwdriver-wrench", name: "Mantenimiento", to: "mantenimiento" }, */
     /*   { icon: "box", name: "Almacen", to: "/almacen" }, */
-    {
-      icon: "people-group",
-      name: "Recursos humanos",
-      to: "recursos-humanos",
-      links: [
-        {
-          to: "empleados",
-          name: "Empleados",
-          icon: "briefcase",
-          collapse: [
-            { to: "departamentos", name: "Departamentos" },
-            { to: "", name: "Control de empleados", end: true },
-            { to: "documentos", name: "Documentos" },
-          ],
-        },
-      ],
-    },
-    {
-      icon: "rectangle-list",
-      name: "Administrativo",
-      to: "administrativo",
-      links: [{ to: "usuarios", name: "Usuarios", icon: "users" }],
-    },
+
     /* { icon: "clipboard-check", name: "Liquidación", to: "liquidacion" },
     { icon: "shop", name: "Tienda", to: "tienda" }, */
     /* { icon: "shield", name: "Seguridad", to: "/despacho" }, */
@@ -146,51 +118,62 @@ const SideBar: FC = () => {
             </ul>
           </details>
         </li> */}
-        {navElements.map((item) => (
-          <li key={`parent ${item.name}`}>
-            <details open={openSummary(item.to)}>
-              <summary>
-                <Icon icon={item.icon} />
-                {item.name}
-              </summary>
-              <ul>
-                {item.hasOwnProperty("links") &&
-                  item.links?.map((child) => (
-                    <li key={`child ${child.name}`}>
-                      {child.hasOwnProperty("collapse") ? (
-                        <>
-                          <h2 className="menu-title flex gap-2 items-center">
-                            <Icon icon={child.icon} />
-                            {child.name}
-                          </h2>
-                          <ul>
-                            {child.collapse?.map((subchild) => (
-                              <li key={`subchild ${subchild.name}`}>
-                                <NavLink
-                                  to={`${item.to}/${child.to}/${subchild.to}`}
-                                  onClick={handleClick}
-                                  end={subchild.end}
-                                >
-                                  {subchild.name}
-                                </NavLink>
-                              </li>
-                            ))}
-                          </ul>
-                        </>
-                      ) : (
-                        <NavLink
-                          to={`${item.to}/${child.to}`}
-                          onClick={handleClick}
-                        >
-                          <Icon icon={child.icon} /> {child.name}
-                        </NavLink>
-                      )}
-                    </li>
-                  ))}
-              </ul>
-            </details>
-          </li>
-        ))}
+        {navElements.map((item) => {
+          if (!item.show) {
+            return null;
+          }
+          return (
+            <li key={`parent ${item.name}`}>
+              <details open={openSummary(item.to)}>
+                <summary>
+                  <Icon icon={item.icon} />
+                  {item.name}
+                </summary>
+                <ul>
+                  {item.hasOwnProperty("links") &&
+                    item.links?.map((child) => {
+                      if (!child.show) {
+                        return null;
+                      }
+
+                      return (
+                        <li key={`child ${child.name}`}>
+                          {child.hasOwnProperty("collapse") ? (
+                            <>
+                              <h2 className="menu-title flex gap-2 items-center">
+                                <Icon icon={child.icon} />
+                                {child.name}
+                              </h2>
+                              <ul>
+                                {child.collapse?.map((subchild) => (
+                                  <li key={`subchild ${subchild.name}`}>
+                                    <NavLink
+                                      to={`${item.to}/${child.to}/${subchild.to}`}
+                                      onClick={handleClick}
+                                      end={subchild.end}
+                                    >
+                                      {subchild.name}
+                                    </NavLink>
+                                  </li>
+                                ))}
+                              </ul>
+                            </>
+                          ) : (
+                            <NavLink
+                              to={`${item.to}/${child.to}`}
+                              onClick={handleClick}
+                            >
+                              <Icon icon={child.icon} /> {child.name}
+                            </NavLink>
+                          )}
+                        </li>
+                      );
+                    })}
+                </ul>
+              </details>
+            </li>
+          );
+        })}
 
         <div className="sticky bottom-0 flex flex-col p-4 bg-base-200/80 backdrop-blur-sm">
           <div className="divider" />
@@ -198,11 +181,11 @@ const SideBar: FC = () => {
             <div className="avatar placeholder flex justify-evenly items-center">
               <div className="bg-neutral text-neutral-content size-14 rounded-full">
                 <span className="text-3xl">
-                  {userData.auth.nombre.charAt(0)}
+                  {userData?.auth.nombre.charAt(0)}
                 </span>
               </div>
             </div>
-            <p className="text-center">{`${userData.auth.nombre} ${userData.auth.apellido_paterno} ${userData.auth.apellido_materno}`}</p>
+            <p className="text-center">{`${userData?.auth.nombre} ${userData?.auth.apellido_paterno} ${userData?.auth.apellido_materno}`}</p>
           </div>
 
           <button

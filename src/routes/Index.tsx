@@ -11,7 +11,6 @@ import Layout from "@layout/Layout";
 
 import Login from "@pages/login/Index";
 import App from "@pages/app/Index";
-import Despacho from "@pages/app/despacho/Index";
 
 //administrativo
 import Usuarios from "@pages/app/administrativo/usuarios/Index";
@@ -31,23 +30,7 @@ import RecursosHumanos from "@pages/app/recursos-humanos/Index";
 import Departamentos from "@pages/app/recursos-humanos/empleados/departamentos/Index";
 import Documentos from "@pages/app/recursos-humanos/empleados/documentos/Index";
 import Empleados from "@pages/app/recursos-humanos/empleados/Index";
-import RegistrosChecklist from "@pages/app/despacho/checklist-bomba/registros";
-import CapturarOyL from "@pages/app/despacho/orden-limpieza-isla/capturar/Index";
-import ReporteOyl from "@pages/app/despacho/orden-limpieza-isla/reporte/Index";
-import ReporteEmpleadoOyL from "@pages/app/despacho/orden-limpieza-isla/reporte/id-empleado";
-import TendenciaOyL from "@pages/app/despacho/orden-limpieza-isla/tendencia/Index";
-import ReportesChecklist from "@pages/app/despacho/checklist-bomba/reporte/Index";
-import ReporteEmpleadoChecklist from "@pages/app/despacho/checklist-bomba/reporte/id-empleado/Index";
-import HistorialOyL from "@pages/app/despacho/orden-limpieza-isla/historial/Index";
-import CapturarEvUniforme from "@pages/app/despacho/evaluacion-uniforme/capturar/Index";
-import CapturarPasosDespachar from "@pages/app/despacho/pasos-despachar/capturar/Index";
-import ReporteEvUniforme from "@pages/app/despacho/evaluacion-uniforme/reporte/Index";
-import ReporteEmpleadoEvUniforme from "@pages/app/despacho/evaluacion-uniforme/reporte/id-empleado/Index";
-import HistorialEvUniforme from "@pages/app/despacho/evaluacion-uniforme/historial/Index";
-import TendenciaEvUniforme from "@pages/app/despacho/evaluacion-uniforme/tendencia/Index";
-import TendenciaPasosDespacho from "@pages/app/despacho/pasos-despachar/tendencia/Index";
-import ReportePasosDespacho from "@pages/app/despacho/pasos-despachar/reporte/Index";
-import ReporteEmpleadoPasosDespacho from "@pages/app/despacho/pasos-despachar/reporte/id-empleado/Index";
+import despachoRoutes from "./despacho.routes";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -78,94 +61,7 @@ const Index: FC = () => {
           index: true,
           element: <App />,
         },
-        {
-          path: "despacho",
-          children: [
-            { index: true, element: <Despacho /> },
-            {
-              path: "checklist-bomba",
-              children: [
-                {
-                  path: "reporte",
-                  children: [
-                    { index: true, element: <ReportesChecklist /> },
-                    {
-                      path: ":year/:mes/:idDespachador",
-                      element: <ReporteEmpleadoChecklist />,
-                    },
-                  ],
-                },
-                { path: "registros", element: <RegistrosChecklist /> },
-              ],
-            },
-            {
-              path: "orden-limpieza-isla",
-              children: [
-                {
-                  path: "capturar",
-                  element: <CapturarOyL />,
-                },
-                {
-                  path: "reporte",
-
-                  children: [
-                    { index: true, element: <ReporteOyl /> },
-                    {
-                      path: ":year/:mes/:idDespachador",
-                      element: <ReporteEmpleadoOyL />,
-                    },
-                  ],
-                },
-                { path: "tendencia", element: <TendenciaOyL /> },
-                { path: "historial", element: <HistorialOyL /> },
-              ],
-            },
-            {
-              path: "evaluacion-uniforme",
-              children: [
-                {
-                  path: "capturar",
-                  element: <CapturarEvUniforme />,
-                },
-                {
-                  path: "reporte",
-
-                  children: [
-                    { index: true, element: <ReporteEvUniforme /> },
-                    {
-                      path: ":year/:mes/:idDespachador",
-                      element: <ReporteEmpleadoEvUniforme />,
-                    },
-                  ],
-                },
-                { path: "tendencia", element: <TendenciaEvUniforme /> },
-                { path: "historial", element: <HistorialEvUniforme /> },
-              ],
-            },
-            {
-              path: "pasos-despachar",
-              children: [
-                {
-                  path: "capturar",
-                  element: <CapturarPasosDespachar />,
-                },
-                {
-                  path: "reporte",
-
-                  children: [
-                    { index: true, element: <ReportePasosDespacho /> },
-                    {
-                      path: ":year/:mes/:idDespachador",
-                      element: <ReporteEmpleadoPasosDespacho />,
-                    },
-                  ],
-                },
-                { path: "tendencia", element: <TendenciaPasosDespacho /> },
-                { path: "historial", element: <HistorialOyL /> },
-              ],
-            },
-          ],
-        },
+        despachoRoutes,
         {
           path: "administrativo",
           children: [{ path: "usuarios", element: <Usuarios /> }],

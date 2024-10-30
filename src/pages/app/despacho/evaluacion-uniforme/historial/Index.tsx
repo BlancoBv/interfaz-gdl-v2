@@ -11,13 +11,26 @@ import { useModal } from "@hooks/useModal";
 import { sendDataInterface, useSendData } from "@hooks/useSendData";
 import { FC, SyntheticEvent, useState } from "react";
 import Line from "@components/charts/Line";
-import { useGetData } from "@hooks/useGetData";
+import { getDataInterface, useGetData } from "@hooks/useGetData";
 import Toggle from "./components/Toggle";
 import Icon from "@components/Icon";
+import { Per } from "@assets/auth";
 
 interface historial extends sendDataInterface {
   data: {
     response: historialUniformeInterface[];
+  };
+}
+
+interface single extends getDataInterface {
+  data: {
+    response: {
+      cumple: boolean;
+      idevaluacion_uniforme: number;
+      idcumplimiento_uniforme: number;
+      cumplimiento: string;
+      fecha: string;
+    }[];
   };
 }
 const HistorialEvUniforme: FC = () => {
@@ -36,7 +49,7 @@ const HistorialEvUniforme: FC = () => {
   const { data, isPending, mutate, isSuccess }: historial = useSendData(
     `evaluacion-uniforme/buscar`
   );
-  const singleEv = useGetData(
+  const singleEv: single = useGetData(
     `evaluacion-uniforme/buscar/${relativeData.identificador}`,
     "singleEvUniformeData",
     { fetchInURLChange: true }
@@ -103,24 +116,18 @@ const HistorialEvUniforme: FC = () => {
               {!singleEv.isPending && !singleEv.isError && (
                 <>
                   <span>
-                    Fecha{" "}
-                    {format.formatFecha(
-                      (singleEv.data.response as historialUniformeInterface)
-                        .fecha
-                    )}
+                    Fecha {format.formatFecha(singleEv.data.response[0].fecha)}
                   </span>
-                  {singleEv.data.response.map(
-                    (el: historialUniformeInterface) => (
-                      <Toggle
-                        key={el.idcumplimiento_uniforme}
-                        label={el.cumplimiento}
-                        name={el.idevaluacion_uniforme}
-                        isChecked={el.cumple}
-                        variable={bodyUpdate}
-                        setVariable={setBodyUpdate}
-                      />
-                    )
-                  )}
+                  {singleEv.data.response.map((el) => (
+                    <Toggle
+                      key={el.idcumplimiento_uniforme}
+                      label={el.cumplimiento}
+                      name={el.idevaluacion_uniforme}
+                      isChecked={el.cumple}
+                      variable={bodyUpdate}
+                      setVariable={setBodyUpdate}
+                    />
+                  ))}
                 </>
               )}
               <Button buttonType="submit" text="Enviar" block />
@@ -171,13 +178,20 @@ const HistorialEvUniforme: FC = () => {
             contextualMenuItems={[
               {
                 name: "Editar",
-                show: true,
+                show: Per(9),
                 icon: "pen-to-square",
                 elementType: "item",
                 onClick: () => {
                   setBodyUpdate((prev) => ({
                     ...prev,
                     empleado: relativeData.idempleado,
+                    ...(!singleEv.isPending &&
+                      !singleEv.isError && {
+                        evaluaciones: singleEv.data.response.map((el) => ({
+                          cumple: el.cumple ? 1 : 0,
+                          idEvaluacionUniforme: el.idevaluacion_uniforme,
+                        })),
+                      }),
                   }));
                   modalEdit.show();
                 },
@@ -186,7 +200,7 @@ const HistorialEvUniforme: FC = () => {
                 name: "Eliminar",
                 color: "error",
                 icon: "trash",
-                show: true,
+                show: Per(10),
                 elementType: "item",
                 onClick: () => modalConfirm.show(),
               },

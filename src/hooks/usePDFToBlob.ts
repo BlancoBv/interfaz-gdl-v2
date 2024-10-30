@@ -6,9 +6,8 @@ export function usePDFToBlob(doc: any) {
   const [pending, setPending] = useState<boolean>(false);
 
   const getBlob = () => {
-    const pdfDoc = pdf(doc);
-
     setPending(true);
+    const pdfDoc = pdf(doc);
     pdfDoc
       .toBlob()
       .then((res) => {
