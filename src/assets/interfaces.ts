@@ -325,3 +325,38 @@ export interface tendenciaPasosDespacharInterface extends empleadoInterface {
     oyl_cumplimiento: evaluacionesPasosDespacharInterface;
   }[];
 }
+
+export interface reportJsonLiqInterface {
+  calculados: {
+    litros: { M: number; P: number; D: number };
+    pesos: { M: number; P: number; D: number };
+  };
+  cancelado: null | boolean;
+  capturado: boolean;
+  createdAt: string;
+  diferencia: number;
+  efectivo_entregado: number;
+  entregado: number;
+  fechaCancelado: string | null;
+  horario: {
+    empleado: Pick<
+      empleadoInterface,
+      | "apellido_materno"
+      | "apellido_paterno"
+      | "nombre"
+      | "estatus"
+      | "idchecador"
+      | "idempleado"
+    >;
+    fechaturno: string;
+    idempleado: number;
+    idhorario: number;
+    idturno: number;
+    turno: turnoInterface;
+  };
+  idempleado_captura: number;
+  idhorario: number;
+  idislas: { nisla: string; idisla: number; posiciones: number[] }[];
+  idliquidacion: number;
+  lecturas: string;
+}

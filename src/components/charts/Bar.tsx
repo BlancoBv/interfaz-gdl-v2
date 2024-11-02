@@ -6,6 +6,8 @@ import { Bar } from "react-chartjs-2";
 interface bar extends ChartsPropsInterface {
   data?: ChartData<"bar", CustomDataPoint[]>;
   id?: string;
+  adjustToContainer?: boolean;
+  tootip?: boolean;
 }
 const Index: FC<bar> = ({
   data,
@@ -17,6 +19,8 @@ const Index: FC<bar> = ({
   onClick,
   ticksYCallback,
   id,
+  adjustToContainer,
+  tootip,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
@@ -29,7 +33,7 @@ const Index: FC<bar> = ({
   }, []);
 
   return (
-    <div className="h-96">
+    <div className={`${adjustToContainer ? "" : "h-96"}`}>
       <Bar
         id={id}
         ref={ref}
@@ -62,6 +66,16 @@ const Index: FC<bar> = ({
             },
             x: {
               title: { display: true, text: etiquetaX },
+              ticks: {
+                callback(value) {
+                  const label = this.getLabelForValue(Number(value)).split(";");
+                  if (label.length > 1) {
+                    return label[1];
+                  }
+
+                  return label[0];
+                },
+              },
             },
           },
           plugins: {
