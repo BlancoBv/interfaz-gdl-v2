@@ -10,7 +10,7 @@ const Card: FC<{
 }> = ({ title, children, className, to, noAnchor }) => {
   return noAnchor ? (
     <div
-      className={`card bg-base-100 w-full min-w-24 h-60 shadow-xl overflow-hidden ${className} group`}
+      className={`card bg-base-100 w-full min-w-24 h-60 shadow-xl ${className} group`}
     >
       <div className="card-body">
         <h2 className="card-title text-sm">{title}</h2>

@@ -1,5 +1,5 @@
 import moment from "moment";
-import { FC, ReactNode, useEffect, useMemo } from "react";
+import { FC, ReactNode, useEffect, useMemo, useRef } from "react";
 import { meses } from "@assets/misc";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
@@ -515,6 +515,8 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
     tabIndex,
     multiple,
   } = props;
+
+  const ref = useRef<any>();
   const value = useMemo(() => {
     if (variable[name] && options) {
       const indexOfValue = options.findIndex((el) => {
@@ -540,6 +542,7 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
 
   return (
     <RSelect
+      ref={ref}
       classNames={{
         control: (state) =>
           `${
@@ -560,7 +563,6 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
         placeholder: () => `overflow-clip text-nowrap me-22`,
         clearIndicator: () => "cursor-pointer hover:text-error",
       }}
-      unstyled
       styles={{
         control: (baseStyles) => {
           const { outline, ...base } = baseStyles;
@@ -595,7 +597,8 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
       value={value}
       tabIndex={tabIndex}
       isMulti={multiple}
-      menuPosition="fixed"
+      menuPosition="absolute"
+      unstyled
     />
   );
 };
