@@ -50,7 +50,7 @@ const RedactarSNC: FC = () => {
   return (
     <div className="w-full">
       <form
-        className="w-[800px] min-w-[850px] border p-4 rounded border-slate-200 border-2 mx-auto"
+        className="xl:w-[800px] xl:min-w-[850px] border p-4 rounded border-slate-200 border-2 mx-auto"
         onSubmit={(ev) => {
           ev.preventDefault();
           saveSNC.mutateAsync(body).then(limpiarCampos);
@@ -65,7 +65,7 @@ const RedactarSNC: FC = () => {
             todayBtn
             required
           />
-          <div>
+          <div className="hidden sm:block">
             <div className="cursor-pointer hover:text-red-500 hover:drop-shadow-[0_0px_20px_rgb(239,68,68)] ">
               <h3 className="font-bold text-lg">
                 SNC <Icon icon="thumbs-down" />{" "}
