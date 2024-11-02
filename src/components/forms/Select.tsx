@@ -553,6 +553,7 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
       value={value}
       tabIndex={tabIndex}
       isMulti={multiple}
+      menuPosition="fixed"
     />
   );
 };
