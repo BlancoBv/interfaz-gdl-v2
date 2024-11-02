@@ -18,9 +18,10 @@ const SelectColors: FC<Props> = ({ editor }: Props) => {
   return (
     <div className="dropdown dropdown-down">
       <button
+        type="button"
         tabIndex={0}
         role="button"
-        className="btn btn-sm bg-zinc-200 m-1 h-auto m-0 rounded font-bold underline underline-offset-2"
+        className="btn btn-sm bg-zinc-200 h-auto m-0 rounded font-bold underline underline-offset-2"
       >
         A
       </button>
@@ -31,30 +32,35 @@ const SelectColors: FC<Props> = ({ editor }: Props) => {
         <div className="flex flex-wrap gap-2 mb-3">
           <li>
             <button
+              type="button"
               className="bg-[#000] hover:bg-[#000] hover:outline hover:outline-neutral w-1 aspect-square"
               onClick={() => setColorBtn("black")}
             ></button>
           </li>
           <li>
             <button
+              type="button"
               className="bg-slate-100 hover:bg-slate-100 hover:outline hover:outline-neutral w-1 aspect-square"
               onClick={() => setColorBtn("white")}
             ></button>
           </li>
           <li>
             <button
+              type="button"
               className="bg-red-600 hover:bg-red-600 hover:outline hover:outline-neutral w-1 aspect-square"
               onClick={() => setColorBtn("#dc2626")}
             ></button>
           </li>
           <li>
             <button
+              type="button"
               className="bg-blue-600 hover:bg-blue-600 hover:outline hover:outline-neutral w-1 aspect-square"
               onClick={() => setColorBtn("#2563eb")}
             ></button>
           </li>
           <li>
             <button
+              type="button"
               className="bg-green-700 hover:bg-green-700 hover:outline hover:outline-neutral w-1 aspect-square"
               onClick={() => setColorBtn("#15803d")}
             ></button>

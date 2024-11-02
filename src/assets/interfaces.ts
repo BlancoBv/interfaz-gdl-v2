@@ -100,6 +100,11 @@ export interface departamentoInterface {
   departamento: string;
 }
 
+export interface incumplimientoInterface {
+  idincumplimiento: number;
+  incumplimiento: string;
+}
+
 export interface controlDocumentoInterface {
   idchecador: number;
   idempleado: number;
