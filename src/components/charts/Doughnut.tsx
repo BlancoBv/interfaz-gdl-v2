@@ -23,6 +23,9 @@ const Index: FC<doughnut> = ({
   id,
   adjustToContainer,
   useDecimalInTotal,
+  showTitle = true,
+  legendPosition = "right",
+  showTooltip = true,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
@@ -32,6 +35,8 @@ const Index: FC<doughnut> = ({
       }
     }
   }, []);
+
+  console.log(data);
 
   const pluginTotal = {
     id: "pluginTotalDoughnut",
@@ -47,15 +52,25 @@ const Index: FC<doughnut> = ({
         return new Decimal(suma).toDecimalPlaces(2).toNumber();
       };
 
+      const calcOffset = (width: number) => {
+        const textOffset = text.length * 10;
+        console.log({ width });
+
+        if (width > 350) {
+          return (350 - textOffset) * 0.1;
+        }
+        if (width < 230) {
+          return (230 - textOffset) * 0.1;
+        }
+        return (width - textOffset) * 0.1;
+      };
+
       const sumatoria = chart.config.data.datasets[0].data.reduce(sumar, 0);
       ctx.restore();
 
-      const text = `Total: ${sumatoria}`,
-        textOffset = text.length * 10;
+      const text = `Total: ${sumatoria}`;
 
-      ctx.font = `${
-        width < 350 ? (width - textOffset) * 0.1 : (350 - textOffset) * 0.1
-      }px Arial`;
+      ctx.font = `${calcOffset(width)}px Arial`;
       ctx.textBaseline = "middle";
 
       const textX = Math.round((width - ctx.measureText(text).width) / 2),
@@ -139,18 +154,19 @@ const Index: FC<doughnut> = ({
               },
             },
             title: {
-              display: true,
+              display: showTitle,
               text: title,
               font: {
                 size: 24,
               },
             },
             legend: {
-              position: "right",
+              position: legendPosition,
               display: legend,
             },
             tooltip: {
               usePointStyle: true,
+              enabled: showTooltip,
             },
           },
         }}

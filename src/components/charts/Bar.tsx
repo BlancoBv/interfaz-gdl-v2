@@ -20,7 +20,7 @@ const Index: FC<bar> = ({
   ticksYCallback,
   id,
   adjustToContainer,
-  tootip,
+  showTitle = true,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
@@ -98,7 +98,7 @@ const Index: FC<bar> = ({
               },
             },
             title: {
-              display: true,
+              display: showTitle,
               text: title,
               font: {
                 size: 24,

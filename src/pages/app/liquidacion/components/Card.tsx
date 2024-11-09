@@ -7,10 +7,13 @@ const Card: FC<{
   className?: string;
   to?: string;
   noAnchor?: boolean;
-}> = ({ title, children, className, to, noAnchor }) => {
+  noStaticHeight?: boolean;
+}> = ({ title, children, className, to, noAnchor, noStaticHeight }) => {
   return noAnchor ? (
     <div
-      className={`card bg-base-100 w-full min-w-24 h-60 shadow-xl ${className} group`}
+      className={`card bg-base-100 w-full min-w-24 ${
+        noStaticHeight ? "" : "h-60"
+      } shadow-xl ${className} group`}
     >
       <div className="card-body">
         <h2 className="card-title text-sm">{title}</h2>
@@ -20,7 +23,9 @@ const Card: FC<{
   ) : (
     <NavLink
       to={to ?? "#"}
-      className={`card bg-base-100 w-full min-w-24 h-60 shadow-xl overflow-hidden ${className} group ${
+      className={`card bg-base-100 w-full min-w-24 ${
+        noStaticHeight ? "" : "h-60"
+      } shadow-xl overflow-hidden ${className} group ${
         to
           ? "cursor-pointer hover:bg-base-200 ease-in duration-150"
           : "cursor-default"

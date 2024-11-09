@@ -34,6 +34,9 @@ export interface ChartsPropsInterface {
   ticksYCallback?: (value: any) => string;
   xAxeAsCategory?: boolean;
   id?: string;
+  showTitle?: boolean;
+  legendPosition?: "right" | "top" | "bottom";
+  showTooltip?: boolean;
 } // props para las graficas
 
 export interface empleadoInterface {
@@ -353,10 +356,23 @@ export interface reportJsonLiqInterface {
     idhorario: number;
     idturno: number;
     turno: turnoInterface;
+    estacion_servicio: estacionServicioInterface;
   };
   idempleado_captura: number;
   idhorario: number;
   idislas: { nisla: string; idisla: number; posiciones: number[] }[];
   idliquidacion: number;
   lecturas: string;
+}
+
+export interface preciosLiquidacionInterface {
+  idprecio: number;
+  fecha: string;
+  idgas: string;
+  idempleado_captura: number;
+  precio: string;
+  ga: {
+    idgas: string;
+    nombre: string;
+  };
 }

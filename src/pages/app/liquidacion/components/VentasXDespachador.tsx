@@ -42,13 +42,16 @@ const VentasXDespachador: FC<{ data: any }> = ({ data }) => {
 
   return (
     <div>
-      <Bar
-        etiquetaX="Despachador"
-        etiquetaY="Litros"
-        adjustToContainer
-        data={{ datasets }}
-        title=""
-      />
+      {datasets.length > 0 && (
+        <Bar
+          etiquetaX="Despachador"
+          etiquetaY="Litros"
+          adjustToContainer
+          data={{ datasets }}
+          title=""
+        />
+      )}
+      {datasets.length < 1 && <span>Sin datos.</span>}
     </div>
   );
 };

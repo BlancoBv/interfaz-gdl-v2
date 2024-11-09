@@ -12,6 +12,8 @@ import { reportJsonLiqInterface } from "@assets/interfaces";
 import agruparArr from "@assets/agruparArr";
 import VentasXDespachador from "./components/VentasXDespachador";
 import Doughnut from "@components/charts/Doughnut";
+import CantidadLiquidaciones from "./components/CantidadLiquidaciones";
+import PreciosCombustible from "./components/PreciosCombustible";
 
 interface liquidacion extends getDataInterface {
   data: { response: reportJsonLiqInterface[] };
@@ -129,7 +131,10 @@ const Liquidacion: FC = () => {
         <Card
           title="Cantidad de liquidaciones"
           className="lg:col-span-4"
-        ></Card>
+          to="cantidad-liquidaciones"
+        >
+          <CantidadLiquidaciones data={data} />
+        </Card>
         <Card
           title="Ventas por despachador"
           className="lg:col-span-4"
@@ -137,23 +142,24 @@ const Liquidacion: FC = () => {
         >
           <VentasXDespachador data={liquidacionXdespachador} />
         </Card>
-        <Card title="Precios" className="lg:col-span-4"></Card>
+        <Card
+          title="Precios"
+          className="lg:row-span-2 lg:col-span-4"
+          to="precios"
+          noStaticHeight
+        >
+          <PreciosCombustible />
+        </Card>
         <Card title="Ventas por turnos" className="lg:col-span-4 "></Card>
         <Card
           title="Litros combustible por día"
           className="lg:col-span-4"
         ></Card>
-        <Card title="Montos faltantes" className="lg:col-start-6"></Card>
+        <Card title="Montos faltantes" className=""></Card>
         <Card title="Montos sobrantes"></Card>
         <Card title="Total en lecturas"></Card>
         <Card title="..."></Card>
       </div>
-      <Doughnut
-        data={{
-          datasets: [{ data: [100, 800, 1000, 5000, 10000, 500, 50.547] }],
-        }}
-        useDecimalInTotal
-      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import calcularTotal from "@assets/calcularTotal";
 import { reportJsonLiqInterface } from "@assets/interfaces";
 import Loader from "@components/gui/Loader";
+import Icon from "@components/Icon";
 import { FC, useMemo } from "react";
 
 const LitrosVendidos: FC<{
@@ -59,6 +60,7 @@ const LitrosVendidos: FC<{
     <div>
       <Loader isPending={isPending} />
       {!isPending && total}
+      <Icon icon="gas-pump" />
     </div>
   );
 };
