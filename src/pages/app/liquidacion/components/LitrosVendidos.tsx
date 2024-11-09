@@ -1,15 +1,21 @@
 import calcularTotal from "@assets/calcularTotal";
+import format from "@assets/format";
 import { reportJsonLiqInterface } from "@assets/interfaces";
 import Loader from "@components/gui/Loader";
 import Icon from "@components/Icon";
 import { FC, useMemo } from "react";
 
+interface colors {
+  M: string;
+  P: string;
+  D: string;
+}
+
 const LitrosVendidos: FC<{
   data: reportJsonLiqInterface[];
   isPending: boolean;
   isError: boolean;
-  variant: "L" | "M" | "P" | "D";
-}> = ({ data, isError, isPending, variant }) => {
+}> = ({ data, isError, isPending }) => {
   const mf = (arrIn: any[]) => {
     const tempArr: any[] = [];
     arrIn.forEach((liq) => {
@@ -41,26 +47,69 @@ const LitrosVendidos: FC<{
     return tempArr;
   };
 
-  const total = useMemo(() => {
-    if (!isError && !isPending) {
-      const allLecturas = mf(data)
-        .map((liq) => liq.dataLecturas)
-        .flat();
+  const getTotalByVariant = (variant: string) => {
+    const allLecturas = mf(data)
+      .map((liq) => liq.dataLecturas)
+      .flat();
 
-      if (variant !== "L") {
-        const filtrar = allLecturas.filter((lec) => lec.idgas === variant);
-        return calcularTotal(filtrar, "litrosVendidos");
-      }
-      return calcularTotal(allLecturas, "litrosVendidos");
+    if (!(variant === "L")) {
+      const filtrar = allLecturas.filter((lec) => lec.idgas === variant);
+      return calcularTotal(filtrar, "litrosVendidos");
     }
-    return 0;
+    return calcularTotal(allLecturas, "litrosVendidos");
+  };
+  const colors: colors = {
+    M: "text-success",
+    P: "text-error",
+    D: "text-secondary",
+  };
+
+  const total = useMemo(() => {
+    const defaultValue = {
+      litros: { variante: "Total general", total: 0 },
+      magna: { variante: "Magna", total: 0 },
+      premium: { variante: "Premium", total: 0 },
+      diesel: { variante: "Diesel", total: 0 },
+    };
+    if (!isError && !isPending) {
+      defaultValue.litros.total = getTotalByVariant("L");
+      defaultValue.magna.total = getTotalByVariant("M");
+      defaultValue.premium.total = getTotalByVariant("P");
+      defaultValue.diesel.total = getTotalByVariant("D");
+
+      return defaultValue;
+    }
+    return defaultValue;
   }, [isPending, data]);
+
+  console.log(total);
 
   return (
     <div>
       <Loader isPending={isPending} />
-      {!isPending && total}
-      <Icon icon="gas-pump" />
+      {!isPending && !isError && (
+        <div className="stats bg-transparent w-full h-full stats-horizontal lg:stats-vertical lg:overflow-hidden">
+          {Object.values(total).map((el) => (
+            <div className="stat" key={el.variante}>
+              <div
+                className={`stat-figure ${
+                  colors[el.variante.charAt(0) as keyof colors]
+                }`}
+              >
+                <Icon icon="gas-pump" size="2x" />
+              </div>
+              <div className="stat-title">{el.variante}</div>
+              <div
+                className={`stat-value text-wrap text-3xl ${
+                  colors[el.variante.charAt(0) as keyof colors]
+                }`}
+              >
+                {format.formatDecimal(el.total)}L
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
