@@ -1,7 +1,17 @@
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import { FC } from "react";
 
-const TablaRevision: FC = () => {
+interface Props {
+  revision?: number;
+  retencion?: number;
+  disposicion?: string;
+}
+
+const TablaRevision: FC<Props> = ({
+  revision,
+  retencion,
+  disposicion,
+}: Props) => {
   const styles = StyleSheet.create({
     dflex: {
       display: "flex",
@@ -31,11 +41,14 @@ const TablaRevision: FC = () => {
     textCenter: {
       textAlign: "center",
     },
+    textSize: {
+      fontSize: 8,
+    },
   });
 
   return (
     <View
-      style={{ border: "1px solid black", width: "150px", fontSize: "12px" }}
+      style={{ border: "1px solid black", width: "100px", fontSize: "12px" }}
     >
       <View style={{ borderBottom: "1px solid black", ...styles.dflex }}>
         <View
@@ -46,7 +59,9 @@ const TablaRevision: FC = () => {
             fontWeight: "bold",
           }}
         >
-          <Text hyphenationCallback={(w) => [w]}>Tiempo Retención</Text>
+          <Text hyphenationCallback={(w) => [w]} style={styles.textSize}>
+            Tiempo Retención
+          </Text>
         </View>
         <View
           style={{
@@ -57,7 +72,7 @@ const TablaRevision: FC = () => {
             ...styles.alignCenter,
           }}
         >
-          <Text>1 año</Text>
+          <Text style={styles.textSize}>{retencion || 1} año</Text>
         </View>
       </View>
 
@@ -70,7 +85,9 @@ const TablaRevision: FC = () => {
             fontWeight: "bold",
           }}
         >
-          <Text hyphenationCallback={(w) => [w]}>Disposición</Text>
+          <Text hyphenationCallback={(w) => [w]} style={styles.textSize}>
+            Disposición
+          </Text>
         </View>
         <View
           style={{
@@ -81,7 +98,7 @@ const TablaRevision: FC = () => {
             ...styles.alignCenter,
           }}
         >
-          <Text>Destrucción</Text>
+          <Text style={styles.textSize}>{disposicion || "Destrucción"}</Text>
         </View>
       </View>
 
@@ -94,7 +111,9 @@ const TablaRevision: FC = () => {
             fontWeight: "bold",
           }}
         >
-          <Text hyphenationCallback={(w) => [w]}>Número de Revisión</Text>
+          <Text hyphenationCallback={(w) => [w]} style={styles.textSize}>
+            Número de Revisión
+          </Text>
         </View>
         <View
           style={{
@@ -105,7 +124,7 @@ const TablaRevision: FC = () => {
             ...styles.alignCenter,
           }}
         >
-          <Text>2</Text>
+          <Text style={styles.textSize}>{revision || 1}</Text>
         </View>
       </View>
     </View>
