@@ -11,6 +11,7 @@ import LitrosVendidos from "./components/LitrosVendidos";
 import { reportJsonLiqInterface } from "@assets/interfaces";
 import agruparArr from "@assets/agruparArr";
 import VentasXDespachador from "./components/VentasXDespachador";
+import Doughnut from "@components/charts/Doughnut";
 
 interface liquidacion extends getDataInterface {
   data: { response: reportJsonLiqInterface[] };
@@ -147,6 +148,12 @@ const Liquidacion: FC = () => {
         <Card title="Total en lecturas"></Card>
         <Card title="..."></Card>
       </div>
+      <Doughnut
+        data={{
+          datasets: [{ data: [100, 800, 1000, 5000, 10000, 500, 50.547] }],
+        }}
+        useDecimalInTotal
+      />
     </div>
   );
 };
