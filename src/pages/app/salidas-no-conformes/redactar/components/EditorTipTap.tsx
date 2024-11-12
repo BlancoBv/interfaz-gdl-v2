@@ -3,16 +3,11 @@ import { forwardRef, useImperativeHandle, useMemo } from "react";
 import { Color } from "@tiptap/extension-color";
 import TextStyle from "@tiptap/extension-text-style";
 import { FontSize } from "../assets/extension/FontSize";
-import {
-  BubbleMenu,
-  EditorContent,
-  FloatingMenu,
-  useEditor,
-} from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Heading from "@tiptap/extension-heading";
 import Placeholder from "@tiptap/extension-placeholder";
-import { MenuFloating, MenuBubble } from "./MenuEditor";
+import { MenuBubble } from "./MenuEditor";
 
 export interface TypeEventChange {
   target: {
@@ -26,6 +21,7 @@ interface Props {
   value: Record<string, string | number | boolean | null | undefined>;
   name: string;
   placeholder?: string;
+  title: string;
   onChange: (event: TypeEventChange) => void;
 }
 
@@ -83,20 +79,26 @@ const EditorTipTap = forwardRef<RefMethods, Props>((props: Props, ref) => {
   }));
 
   return (
-    <div className="relative">
+    <div>
+      <div className="label bg-zinc-100 text-white py-2 px-2 rounded rounded-b-none flex gap-2 flex-wrap">
+        <p className="label-text">{props.title}</p>
+        <div className="overflow-x-autos overflow-y-hiddens sm:overflow-hiddens">
+          <MenuBubble editor={editor} />
+        </div>
+      </div>
       {/* {disabled && (
         <div className="absolute inset-0 bg-slate-100 z-10 bg-opacity-50"></div>
       )} */}
-      {editor && (
+      {/* {editor && (
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <MenuBubble editor={editor} />
         </BubbleMenu>
-      )}
-      {editor && (
-        <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <MenuFloating editor={editor} />
-        </FloatingMenu>
-      )}
+      )} */}
+      {/*  {editor && (
+          <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
+            <MenuFloating editor={editor} />
+          </FloatingMenu>
+        )} */}
       {/* <MenuEditor editor={editor} /> */}
       <EditorContent editor={editor} />
     </div>
