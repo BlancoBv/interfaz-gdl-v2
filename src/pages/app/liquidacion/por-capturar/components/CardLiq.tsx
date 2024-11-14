@@ -86,25 +86,25 @@ const CardLiq: FC<{
 
   return (
     <div
-      className="card bg-base-100 w-full shadow-xl group indicator hover:bg-base-200 ease-in duration-150 cursor-pointer"
+      className="card bg-base-100 w-full shadow-xl group indicator hover:bg-base-200 ease-in duration-150 cursor-pointer min-h-64"
       onClick={handleClick}
     >
       <div className="card-body group-hover:scale-105 ease-in duration-150 indicator text-wrap w-full">
         <h2 className="card-title">{data.idliquidacion}</h2>
         <p className="flex items-center gap-2 text-sm">
-          <span className="text-base-content/60">
+          <span className="text-base-content/60 w-12 flex items-center justify-center">
             <Icon icon="user" size="2x" />
           </span>
           {`${data.horario.empleado.nombre} ${data.horario.empleado.apellido_paterno} ${data.horario.empleado.apellido_materno}`}
         </p>
         <p className="flex items-center gap-2 text-sm">
-          <span className="text-base-content/60">
+          <span className="text-base-content/60 w-12 flex items-center justify-center">
             <Icon icon="warehouse" size="2x" />
           </span>
           {data.horario.estacion_servicio.nombre}
         </p>
         <p className="flex items-center gap-2 text-sm">
-          <span className="text-base-content/60">
+          <span className="text-base-content/60 w-12 flex items-center justify-center">
             <Icon icon="business-time" size="2x" />
           </span>
           {data.horario.turno.turno}
@@ -112,7 +112,7 @@ const CardLiq: FC<{
 
         {data.capturado && !data.lecturas && (
           <p className="flex items-center gap-2 text-sm">
-            <span className="text-base-content/60">
+            <span className="text-base-content/60 w-12 flex items-center justify-center">
               <Icon icon="user-pen" size="2x" />
             </span>
             Capturando: {data.empleado_captura.nombre}
