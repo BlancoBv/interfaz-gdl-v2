@@ -376,3 +376,9 @@ export interface preciosLiquidacionInterface {
     nombre: string;
   };
 }
+
+export interface liquidacionesPendientesInterface
+  extends Omit<reportJsonLiqInterface, "calculados"> {
+  empleado_captura: { nombre: string; idempleado: number };
+  paginacion: string | null;
+}

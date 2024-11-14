@@ -4,10 +4,11 @@ import { FC } from "react";
 const NoData: FC<{
   isPending: boolean;
   isError: boolean;
-}> = ({ isError, isPending }) => {
+  condition?: boolean;
+}> = ({ isError, isPending, condition }) => {
   return (
     <>
-      {isError && !isPending && (
+      {(condition || (isError && !isPending)) && (
         <div className="h-96 flex flex-col items-center justify-center">
           <div className="flex items-center relative">
             <div className="text-warning">

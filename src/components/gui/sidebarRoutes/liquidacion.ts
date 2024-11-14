@@ -7,10 +7,10 @@ export default {
   to: "liquidacion",
   show: Dep(2), //cambiar
   links: [
-    { to: "", name: "Dashboard (reportes)", icon: "home", show: true },
+    { to: "reportes", name: "Dashboard (reportes)", icon: "home", show: true },
     { to: "ajustes", name: "Ajustes", icon: "gear", show: true },
     {
-      to: "liquidacion",
+      to: "liquidaciones",
       name: "Liquidaciones",
       icon: "file-lines",
       show: true,
