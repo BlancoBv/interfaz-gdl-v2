@@ -2,15 +2,6 @@ import { FC } from "react";
 import SectionCard from "./components/SectionCard";
 import { Dep } from "@assets/auth";
 
-export interface SNCForm {
-  accionesCorregir: string;
-  concesiones: string;
-  descripcionFalla: string;
-  fecha: string;
-  idEmpleadoIncumple: number | null;
-  idIncumplimiento: number | null;
-}
-
 const Index: FC = () => {
   const items: { icon: string; name: string; to: string; show: boolean }[] = [
     { icon: "gas-pump", name: "Despacho", to: "despacho", show: Dep(2) },
