@@ -12,13 +12,21 @@ import {
 import { VariedObject } from "@assets/interfaces";
 import Icon from "./Icon";
 
-//TableClientRendering es para datos que el servidor manda al cliente, y el cliente tiene que procesarlos
-const TableClientRendering: FC<{
+interface Props {
   data: any[];
+  stickyHeaderNumber?: number;
   noDataMsg?: string;
   columns: ColumnDef<any>[];
   condicionalRowStyle?: VariedObject;
-}> = ({ columns, data, noDataMsg }) => {
+}
+
+//TableClientRendering es para datos que el servidor manda al cliente, y el cliente tiene que procesarlos
+const TableClientRendering: FC<Props> = ({
+  columns,
+  data,
+  noDataMsg,
+  stickyHeaderNumber,
+}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -52,57 +60,65 @@ const TableClientRendering: FC<{
     <div>
       {data.length > 0 ? (
         <div>
-          <table
-            className="table table-fixed table-xs lg:table-md not-prose"
-            // id={id}
-          >
-            <thead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder ? null : (
-                        <>
-                          <div
-                            onClick={header.column.getToggleSortingHandler()}
-                            {...{
-                              className: header.column.getCanSort()
-                                ? "cursor-pointer select-none"
-                                : "",
-                            }}
-                          >
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                            {{
-                              asc: <Icon icon="arrow-up" />,
-                              desc: <Icon icon="arrow-down" />,
-                            }[header.column.getIsSorted() as string] ?? null}
-                          </div>
-                        </>
-                      )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <hr />
+          <div className="overflow-x-auto">
+            <table
+              className="table table-fixekd table-xs table-pdin-rows tdable-pin-cols w-full lg:table-md"
+              // id={id}
+            >
+              <thead
+                className={
+                  stickyHeaderNumber
+                    ? `sticky top-${stickyHeaderNumber} bg-white`
+                    : ""
+                }
+              >
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder ? null : (
+                          <>
+                            <div
+                              onClick={header.column.getToggleSortingHandler()}
+                              {...{
+                                className: header.column.getCanSort()
+                                  ? "cursor-pointer select-none"
+                                  : "",
+                              }}
+                            >
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                              {{
+                                asc: <Icon icon="arrow-up" />,
+                                desc: <Icon icon="arrow-down" />,
+                              }[header.column.getIsSorted() as string] ?? null}
+                            </div>
+                          </>
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <hr />
+          </div>
           <div className="flex gap-1 justify-end items-center mt-1">
             <div className="flex gap-2 text-sm text-slate-700">
               <label htmlFor="filaTable">Filas por página</label>
