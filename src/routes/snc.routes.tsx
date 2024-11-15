@@ -1,7 +1,8 @@
 import App from "@pages/app/Index";
 import { redirect, RouteObject } from "react-router-dom";
 import Layout from "@layout/Layout";
-import RedactarSNC from "@pages/app/salidas-no-conformes/despacho/redactar/RedactarSNC";
+import RedactarSNC from "@pages/app/salidas-no-conformes/redactar/RedactarSNC";
+import Archivos from "@pages/app/salidas-no-conformes/archivos/Archivos";
 
 export default {
   path: "/app",
@@ -25,7 +26,10 @@ export default {
         {
           // index: true,
           // element: <RedactarSNC />,
-          children: [{ path: "redactar", element: <RedactarSNC /> }],
+          children: [
+            { path: "redactar", element: <RedactarSNC /> },
+            { path: "archivos", element: <Archivos /> },
+          ],
         },
       ],
     },
