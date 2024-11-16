@@ -6,16 +6,10 @@ import {
 } from "@components/forms/Select";
 import { InputFecha } from "@components/forms/Input";
 import { useSendData } from "@hooks/useSendData";
+import { SNCForm } from "../../Index.tsx";
 
 interface BaseProps {
-  body: {
-    accionesCorregir: string;
-    concesiones: string;
-    descripcionFalla: string;
-    fecha: string;
-    idEmpleadoIncumple: number | null;
-    idIncumplimiento: number | null;
-  };
+  body: SNCForm;
   edit?: boolean;
 }
 
@@ -64,8 +58,10 @@ const FormularioSNC: FC<Props> = (props) => {
   useEffect(() => {
     if (props.edit) {
       editorDescripcion.current?.setContent(props.body.descripcionFalla);
-      editorAccion.current?.setContent(props.body.accionesCorregir);
-      editorConcesion.current?.setContent(props.body.concesiones);
+      props.body.accionesCorregir &&
+        editorAccion.current?.setContent(props.body.accionesCorregir);
+      props.body.concesiones &&
+        editorConcesion.current?.setContent(props.body.concesiones);
     }
   }, [props.edit, props.body]);
 
@@ -109,7 +105,7 @@ const FormularioSNC: FC<Props> = (props) => {
           label="Empleado"
           name="idEmpleadoIncumple"
           departamento="all"
-          estatus={[]}
+          estatus={props.edit ? "todo" : []}
           required
         />
         <SelectIncumplimientos
