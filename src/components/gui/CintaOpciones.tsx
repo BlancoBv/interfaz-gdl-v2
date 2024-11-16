@@ -7,7 +7,7 @@ const CintaOpciones: FC<{
 }> = ({ children, onSubmit, zeroTop }) => {
   return (
     <div
-      className={`flex flex-col sticky ${
+      className={`flex flex-col sm:sticky ${
         zeroTop ? "top-0" : "top-28"
       } bg-base-100/80 backdrop-blur-sm z-30 w-full`}
     >

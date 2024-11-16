@@ -22,7 +22,7 @@ const SelectFontSize: FC<Props> = ({ editor }: Props) => {
         className="svg-inline--fa grow"
       />
       <select
-        className="select select-ghost bg-zinc-200 font-semibold select-sm focus:outline-0 focus:border-0 pl-2 grow"
+        className="select select-ghost bg-zinc-200 font-semibold select-sm focus:outline-0 focus:border-0 pl-2 grow text-slate-900"
         onChange={changeFontSize}
       >
         <option value="">Normal</option>

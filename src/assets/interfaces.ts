@@ -9,6 +9,16 @@ export type Rename<T, K extends keyof T, N extends string> = Pick<
   Exclude<keyof T, K>
 > & { [P in N]: T[K] };
 
+export type VariedObject = Partial<Record<string, any>>;
+
+export type EstatusEmpleados =
+  | "Contrato"
+  | "Practica"
+  | "Despido"
+  | "Rechazado"
+  | "Pendiente"
+  | "Usuario";
+
 export interface sideBarItems {
   icon: string;
   name: string;
@@ -327,6 +337,25 @@ export interface tendenciaPasosDespacharInterface extends empleadoInterface {
     evaluacion: boolean;
     oyl_cumplimiento: evaluacionesPasosDespacharInterface;
   }[];
+}
+
+export interface IncumplimientosSNC {
+  idincumplimiento: number;
+  incumplimiento: string;
+}
+
+export interface SNC {
+  empleado: empleadoInterface;
+  empleado_autoriza: empleadoInterface;
+  descripcion_falla: string;
+  concesiones: string | null;
+  acciones_corregir: string | null;
+  fecha: string;
+  idempleado: number;
+  idempleado_autoriza: number;
+  idincumplimiento: number;
+  idsalida_noconforme: number;
+  incumplimiento: IncumplimientosSNC;
 }
 
 export interface reportJsonLiqInterface {

@@ -6,8 +6,7 @@ import despacho from "./sidebarRoutes/despacho";
 import administrativo from "./sidebarRoutes/administrativo";
 import liquidacion from "./sidebarRoutes/liquidacion";
 import { sideBarItems } from "@assets/interfaces";
-
-//import salidaNoConforme from "./sidebarRoutes/salida-no-conforme";
+import salidaNoConforme from "./sidebarRoutes/salida-no-conforme";
 //import recursosHumanos from "./sidebarRoutes/recursos-humanos";
 
 const SideBar: FC = () => {
@@ -23,7 +22,7 @@ const SideBar: FC = () => {
   const overlay = useRef<HTMLLabelElement>(null);
   const navElements: sideBarItems[] = [
     despacho,
-    //salidaNoConforme,
+    salidaNoConforme,
     //recursosHumanos,
     administrativo,
     liquidacion,

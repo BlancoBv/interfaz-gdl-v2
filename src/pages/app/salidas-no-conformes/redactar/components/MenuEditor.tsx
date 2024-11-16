@@ -25,7 +25,7 @@ const MenuEditor: FC<Props> = (props: Props) => {
           disabled={!editor.can().chain().focus().toggleBold().run()}
           className={
             editor.isActive("bold")
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -37,7 +37,7 @@ const MenuEditor: FC<Props> = (props: Props) => {
           disabled={!editor.can().chain().focus().toggleItalic().run()}
           className={
             editor.isActive("italic")
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -51,7 +51,7 @@ const MenuEditor: FC<Props> = (props: Props) => {
           }
           className={
             editor.isActive("heading", { level: 1 })
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -64,7 +64,7 @@ const MenuEditor: FC<Props> = (props: Props) => {
           }
           className={
             editor.isActive("heading", { level: 2 })
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -77,7 +77,7 @@ const MenuEditor: FC<Props> = (props: Props) => {
           }
           className={
             editor.isActive("heading", { level: 3 })
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -88,7 +88,7 @@ const MenuEditor: FC<Props> = (props: Props) => {
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={
             editor.isActive("bulletList")
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -99,7 +99,7 @@ const MenuEditor: FC<Props> = (props: Props) => {
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={
             editor.isActive("orderedList")
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -125,19 +125,19 @@ export const MenuBubble: FC<Props> = (props: Props) => {
   }
 
   return (
-    <div className="control-group mb-1 w-full overflow-x-autooverflow-y-hidden bg-zinc-900 p-1 rounded">
-      <div className="flex gap-1 flex-wrap">
+    <div className="">
+      <div className="flex gap-1">
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
           className={
             editor.isActive("bold")
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
-              : "btn btn-sm rounded p-1 btn-light"
+              ? "btn btn-sm btn-neutral font-bold rounded p-1 text-base-100"
+              : "btn btn-sm rounded p-1 font-bold btn-light"
           }
         >
-          Negrita
+          N
         </button>
         <button
           type="button"
@@ -145,11 +145,33 @@ export const MenuBubble: FC<Props> = (props: Props) => {
           disabled={!editor.can().chain().focus().toggleItalic().run()}
           className={
             editor.isActive("italic")
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral italic rounded p-1 text-base-100"
+              : "btn btn-sm rounded p-1 btn-light italic"
+          }
+        >
+          Cursivo
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={
+            editor.isActive("bulletList")
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
-          Cursiva
+          <Icon icon="list-ul" />
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={
+            editor.isActive("orderedList")
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
+              : "btn btn-sm rounded p-1 btn-light"
+          }
+        >
+          <Icon icon="list-ol" />
         </button>
 
         <div className="min-w-max">
@@ -181,7 +203,7 @@ export const MenuFloating: FC<Props> = (props: Props) => {
           }
           className={
             editor.isActive("heading", { level: 1 })
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -194,7 +216,7 @@ export const MenuFloating: FC<Props> = (props: Props) => {
           }
           className={
             editor.isActive("heading", { level: 2 })
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -207,7 +229,7 @@ export const MenuFloating: FC<Props> = (props: Props) => {
           }
           className={
             editor.isActive("heading", { level: 3 })
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -218,7 +240,7 @@ export const MenuFloating: FC<Props> = (props: Props) => {
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={
             editor.isActive("bulletList")
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >
@@ -229,7 +251,7 @@ export const MenuFloating: FC<Props> = (props: Props) => {
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={
             editor.isActive("orderedList")
-              ? "btn btn-sm btn-neutral p-1 text-base-100"
+              ? "btn btn-sm btn-neutral rounded p-1 text-base-100"
               : "btn btn-sm rounded p-1 btn-light"
           }
         >

@@ -5,6 +5,7 @@ import { getDataInterface, useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
 import {
   departamentoInterface,
+  EstatusEmpleados,
   incumplimientoInterface,
   islasInterface,
 } from "@assets/interfaces";
@@ -93,10 +94,20 @@ export const SelectYear: FC<{
   required?: boolean;
   disabled?: boolean;
 }> = ({ name, label, variable, setVariable, disabled, required }) => {
-  const date = moment(new Date(Date.now()));
+  const date = moment();
   const value: number = variable.hasOwnProperty(name)
     ? variable[name]
     : date.year();
+
+  const numYears = Math.round(
+    (Date.now() - new Date("2021-01-01").getTime()) / 3.154e10
+  );
+
+  const years = [];
+
+  for (let i = 0; i < numYears; i++) {
+    years.push({ value: 2022 + i, label: String(2022 + i) });
+  }
 
   return (
     <Select
@@ -105,11 +116,7 @@ export const SelectYear: FC<{
       variable={variable}
       setVariable={setVariable}
       placeholder="Selecciona un año"
-      options={[
-        { value: value - 1, label: String(value - 1) },
-        { value, label: String(value) },
-        { value: value + 1, label: String(value + 1) },
-      ]}
+      options={years}
       disabled={disabled}
       required={required}
     />
@@ -123,7 +130,7 @@ export const SelectEmpleado: FC<{
   setVariable: any;
   required?: boolean;
   disabled?: boolean;
-  estatus: string[];
+  estatus?: EstatusEmpleados[] | "todo";
   departamento:
     | "0"
     | "1"
@@ -158,7 +165,9 @@ export const SelectEmpleado: FC<{
   const { data, isPending, isError } = useGetData(
     `empleado?departamento=${
       departamento === "all" ? "" : departamento
-    }&auth=false&estatus=${estatus ? estatus.join("&estatus=") : ""}`,
+    }&auth=false&estatus=${
+      Array.isArray(estatus) ? estatus.join("&estatus=") : ""
+    }&todo=${estatus === "todo" ? "true" : ""}`,
     "empledoSelectData",
     { fetchInURLChange: true, fetchTrigger: departamento }
   );

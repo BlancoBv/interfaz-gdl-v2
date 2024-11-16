@@ -16,7 +16,7 @@ const SelectColors: FC<Props> = ({ editor }: Props) => {
   };
 
   return (
-    <div className="dropdown dropdown-down">
+    <div className="dropdown dropdown-bottom dropdown-end">
       <button
         type="button"
         tabIndex={0}
@@ -67,7 +67,10 @@ const SelectColors: FC<Props> = ({ editor }: Props) => {
           </li>
         </div>
         <li>
-          <label htmlFor="hs-color-input" className="block text-sm font-medium">
+          <label
+            htmlFor="hs-color-input"
+            className="block text-sm font-medium text-black"
+          >
             Color personalizado
           </label>
           <input

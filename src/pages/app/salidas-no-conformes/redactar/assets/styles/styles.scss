@@ -4,6 +4,8 @@
   // margin-top: 0.75em;
   // }
 
+  color: #2d2d2d;
+
   img {
     max-width: 500px;
     max-height: 500px;
@@ -202,9 +204,9 @@
   }
 
   & {
-    background-color: #fafafa;
+    background-color: #ffffff;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     // outline-width: 0;
     min-height: 100px;
   }
@@ -220,7 +222,8 @@
   cursor: col-resize;
 }
 .ProseMirror-focused {
-  outline: 2px solid #e4e4e7;
+  // outline: 2px solid #e4e4e7;
+  outline: none;
 }
 
 p.is-editor-empty:first-child::before {
