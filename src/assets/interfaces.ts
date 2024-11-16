@@ -11,6 +11,14 @@ export type Rename<T, K extends keyof T, N extends string> = Pick<
 
 export type VariedObject = Partial<Record<string, any>>;
 
+export type EstatusEmpleados =
+  | "Contrato"
+  | "Practica"
+  | "Despido"
+  | "Rechazado"
+  | "Pendiente"
+  | "Usuario";
+
 export interface sideBarItems {
   icon: string;
   name: string;
