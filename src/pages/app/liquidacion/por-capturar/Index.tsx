@@ -14,7 +14,7 @@ import {
 import CardLiq from "./components/CardLiq";
 import NoData from "@components/gui/NoData";
 import Icon from "@components/Icon";
-import { ModalConfirmNoMutate } from "@components/gui/Modal";
+import Modal, { ModalConfirmNoMutate } from "@components/gui/Modal";
 import { useNavigate } from "react-router-dom";
 
 interface liquidaciones extends getDataInterface {
@@ -64,6 +64,22 @@ const LiqPorCapturar: FC = () => {
 
   return (
     <div>
+      <Modal
+        title="No existe una preliquidación para esta captura"
+        id="modal-no-preliq"
+        sm
+        icon="triangle-exclamation"
+      >
+        <p>
+          Intenta de nuevo más tarde o espera a que el despachador realice su
+          respectiva preliquidación.
+        </p>
+        <div className="modal-action">
+          <form method="dialog">
+            <button className="btn">Cerrar</button>
+          </form>
+        </div>
+      </Modal>
       <ModalConfirmNoMutate
         customID="liq-capturando"
         title="Liquidación en captura"

@@ -1,5 +1,6 @@
 import { FC, ReactNode } from "react";
 import { ToastContainer } from "react-toastify";
+import Icon from "@components/Icon";
 
 const Modal: FC<{
   id: string;
@@ -7,7 +8,8 @@ const Modal: FC<{
   children?: ReactNode;
   sm?: boolean;
   onClose?: () => void;
-}> = ({ id, title = "Titulo de ejemplo", children, sm, onClose }) => {
+  icon?: string;
+}> = ({ id, title = "Titulo de ejemplo", children, sm, onClose, icon }) => {
   return (
     <dialog id={id} className="modal" onClose={onClose}>
       <div
@@ -19,7 +21,10 @@ const Modal: FC<{
               ✕
             </button>
           </form>
-          <h3 className="font-bold text-lg">{title}</h3>
+          <h3 className="font-bold text-lg flex gap-2 items-center">
+            {icon && <Icon icon={icon} size="2x" />}
+            <span>{title}</span>
+          </h3>
           <div className="divider mt-0" />
         </div>
         <div className="flex-grow overflow-y-auto"> {children}</div>
