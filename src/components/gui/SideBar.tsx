@@ -4,6 +4,7 @@ import Icon from "@components/Icon";
 import { toast } from "react-toastify";
 import despacho from "./sidebarRoutes/despacho";
 import administrativo from "./sidebarRoutes/administrativo";
+import liquidacion from "./sidebarRoutes/liquidacion";
 import { sideBarItems } from "@assets/interfaces";
 import salidaNoConforme from "./sidebarRoutes/salida-no-conforme";
 //import recursosHumanos from "./sidebarRoutes/recursos-humanos";
@@ -24,6 +25,7 @@ const SideBar: FC = () => {
     salidaNoConforme,
     //recursosHumanos,
     administrativo,
+    liquidacion,
     /* {
       icon: "thumbs-down",
       name: "Salidas no conformes",

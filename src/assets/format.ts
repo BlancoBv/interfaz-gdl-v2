@@ -1,7 +1,7 @@
 //import agruparArr from "./agrupar";
 
 import Decimal from "decimal.js-light";
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 const format = {
   /* formatFechaLocale: (date) =>
@@ -49,7 +49,7 @@ const format = {
   formatFecha: (fecha: string) => {
     return moment(fecha).format("L");
   },
-  formatFechaAsDB: (fecha: string) => {
+  formatFechaAsDB: (fecha: string | Date | Moment) => {
     return moment(fecha).format("YYYY-MM-DD");
   },
   obtenerMesyYear: (fecha: string) => {

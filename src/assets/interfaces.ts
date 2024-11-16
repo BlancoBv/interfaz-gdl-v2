@@ -44,6 +44,9 @@ export interface ChartsPropsInterface {
   ticksYCallback?: (value: any) => string;
   xAxeAsCategory?: boolean;
   id?: string;
+  showTitle?: boolean;
+  legendPosition?: "right" | "top" | "bottom";
+  showTooltip?: boolean;
 } // props para las graficas
 
 export interface empleadoInterface {
@@ -353,4 +356,58 @@ export interface SNC {
   idincumplimiento: number;
   idsalida_noconforme: number;
   incumplimiento: IncumplimientosSNC;
+}
+
+export interface reportJsonLiqInterface {
+  calculados: {
+    litros: { M: number; P: number; D: number };
+    pesos: { M: number; P: number; D: number };
+  };
+  cancelado: null | boolean;
+  capturado: boolean;
+  createdAt: string;
+  diferencia: number;
+  efectivo_entregado: number;
+  entregado: number;
+  fechaCancelado: string | null;
+  horario: {
+    empleado: Pick<
+      empleadoInterface,
+      | "apellido_materno"
+      | "apellido_paterno"
+      | "nombre"
+      | "estatus"
+      | "idchecador"
+      | "idempleado"
+    >;
+    fechaturno: string;
+    idempleado: number;
+    idhorario: number;
+    idturno: number;
+    turno: turnoInterface;
+    estacion_servicio: estacionServicioInterface;
+  };
+  idempleado_captura: number;
+  idhorario: number;
+  idislas: { nisla: string; idisla: number; posiciones: number[] }[];
+  idliquidacion: number;
+  lecturas: string;
+}
+
+export interface preciosLiquidacionInterface {
+  idprecio: number;
+  fecha: string;
+  idgas: string;
+  idempleado_captura: number;
+  precio: string;
+  ga: {
+    idgas: string;
+    nombre: string;
+  };
+}
+
+export interface liquidacionesPendientesInterface
+  extends Omit<reportJsonLiqInterface, "calculados"> {
+  empleado_captura: { nombre: string; idempleado: number };
+  paginacion: string | null;
 }

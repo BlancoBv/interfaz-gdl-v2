@@ -1,40 +1,87 @@
-import { ChartsPropsInterface, CustomDataPoint } from "@assets/interfaces";
-import { ChartData } from "chart.js";
+import { ChartsPropsInterface } from "@assets/interfaces";
+import { Chart, ChartData } from "chart.js";
+import Decimal from "decimal.js-light";
 import { FC, useEffect, useRef } from "react";
-import { Bar } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 
-interface bar extends ChartsPropsInterface {
-  data?: ChartData<"bar", CustomDataPoint[]>;
+interface doughnut
+  extends Omit<
+    ChartsPropsInterface,
+    "etiquetaX" | "etiquetaY" | "ticksYCallback"
+  > {
+  data?: ChartData<"doughnut">;
   id?: string;
   adjustToContainer?: boolean;
-  tootip?: boolean;
+  useDecimalInTotal?: boolean;
 }
-const Index: FC<bar> = ({
+const Index: FC<doughnut> = ({
   data,
   title = "Texto de ejemplo",
   redraw,
   legend = false,
-  etiquetaX,
-  etiquetaY,
   onClick,
-  ticksYCallback,
   id,
   adjustToContainer,
+  useDecimalInTotal,
   showTitle = true,
+  legendPosition = "right",
+  showTooltip = true,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
     if (ref.current) {
       if (ref.current?.chart) {
-        console.log(ref.current?.chart);
         ref.current.chart?.destroy();
       }
     }
   }, []);
 
+  console.log(data);
+
+  const pluginTotal = {
+    id: "pluginTotalDoughnut",
+    beforeDraw: function (chart: Chart<"doughnut">) {
+      const { width, top, bottom } = chart.chartArea;
+      const { ctx } = chart;
+
+      const sumar = (a: number, b: number) => {
+        const suma = a + b;
+        if (!useDecimalInTotal) {
+          return suma;
+        }
+        return new Decimal(suma).toDecimalPlaces(2).toNumber();
+      };
+
+      const calcOffset = (width: number) => {
+        const textOffset = text.length * 10;
+        console.log({ width });
+
+        if (width > 350) {
+          return (350 - textOffset) * 0.1;
+        }
+        if (width < 230) {
+          return (230 - textOffset) * 0.1;
+        }
+        return (width - textOffset) * 0.1;
+      };
+
+      const sumatoria = chart.config.data.datasets[0].data.reduce(sumar, 0);
+      ctx.restore();
+
+      const text = `Total: ${sumatoria}`;
+
+      ctx.font = `${calcOffset(width)}px Arial`;
+      ctx.textBaseline = "middle";
+
+      const textX = Math.round((width - ctx.measureText(text).width) / 2),
+        textY = (bottom + top) / 2;
+      ctx.fillText(text, textX, textY);
+      ctx.save();
+    },
+  };
   return (
     <div className={`${adjustToContainer ? "" : "h-96"}`}>
-      <Bar
+      <Doughnut
         id={id}
         ref={ref}
         data={
@@ -43,8 +90,7 @@ const Index: FC<bar> = ({
             : {
                 labels: ["Prueba", "Prueba 2", "Prueba 3"],
                 datasets: [
-                  { data: [1, 2, 3, 4], label: "Grupo de ejemplo" },
-                  { data: [1, 2, 3, 4], label: "Grupo de ejemplo 2" },
+                  { data: [10, 27, 300, 40], label: "Grupo de ejemplo" },
                 ],
               }
         }
@@ -58,7 +104,10 @@ const Index: FC<bar> = ({
             }
           },
           maintainAspectRatio: false,
-          scales: {
+          rotation: 0,
+          circumference: 360,
+
+          /*  scales: {
             y: {
               type: "logarithmic",
               title: { display: true, text: etiquetaY },
@@ -77,13 +126,17 @@ const Index: FC<bar> = ({
                 },
               },
             },
-          },
+          }, */
           plugins: {
             datalabels: {
+              clamp: true,
               labels: {
                 title: { color: "#000" },
               },
-              display(context) {
+              display: false,
+              /* display(context) {
+                console.log({ context });
+
                 const value = context.dataset.data[
                   context.dataIndex
                 ] as CustomDataPoint;
@@ -95,6 +148,9 @@ const Index: FC<bar> = ({
                   return false;
                 }
                 return true;
+              }, */
+              formatter(context) {
+                return "sdasdasd";
               },
             },
             title: {
@@ -105,15 +161,17 @@ const Index: FC<bar> = ({
               },
             },
             legend: {
-              position: "right",
+              position: legendPosition,
               display: legend,
             },
             tooltip: {
               usePointStyle: true,
+              enabled: showTooltip,
             },
           },
         }}
         redraw={redraw}
+        plugins={[pluginTotal]}
       />
     </div>
   );

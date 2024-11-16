@@ -31,6 +31,7 @@ import Departamentos from "@pages/app/recursos-humanos/empleados/departamentos/I
 import Documentos from "@pages/app/recursos-humanos/empleados/documentos/Index";
 import Empleados from "@pages/app/recursos-humanos/empleados/Index";
 import despachoRoutes from "./despacho.routes";
+import liquidacionRoutes from "./liquidacion.routes";
 
 const Index: FC = () => {
   const router = createBrowserRouter([
@@ -62,6 +63,7 @@ const Index: FC = () => {
           element: <App />,
         },
         despachoRoutes,
+        liquidacionRoutes,
         {
           path: "administrativo",
           children: [{ path: "usuarios", element: <Usuarios /> }],
