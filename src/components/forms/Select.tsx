@@ -5,6 +5,7 @@ import { getDataInterface, useGetData } from "@hooks/useGetData";
 import RSelect from "react-select";
 import {
   departamentoInterface,
+  EstatusEmpleados,
   incumplimientoInterface,
   islasInterface,
 } from "@assets/interfaces";
@@ -129,7 +130,7 @@ export const SelectEmpleado: FC<{
   setVariable: any;
   required?: boolean;
   disabled?: boolean;
-  estatus: string[];
+  estatus?: EstatusEmpleados[] | "todo";
   departamento:
     | "0"
     | "1"
@@ -164,7 +165,9 @@ export const SelectEmpleado: FC<{
   const { data, isPending, isError } = useGetData(
     `empleado?departamento=${
       departamento === "all" ? "" : departamento
-    }&auth=false&estatus=${estatus ? estatus.join("&estatus=") : ""}`,
+    }&auth=false&estatus=${
+      Array.isArray(estatus) ? estatus.join("&estatus=") : ""
+    }&todo=${estatus === "todo" ? "true" : ""}`,
     "empledoSelectData",
     { fetchInURLChange: true, fetchTrigger: departamento }
   );
