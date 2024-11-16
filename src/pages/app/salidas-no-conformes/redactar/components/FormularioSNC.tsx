@@ -7,6 +7,7 @@ import {
 import { InputFecha } from "@components/forms/Input";
 import { useSendData } from "@hooks/useSendData";
 import { SNCForm } from "../../Index.tsx";
+import { useModal } from "@hooks/useModal.ts";
 
 interface BaseProps {
   body: SNCForm;
@@ -29,6 +30,7 @@ const FormularioSNC: FC<Props> = (props) => {
   const editorConcesion = useRef<RefMethods>(null);
   const editorAccion = useRef<RefMethods>(null);
   const initialBody = props.body;
+  const { close } = useModal("idModalEditSnc");
   const [body, setBody] = useState(initialBody);
 
   const saveSNC = useSendData("/salida-no-conforme", {
@@ -44,6 +46,7 @@ const FormularioSNC: FC<Props> = (props) => {
       method: "put",
       refetchFn: () => {
         limpiarCampos();
+        close();
       },
     }
   );

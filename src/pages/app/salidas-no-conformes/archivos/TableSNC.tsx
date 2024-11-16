@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useCallback, useContext, useMemo } from "react";
 import { SNC } from "@assets/interfaces";
 import moment from "moment";
 import DinamicTable from "@components/TableClientRendering";
@@ -6,37 +6,40 @@ import { ColumnDef } from "@tanstack/react-table";
 import Icon from "@components/Icon";
 import { useModal } from "@hooks/useModal";
 import BtnPdfSnc from "./components/BtnPdfSnc";
-import { useNavigate } from "react-router-dom";
+import DataSNC from "./components/ProviderSNC";
 
 const TableSNC: FC<{
   data: SNC[];
   noDataMsg?: string;
 }> = ({ noDataMsg, data }) => {
+  const { setSncSelect } = useContext(DataSNC);
   const { show } = useModal("idModalEditSnc");
-  const navigate = useNavigate();
 
-  const editSnc = (snc: SNC) => {
-    const {
-      descripcion_falla,
-      acciones_corregir,
-      concesiones,
-      idincumplimiento,
-      idempleado,
-      fecha,
-    } = snc;
-    navigate("", {
-      state: {
+  const editSnc = useCallback(
+    (snc: SNC) => {
+      const {
         descripcion_falla,
         acciones_corregir,
         concesiones,
         idincumplimiento,
         idempleado,
         fecha,
-      },
-    });
+        idsalida_noconforme,
+      } = snc;
+      setSncSelect({
+        descripcion_falla: descripcion_falla,
+        acciones_corregir: acciones_corregir,
+        concesiones,
+        idincumplimiento: idincumplimiento,
+        idempleado: idempleado,
+        fecha,
+        idsalida_noconforme,
+      });
 
-    show();
-  };
+      show();
+    },
+    [show, setSncSelect]
+  );
 
   const columns = useMemo<ColumnDef<SNC>[]>(
     () => [
@@ -100,7 +103,7 @@ const TableSNC: FC<{
         cell: (info) => info.getValue(),
       },
     ],
-    [show]
+    [editSnc]
   );
 
   return (
