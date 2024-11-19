@@ -5,7 +5,6 @@ import TextStyle from "@tiptap/extension-text-style";
 import { FontSize } from "../assets/extension/FontSize";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Heading from "@tiptap/extension-heading";
 import Placeholder from "@tiptap/extension-placeholder";
 import { MenuBubble } from "./MenuEditor";
 
