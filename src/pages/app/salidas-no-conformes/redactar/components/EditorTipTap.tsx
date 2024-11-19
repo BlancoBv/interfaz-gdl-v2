@@ -38,7 +38,7 @@ const EditorTipTap = forwardRef<RefMethods, Props>((props: Props, ref) => {
       FontSize,
       TextStyle,
       Color.configure({ types: [TextStyle.name] }),
-      Heading.configure({}),
+      // Heading.configure({}),
       StarterKit.configure({
         bulletList: {
           keepMarks: true,
