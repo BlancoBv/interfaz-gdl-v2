@@ -183,13 +183,13 @@ const Liquidacion: FC = () => {
           <div
             tabIndex={0}
             role="button"
-            className="shadow-xl rounded-box flex items-center justify-center w-full h-full"
+            className="card bg-base-100 shadow-xl h-full w-full justify-center items-center"
           >
             <Icon icon="ellipsis" size="2x" />
           </div>
           <div
             tabIndex={0}
-            className="dropdown-content card bg-base-100 rounded-box z-[1] w-96 h-96 p-2 shadow grid grid-cols-2 grid-rows-5 gap-4 overflow-y-auto"
+            className="dropdown-content card bg-base-100 rounded-box z-[1] w-96 h-96 p-2 shadow-2xl grid grid-cols-2 grid-rows-5 gap-4 overflow-y-auto"
           >
             <Card title="Historial de lecturas" noStaticHeight />
             <Card title="Codigos de uso" noStaticHeight />

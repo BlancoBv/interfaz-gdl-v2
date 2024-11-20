@@ -410,4 +410,22 @@ export interface liquidacionesPendientesInterface
   extends Omit<reportJsonLiqInterface, "calculados"> {
   empleado_captura: { nombre: string; idempleado: number };
   paginacion: string | null;
+  horario: {
+    empleado: Pick<
+      empleadoInterface,
+      | "apellido_materno"
+      | "apellido_paterno"
+      | "nombre"
+      | "estatus"
+      | "idchecador"
+      | "idempleado"
+    >;
+    fechaturno: string;
+    idempleado: number;
+    idhorario: number;
+    idturno: number;
+    turno: turnoInterface;
+    estacion_servicio: estacionServicioInterface;
+    fechaliquidacion: string;
+  };
 }

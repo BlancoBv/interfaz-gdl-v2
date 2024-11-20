@@ -3,10 +3,14 @@ import {
   reportJsonLiqInterface,
 } from "@assets/interfaces";
 import Icon from "@components/Icon";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import socket from "../../components/socket";
 import { useModal } from "@hooks/useModal";
+import { getDataInterface, useGetData } from "@hooks/useGetData";
+interface preliquidacionExist extends getDataInterface {
+  data: { response: null | { [key: string]: any } };
+}
 
 const CardLiq: FC<{
   data: liquidacionesPendientesInterface;
@@ -17,10 +21,14 @@ const CardLiq: FC<{
     localStorage.getItem("credentials") ?? "null"
   );
 
-  console.log(data);
-
   const navigate = useNavigate();
   const modalCapturando = useModal("liq-capturando");
+  const modalNoPreliq = useModal("modal-no-preliq");
+  const preliquidacionExist: preliquidacionExist = useGetData(
+    `liquidacion/buscar-preliquidacion?idEmpleado=${data.horario.idempleado}&fechaTurno=${data.horario.fechaliquidacion}&idEstacionServicio=${data.horario.estacion_servicio.idestacion_servicio}&idTurno=${data.horario.turno.idturno}`,
+    "preliqExistenteData"
+  );
+
   const statusMsg = (): ReactNode => {
     const status: {
       msg: string;
@@ -57,9 +65,17 @@ const CardLiq: FC<{
     );
   };
 
-  const handleClick = (): void => {
+  const handleClick = async (): Promise<void> => {
+    const response = await preliquidacionExist.refetch();
+    const havePreliq = response.data?.response === null;
+
+    //llama la fución que actualiza el valor de la petición
     handleClick: {
       if (!data.capturado && !data.lecturas) {
+        if (havePreliq) {
+          modalNoPreliq.show();
+          break handleClick;
+        }
         navigate(
           `/app/liquidacion/liquidaciones/capturar/${data.idliquidacion}`
         );
@@ -73,6 +89,10 @@ const CardLiq: FC<{
         break handleClick;
       }
       if (data.capturado && !data.lecturas) {
+        if (havePreliq) {
+          modalNoPreliq.show();
+          break handleClick;
+        }
         setRecapValid({
           valid:
             credentials.auth?.idempleado === data.empleado_captura.idempleado,
