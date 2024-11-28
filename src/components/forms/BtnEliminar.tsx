@@ -25,7 +25,7 @@ const BtnEliminar: FC<Props> = (props) => {
         className="swap-on btn btn-sm btn-error"
         onClick={() => modal().show()}
       >
-        <Icon icon="eraser" />
+        <Icon icon="trash" />
       </button>
       <dialog ref={modalRef} className="modal">
         <div className="modal-box flex flex-col">
