@@ -7,6 +7,7 @@ import Icon from "@components/Icon";
 import { useModal } from "@hooks/useModal";
 import BtnPdfSnc from "./components/BtnPdfSnc";
 import DataSNC from "./components/ProviderSNC";
+import BtnEliminar from "@components/forms/BtnEliminar";
 
 const TableSNC: FC<{
   data: SNC[];
@@ -92,9 +93,7 @@ const TableSNC: FC<{
             >
               <Icon icon="pencil" />
             </button>
-            <button className="btn btn-sm btn-error">
-              <Icon icon="trash" />
-            </button>
+            <BtnEliminar onClick={() => console.log("Eliminando elemento")} />
             <BtnPdfSnc data={row} />
           </div>
         ),
