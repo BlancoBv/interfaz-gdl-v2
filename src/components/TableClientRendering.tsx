@@ -9,7 +9,7 @@ import {
   getPaginationRowModel,
   PaginationState,
 } from "@tanstack/react-table";
-import { VariedObject } from "@assets/interfaces";
+// import "@tanstack/react-table";
 import Icon from "./Icon";
 
 interface Props {
@@ -17,7 +17,15 @@ interface Props {
   stickyHeaderNumber?: number;
   noDataMsg?: string;
   columns: ColumnDef<any>[];
-  condicionalRowStyle?: VariedObject;
+  TfootChildren?: any;
+}
+
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    classNameCell?: (info: TData) => string;
+    classNameHead?: string;
+    titleHead?: string;
+  }
 }
 
 //TableClientRendering es para datos que el servidor manda al cliente, y el cliente tiene que procesarlos
@@ -26,6 +34,7 @@ const TableClientRendering: FC<Props> = ({
   data,
   noDataMsg,
   stickyHeaderNumber,
+  TfootChildren,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -45,6 +54,7 @@ const TableClientRendering: FC<Props> = ({
       pagination,
       sorting,
     },
+    meta: { className: "string" },
   });
 
   const paginationInit =
@@ -55,6 +65,8 @@ const TableClientRendering: FC<Props> = ({
   const paginationFinish =
     (table.getState().pagination.pageIndex + 1) *
     table.getState().pagination.pageSize;
+
+  console.log(table);
 
   return (
     <div>
@@ -75,7 +87,14 @@ const TableClientRendering: FC<Props> = ({
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                      <th key={header.id} colSpan={header.colSpan}>
+                      <th
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        className={
+                          header.column.columnDef.meta?.classNameHead ?? ""
+                        }
+                        title={header.column.columnDef.meta?.titleHead ?? ""}
+                      >
                         {header.isPlaceholder ? null : (
                           <>
                             <div
@@ -106,7 +125,16 @@ const TableClientRendering: FC<Props> = ({
                 {table.getRowModel().rows.map((row) => (
                   <tr key={row.id}>
                     {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id}>
+                      <td
+                        key={cell.id}
+                        className={
+                          (cell.column.columnDef.meta?.classNameCell &&
+                            cell.column.columnDef.meta?.classNameCell(
+                              cell.getValue()
+                            )) ??
+                          ""
+                        }
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -116,6 +144,7 @@ const TableClientRendering: FC<Props> = ({
                   </tr>
                 ))}
               </tbody>
+              {TfootChildren && <tfoot>{TfootChildren}</tfoot>}
             </table>
             <hr />
           </div>
