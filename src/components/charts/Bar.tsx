@@ -8,6 +8,7 @@ interface bar extends ChartsPropsInterface {
   id?: string;
   adjustToContainer?: boolean;
   tootip?: boolean;
+  logaritmic?: boolean;
 }
 const Index: FC<bar> = ({
   data,
@@ -21,6 +22,7 @@ const Index: FC<bar> = ({
   id,
   adjustToContainer,
   showTitle = true,
+  logaritmic,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
@@ -60,7 +62,7 @@ const Index: FC<bar> = ({
           maintainAspectRatio: false,
           scales: {
             y: {
-              type: "logarithmic",
+              type: logaritmic ? "logarithmic" : undefined,
               title: { display: true, text: etiquetaY },
               ticks: { callback: ticksYCallback },
             },
