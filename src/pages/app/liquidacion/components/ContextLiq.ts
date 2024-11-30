@@ -4,6 +4,7 @@ import {
   turnoInterface,
   islasInterface as islasInterfacePet,
   liquidacionesPendientesInterface,
+  codigosUsoInterface,
 } from "@assets/interfaces";
 import { createContext, Dispatch, SetStateAction } from "react";
 
@@ -26,16 +27,25 @@ export interface preciosInterface {
 }
 
 export interface manguerasInterface {
-  idManguera?: string;
-  precioUnitario?: string;
-  lecturaInicial?: string;
-  lecturaFinal?: string;
-  litrosVendidos?: string | number;
+  [key: string]: {
+    manguera?: string;
+    idmangueraGenerico?: string;
+    posicion?: number;
+    idisla?: number;
+    combustible?: string;
+    idgas?: string;
+    lecturaInicial?: string;
+    lecturaFinal?: string;
+    precioUnitario?: string;
+    litrosVendidos?: string | number;
+    importe?: number;
+  };
 }
 
 export interface efectivoInterface {
-  type: "efectivo";
-  cantidad: string[];
+  folio?: string;
+  monto?: string;
+  codigoUso?: string;
 }
 
 export interface valesInterface {
@@ -82,12 +92,12 @@ export const ContextLiq = createContext<{
     setBody?: Dispatch<SetStateAction<preciosInterface>>;
   };
   mangueras: {
-    body: manguerasInterface[];
-    setBody?: Dispatch<SetStateAction<manguerasInterface[]>>;
+    body: manguerasInterface;
+    setBody?: Dispatch<SetStateAction<manguerasInterface>>;
   };
   efectivo: {
-    body: efectivoInterface;
-    setBody?: Dispatch<SetStateAction<efectivoInterface>>;
+    body: efectivoInterface[];
+    setBody?: Dispatch<SetStateAction<efectivoInterface[]>>;
   };
   vales: {
     body: valesInterface;
@@ -102,17 +112,18 @@ export const ContextLiq = createContext<{
     vales?: string[];
     efectivo?: string[];
     lecturasIniciales?: lecturasInicialesInterface[];
+    codigosUso: codigosUsoInterface[];
   };
   totales: {};
   cleanAll: () => void;
 }>({
   infoGeneral: { body: {} },
   precios: { body: {} },
-  mangueras: { body: [] },
-  efectivo: { body: { type: "efectivo", cantidad: [] } },
+  mangueras: { body: {} },
+  efectivo: { body: [] },
   vales: { body: { type: "vales", cantidad: [] } },
   error: { body: false },
-  otherData: { islas: [] },
+  otherData: { islas: [], codigosUso: [] },
   totales: {
     totalEntregar: 0,
     totalVales: 0,

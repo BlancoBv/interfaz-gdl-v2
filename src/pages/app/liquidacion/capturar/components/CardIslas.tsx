@@ -36,8 +36,6 @@ const CardIslas: FC<{
   estacionServicio: number;
   setIdManguera: any;
 }> = ({ data, estacionServicio, setIdManguera }) => {
-  console.log(data);
-
   return (
     <>
       {data.map((isla) => {

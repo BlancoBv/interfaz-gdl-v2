@@ -37,7 +37,7 @@ const InputPreliq = forwardRef<ref, props>(
           name={name}
           required={required}
           disabled={disabled}
-          onChange={(ev) => handleFn(ev, ref)}
+          onChange={disabled ? undefined : (ev) => handleFn(ev, ref)}
           autoFocus={autoFocus}
           //value={value && value.hasOwnProperty(name) ? value[name] : ""}
           value={value}

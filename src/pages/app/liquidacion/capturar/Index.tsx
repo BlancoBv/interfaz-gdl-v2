@@ -20,9 +20,10 @@ const CapturarLecturas: FC = () => {
       final: { current: HTMLInputElement };
     };
   }>({ idManguera: "" });
+
   const ID_MODAL = "modal-confirm-delete-lectura";
 
-  const deleteElement = () => {
+  /*   const deleteElement = () => {
     const indexOfValue = mangueras.findIndex(
       (el) => el.idManguera === idManguera.idManguera
     );
@@ -43,26 +44,24 @@ const CapturarLecturas: FC = () => {
 
       setMangueras?.([...fGroup, ...lGroup]);
     }
-  };
+  }; */
 
   useEffect(() => {
     localStorage.setItem("manguerasLiq", JSON.stringify(mangueras));
   }, [mangueras]);
 
-  console.log(islas);
-
   return (
     <div className="w-full">
-      <ModalConfirmNoMutate
+      {/* <ModalConfirmNoMutate
         action={deleteElement}
         msg={`¿Desea eliminar las lecturas de la manguera seleccionada?`}
         customID={ID_MODAL}
         closeOnESC
-      />
+      /> */}
       {/* // esto va aqui debido a como maneja daisyui los modales */}
       <SectionTitle
         titulo="Captura de lecturas"
-        subtitulo="Preliquidación"
+        subtitulo="Liquidación"
         noBackButton
       />
       <CardIslas
