@@ -292,6 +292,18 @@ const ReporteEmpleadoChecklist: FC = () => {
                 name: "Fecha",
                 selector: (el: dataDetallesChecklistInterface) =>
                   format.formatFecha(el.fecha),
+                sortableValue: (
+                  a: dataDetallesChecklistInterface,
+                  b: dataDetallesChecklistInterface
+                ) => {
+                  if (a.fecha < b.fecha) {
+                    return 1;
+                  }
+                  if (a.fecha > b.fecha) {
+                    return -1;
+                  }
+                  return 0;
+                },
               },
               {
                 name: "Fecha checklist",

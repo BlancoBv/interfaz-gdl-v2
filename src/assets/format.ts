@@ -32,7 +32,7 @@ const format = {
       style: "currency",
       currency: "MXN",
     }).format(Number(monto)),
-  zFill: (cantidad: string) => {
+  zFill: (cantidad: string | number) => {
     // const longitud = [0, 0, 0, 0, 0, 0];
     // const textoArr = String(cantidad).split("");
     // const textoCrudo = [...longitud, ...textoArr];

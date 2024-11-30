@@ -7,15 +7,12 @@ import SectionTitle from "@components/gui/SectionTitle";
 import { FC, SyntheticEvent, useEffect, useState } from "react";
 import socket from "../components/socket";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
-import {
-  liquidacionesPendientesInterface,
-  reportJsonLiqInterface,
-} from "@assets/interfaces";
+import { liquidacionesPendientesInterface } from "@assets/interfaces";
 import CardLiq from "./components/CardLiq";
 import NoData from "@components/gui/NoData";
 import Icon from "@components/Icon";
 import Modal, { ModalConfirmNoMutate } from "@components/gui/Modal";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface liquidaciones extends getDataInterface {
   data: {
@@ -28,6 +25,7 @@ interface liquidaciones extends getDataInterface {
 const LiqPorCapturar: FC = () => {
   const date = new Date(Date.now());
   const navigate = useNavigate();
+  const cacheLiq = JSON.parse(localStorage.getItem("liqDatos") ?? "null");
 
   const cacheFiltros = sessionStorage.getItem("liqPendFiltros");
   const parsedFiltros = cacheFiltros
@@ -61,6 +59,15 @@ const LiqPorCapturar: FC = () => {
       refetch();
     }
   }, [lastJsonMessage]);
+
+  if (cacheLiq) {
+    return (
+      <Navigate
+        to={`/app/liquidacion/liquidaciones/capturar/${cacheLiq.idliquidacion}`}
+        replace
+      />
+    );
+  }
 
   return (
     <div>
@@ -164,6 +171,10 @@ const LiqPorCapturar: FC = () => {
                 key={el.idliquidacion}
                 anteriores={data.anteriores}
                 setRecapValid={setRecapValid}
+                totalLiquidaciones={data.totalLiquidaciones}
+                liquidacionesEnCaptura={
+                  data.response.filter((el) => el.capturado === true).length
+                }
               />
             ))}
           </div>

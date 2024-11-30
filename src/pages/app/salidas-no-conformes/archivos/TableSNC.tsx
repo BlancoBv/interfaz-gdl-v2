@@ -14,7 +14,7 @@ const TableSNC: FC<{
   noDataMsg?: string;
 }> = ({ noDataMsg, data }) => {
   const { setSncSelect } = useContext(DataSNC);
-  const { show } = useModal("idModalEditSnc");
+  const modal = useModal("idModalEditSnc");
 
   const editSnc = useCallback(
     (snc: SNC) => {
@@ -37,9 +37,9 @@ const TableSNC: FC<{
         idsalida_noconforme,
       });
 
-      show();
+      modal.show();
     },
-    [show, setSncSelect]
+    [modal, setSncSelect]
   );
 
   const columns = useMemo<ColumnDef<SNC>[]>(

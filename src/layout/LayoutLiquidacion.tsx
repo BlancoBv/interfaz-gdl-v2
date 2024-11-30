@@ -5,33 +5,35 @@ import ScrollToTop from "@assets/ScrollToTop";
 import Header from "@components/gui/Header";
 import { ModalConfirmNoMutate } from "@components/gui/Modal";
 import {
-  ContextPreliq,
+  ContextLiq,
   efectivoInterface,
   manguerasInterface,
   preciosInterface,
   valesInterface,
-} from "@pages/preliquidacion/components/ContextPreliq";
+  lecturasInicialesInterface,
+} from "@pages/app/liquidacion/components/ContextLiq";
 import Decimal from "decimal.js-light";
 import format from "@assets/format";
-import { useGetData } from "@hooks/useGetData";
+import { getDataInterface, useGetData } from "@hooks/useGetData";
+import { liquidacionesPendientesInterface } from "@assets/interfaces";
+
+interface lectInit extends getDataInterface {
+  data: { response: lecturasInicialesInterface[] };
+}
 
 const LayoutLiquidacion: FC = () => {
-  const CACHE_INFOGENERAL = localStorage.getItem("infoGeneralPreliq");
+  const CACHE_INFOGENERAL = localStorage.getItem("liqDatos");
   const PARSED_INFOGENERAL = CACHE_INFOGENERAL
     ? JSON.parse(CACHE_INFOGENERAL)
     : {};
-  const [infoGeneral, setInfoGeneral] = useState<{
-    empleado?: number;
-    turno?: number;
-    estacion?: number;
-    islas?: { nIsla: string; idIsla: number }[];
-  }>(PARSED_INFOGENERAL);
+  const [infoGeneral, setInfoGeneral] =
+    useState<Partial<liquidacionesPendientesInterface>>(PARSED_INFOGENERAL);
   //Empieza configuracion de precios
   const CACHE_PRECIOS = localStorage.getItem("preciosPreliq");
   const PARSED_PRECIOS = CACHE_PRECIOS ? JSON.parse(CACHE_PRECIOS) : {};
   const [precios, setPrecios] = useState<preciosInterface>(PARSED_PRECIOS);
   //mangueras
-  const CACHE_MANGUERAS = localStorage.getItem("manguerasPreliq");
+  const CACHE_MANGUERAS = localStorage.getItem("manguerasLiq");
   const PARSED_MANGUERAS = CACHE_MANGUERAS ? JSON.parse(CACHE_MANGUERAS) : [];
   const [mangueras, setMangueras] =
     useState<manguerasInterface[]>(PARSED_MANGUERAS);
@@ -61,7 +63,7 @@ const LayoutLiquidacion: FC = () => {
     "estacionSelectData"
   );
   const islas = useGetData(
-    `/liquidacion/islas/${infoGeneral.estacion}&auth=false`,
+    `/liquidacion/islas/${infoGeneral.horario?.estacion_servicio.idestacion_servicio}&auth=false`,
     "islaSelectData",
     { fetchInURLChange: true }
   );
@@ -70,24 +72,31 @@ const LayoutLiquidacion: FC = () => {
     "turnoSelectData"
   );
 
+  const lecturasIniciales: lectInit = useGetData(
+    `/liquidacion/lectura/inicialn/${infoGeneral.horario?.estacion_servicio.idestacion_servicio}`,
+    "lecturasIniciales"
+  );
+
   const otherData = useMemo(() => {
     const values: {
       islas: any[];
       estacionServicio: any;
       turno: any;
       empleado: any;
+      lecturasIniciales: any;
     } = {
       islas: [],
       estacionServicio: "",
       turno: "",
       empleado: "",
+      lecturasIniciales: [],
     };
 
     if (!islas.isPending) {
       const filteredIslas: any[] = [];
-      infoGeneral.islas?.forEach((element) => {
+      infoGeneral.idislas?.forEach((element) => {
         const indexOfValue = islas.data.response.findIndex(
-          (el: { idisla: number }) => el.idisla === element.idIsla
+          (el: { idisla: number }) => el.idisla === element.idisla
         );
         if (indexOfValue >= 0) {
           filteredIslas.push(islas.data.response[indexOfValue]);
@@ -98,7 +107,9 @@ const LayoutLiquidacion: FC = () => {
 
     if (!estacionServicio.isPending) {
       const indexOfValue = estacionServicio.data.response.findIndex(
-        (el: any) => el.idestacion_servicio === infoGeneral.estacion
+        (el: any) =>
+          el.idestacion_servicio ===
+          infoGeneral.horario?.estacion_servicio.idestacion_servicio
       );
 
       if (indexOfValue >= 0) {
@@ -108,7 +119,8 @@ const LayoutLiquidacion: FC = () => {
 
     if (!turnos.isPending) {
       const indexOfValue = turnos.data.response.findIndex(
-        (el: { idturno: number }) => el.idturno === infoGeneral.turno
+        (el: { idturno: number }) =>
+          el.idturno === infoGeneral.horario?.turno.idturno
       );
       if (indexOfValue >= 0) {
         values.turno = turnos.data.response[indexOfValue];
@@ -117,14 +129,19 @@ const LayoutLiquidacion: FC = () => {
 
     if (!empleados.isPending) {
       const indexOfValue = empleados.data.response.findIndex(
-        (el: { idempleado: number }) => el.idempleado === infoGeneral.empleado
+        (el: { idempleado: number }) =>
+          el.idempleado === infoGeneral.horario?.empleado.idempleado
       );
       if (indexOfValue >= 0) {
         values.empleado = empleados.data.response[indexOfValue];
       }
     }
+
+    if (!lecturasIniciales.isPending) {
+      values.lecturasIniciales = lecturasIniciales.data.response;
+    }
     return values;
-  }, [islas, estacionServicio, turnos, empleados]);
+  }, [islas, estacionServicio, turnos, empleados, lecturasIniciales]);
 
   //totales
   const totales = useMemo(() => {
@@ -178,8 +195,8 @@ const LayoutLiquidacion: FC = () => {
 
   console.log(otherData);
 
-  useEffect(() => {
-    const infoGralCache = localStorage.getItem("infoGeneralPreliq");
+  /*   useEffect(() => {
+    const infoGralCache = localStorage.getItem("infoGeneralLiq");
     if (infoGralCache) {
       //comprueba que existe la variable en el almacenamiento local
       if (JSON.parse(infoGralCache).hasOwnProperty("empleado")) {
@@ -192,7 +209,7 @@ const LayoutLiquidacion: FC = () => {
       }
     }
   }, []);
-
+ */
   const cleanAll = () => {
     setInfoGeneral({});
     setPrecios({});
@@ -203,7 +220,7 @@ const LayoutLiquidacion: FC = () => {
 
     localStorage.removeItem("efectivoPreliq");
     localStorage.removeItem("infoGeneralPreliq");
-    localStorage.removeItem("manguerasPreliq");
+    localStorage.removeItem("manguerasLiq");
     localStorage.removeItem("preciosPreliq");
     localStorage.removeItem("valesPreliq");
     localStorage.removeItem("errorPreliq");
@@ -211,8 +228,10 @@ const LayoutLiquidacion: FC = () => {
     navigate("/preliquidacion");
   };
 
+  console.log({ infoGeneral, lecturasIniciales, otherData });
+
   return (
-    <ContextPreliq.Provider
+    <ContextLiq.Provider
       value={{
         infoGeneral: { body: infoGeneral, setBody: setInfoGeneral },
         precios: { body: precios, setBody: setPrecios },
@@ -226,14 +245,14 @@ const LayoutLiquidacion: FC = () => {
       }}
     >
       <div className="w-full h-[calc(100vh-6rem)] flex">
-        <ModalConfirmNoMutate
+        {/*         <ModalConfirmNoMutate
           action={cleanAll}
           msg="Existen datos sin guardar, ¿desea recuperarlos?"
           title="Advertencia"
           actionOnCloseButton
           confirmButtonText="Sí"
           closeButtonText="No"
-        />
+        /> */}
         <ul className="menu bg-base-300 rounded-box lg:w-1/6 h-full gap-2">
           {/* <NavButton
             to="/preliquidacion"
@@ -278,6 +297,53 @@ const LayoutLiquidacion: FC = () => {
             {/*             <Header noShowBarMenu />
              */}
             <div className="p-4">
+              <div className="stats shadow w-full sticky top-0 bg-base-100/80 backdrop-blur-sm z-40 mb-4">
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <Icon icon="calculator" size="2x" />
+                  </div>
+                  <div className="stat-title">Fecha</div>
+                  <div className="stat-value text-xs">
+                    {format.formatFecha(infoGeneral.horario!.fechaliquidacion)}
+                  </div>
+                </div>
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <Icon icon="sack-dollar" size="2x" />
+                  </div>
+                  <div className="stat-title">Despachador</div>
+                  <div className="stat-value text-xs">
+                    {`${infoGeneral.horario?.empleado.nombre} ${infoGeneral.horario?.empleado.apellido_paterno} ${infoGeneral.horario?.empleado.apellido_materno}`}
+                  </div>
+                </div>
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <Icon icon="briefcase" size="2x" />
+                  </div>
+                  <div className="stat-title">Turno</div>
+                  <div className="stat-value text-xs">
+                    {infoGeneral.horario?.turno.turno}
+                  </div>
+                </div>
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <Icon icon="briefcase" size="2x" />
+                  </div>
+                  <div className="stat-title">Estación de servicio</div>
+                  <div className="stat-value text-xs">
+                    {infoGeneral.horario?.estacion_servicio.nombre}
+                  </div>
+                </div>
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <Icon icon="briefcase" size="2x" />
+                  </div>
+                  <div className="stat-title">Islas</div>
+                  <div className="stat-value text-xs">
+                    {infoGeneral.idislas?.map((el) => el.nisla)}
+                  </div>
+                </div>
+              </div>
               <Outlet />
               <div className="stats shadow w-full sticky bottom-0 bg-base-100/80 backdrop-blur-sm mt-4">
                 <div className="stat">
@@ -312,7 +378,7 @@ const LayoutLiquidacion: FC = () => {
           </div>
         </ScrollToTop>
       </div>
-    </ContextPreliq.Provider>
+    </ContextLiq.Provider>
   );
 };
 
