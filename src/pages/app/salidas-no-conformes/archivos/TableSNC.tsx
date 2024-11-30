@@ -112,7 +112,6 @@ const TableSNC: FC<{
         columns={columns}
         data={data}
         noDataMsg={noDataMsg}
-        condicionalRowStyle={{ lol: "ad" }}
       />
     </div>
   );
