@@ -29,5 +29,18 @@ export default {
       icon: "file-pdf",
       show: true,
     },
+    {
+      to: "reportes",
+      name: "Reportes",
+      icon: "chart-simple",
+      show: true,
+      collapse: [
+        {
+          show: true,
+          to: "graficas",
+          name: "Incumplimientos y Empleados",
+        },
+      ],
+    },
   ],
 } satisfies sideBarItems;

@@ -9,6 +9,7 @@ interface filtrosData {
   folio: string;
   etapa: string;
   idIncumplimiento: number | string;
+  idDepartamento: number | string;
   filtro: 1 | 2 | 3 | 4;
 }
 

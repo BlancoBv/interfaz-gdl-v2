@@ -3,6 +3,7 @@ import { redirect, RouteObject } from "react-router-dom";
 import Layout from "@layout/Layout";
 import RedactarSNC from "@pages/app/salidas-no-conformes/redactar/RedactarSNC";
 import Archivos from "@pages/app/salidas-no-conformes/archivos/Archivos";
+import GIyE from "@pages/app/salidas-no-conformes/reportes/GIyE";
 
 export default {
   path: "/app",
@@ -29,6 +30,10 @@ export default {
           children: [
             { path: "redactar", element: <RedactarSNC /> },
             { path: "archivos", element: <Archivos /> },
+            {
+              path: "reportes",
+              children: [{ path: "graficas", element: <GIyE /> }],
+            },
           ],
         },
       ],

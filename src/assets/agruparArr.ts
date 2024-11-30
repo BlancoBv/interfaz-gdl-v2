@@ -2,6 +2,7 @@ export interface agruparArrInterface {
   keys: string[];
   values: any[];
   single: any;
+  keysAndValue: any[];
 }
 
 const agruparArr = (
@@ -26,6 +27,7 @@ const agruparArr = (
     keys: Object.keys(group),
     values: Object.values(group),
     single: group,
+    keysAndValue: Object.keys(group).map((k) => ({ key: k, value: group[k] })),
   } as const;
 };
 export default agruparArr;
