@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import socket from "../../components/socket";
 import { useModal } from "@hooks/useModal";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
+import { useSendData } from "@hooks/useSendData";
 interface preliquidacionExist extends getDataInterface {
   data: { response: null | { [key: string]: any } };
 }
@@ -16,7 +17,10 @@ const CardLiq: FC<{
   data: liquidacionesPendientesInterface;
   anteriores: [];
   setRecapValid: any;
-}> = ({ data, setRecapValid }) => {
+  totalLiquidaciones: number;
+  liquidacionesEnCaptura: number;
+}> = ({ data, setRecapValid, totalLiquidaciones, liquidacionesEnCaptura }) => {
+  const { sendJsonMessage } = socket();
   const credentials: { auth?: { idempleado: number } } = JSON.parse(
     localStorage.getItem("credentials") ?? "null"
   );
@@ -28,6 +32,7 @@ const CardLiq: FC<{
     `liquidacion/buscar-preliquidacion?idEmpleado=${data.horario.idempleado}&fechaTurno=${data.horario.fechaliquidacion}&idEstacionServicio=${data.horario.estacion_servicio.idestacion_servicio}&idTurno=${data.horario.turno.idturno}`,
     "preliqExistenteData"
   );
+  const reservar = useSendData(`liquidacion/reservar/${data.idliquidacion}`);
 
   const statusMsg = (): ReactNode => {
     const status: {
@@ -76,6 +81,22 @@ const CardLiq: FC<{
           modalNoPreliq.show();
           break handleClick;
         }
+        const bodyReserva: { total: number; numero: number } = {
+          total: totalLiquidaciones,
+          numero: liquidacionesEnCaptura + 1,
+        };
+
+        await reservar.mutateAsync(bodyReserva);
+
+        sendJsonMessage({
+          type: "closeLiquidacion",
+          idliquidacion: data.idliquidacion,
+          escena: "usuarioCapturaOtraLiquidacion",
+          msg: `Un usuario esta capturando una liquidación con folio: ${data.idliquidacion} `,
+        });
+        localStorage.setItem("liqDatos", JSON.stringify(data));
+        localStorage.setItem("hasReinicio", JSON.stringify(false));
+
         navigate(
           `/app/liquidacion/liquidaciones/capturar/${data.idliquidacion}`
         );

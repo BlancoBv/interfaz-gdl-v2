@@ -4,6 +4,7 @@ import { redirect, RouteObject } from "react-router-dom";
 import { Dep } from "@assets/auth";
 import LiqPorCapturar from "@pages/app/liquidacion/por-capturar/Index";
 import LayoutLiquidacion from "@layout/LayoutLiquidacion";
+import CapturarLecturas from "@pages/app/liquidacion/capturar/Index";
 
 export default {
   path: "liquidacion",
@@ -29,7 +30,7 @@ export default {
           path: "capturar/:idLiquidacion",
           element: <LayoutLiquidacion />,
           children: [
-            { index: true, element: "captura" },
+            { index: true, element: <CapturarLecturas /> },
             { path: "previsualizar-lecturas", element: "lecturas-prev" },
             { path: "capturar-efectivo", element: "captura de efetvi" },
             { path: "capturar-vales", element: "captura de vales" },
