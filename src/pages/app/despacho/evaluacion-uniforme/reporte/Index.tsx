@@ -155,7 +155,7 @@ const ReporteEvUniforme: FC = () => {
               ],
             }}
             legend
-            omitDatalabelOnIndex={1}
+            logaritmic={false}
           />
         </>
       )}
