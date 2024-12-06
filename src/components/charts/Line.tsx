@@ -11,10 +11,7 @@ interface DrawHorizontalLineInterface {
 }
 
 interface ChartDataExtends
-  extends ChartData<
-    "line",
-    CustomDataPoint[] | ChartData<"bar", CustomDataPoint[]>
-  > {
+  extends ChartData<"line" | "bar", CustomDataPoint[]> {
   metaData?: any[];
 }
 
