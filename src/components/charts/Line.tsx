@@ -1,12 +1,50 @@
 import { ChartsPropsInterface, type CustomDataPoint } from "@assets/interfaces";
-import { ChartData } from "chart.js";
+import { ChartData, ChartType } from "chart.js";
 import { FC, useEffect, useRef } from "react";
 import { Line } from "react-chartjs-2";
 
+interface DrawHorizontalLineInterface {
+  y?: number;
+  color?: string;
+  text?: string;
+  dashed?: boolean;
+}
+
 interface line extends ChartsPropsInterface {
-  data?: ChartData<"line", CustomDataPoint[]>;
+  data?:
+    | ChartData<"line", CustomDataPoint[]>
+    | ChartData<"bar", CustomDataPoint[]>;
   logaritmic?: boolean;
   omitDatalabelOnIndex?: number;
+  linesHorizontal?: DrawHorizontalLineInterface[];
+}
+
+const PluginDrawLineHorizontal = {
+  id: "drawHorizontalLine",
+  afterDraw: (chart, _args, options) => {
+    for (let i = 0; i < options.length; i++) {
+      const { ctx, scales } = chart;
+      const yScale = scales["y"];
+      const element = options[i];
+      const yValue = yScale.getPixelForValue(element.y || 7);
+      ctx.beginPath();
+      ctx.lineWidth = 2;
+      if (element.dashed) ctx.setLineDash([5, 3]);
+      ctx.strokeStyle = element.color || "#b91c1c";
+      ctx.moveTo(0, yValue);
+      ctx.lineTo(chart.width, yValue);
+      ctx.stroke();
+
+      ctx.fillStyle = element.color || "#b91c1c";
+      ctx.fillText(element.text || "7 - PM", 0, yValue + 12);
+    }
+  },
+};
+
+declare module "chart.js" {
+  interface PluginOptionsByType<TType extends ChartType> {
+    drawHorizontalLine?: DrawHorizontalLineInterface[] | boolean;
+  }
 }
 
 const Index: FC<line> = ({
@@ -21,12 +59,12 @@ const Index: FC<line> = ({
   logaritmic,
   omitDatalabelOnIndex,
   id,
+  linesHorizontal,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
     if (ref.current) {
       if (ref.current?.chart) {
-        console.log(ref.current?.chart);
         ref.current.chart?.destroy();
       }
     }
@@ -35,6 +73,7 @@ const Index: FC<line> = ({
   return (
     <div className="h-96">
       <Line
+        plugins={[PluginDrawLineHorizontal]}
         id={id}
         ref={ref}
         data={
@@ -79,6 +118,7 @@ const Index: FC<line> = ({
             },
           },
           plugins: {
+            drawHorizontalLine: linesHorizontal || false,
             datalabels: {
               labels: {
                 title: {
