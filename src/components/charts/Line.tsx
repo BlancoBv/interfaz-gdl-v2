@@ -10,10 +10,16 @@ interface DrawHorizontalLineInterface {
   dashed?: boolean;
 }
 
+interface ChartDataExtends
+  extends ChartData<
+    "line",
+    CustomDataPoint[] | ChartData<"bar", CustomDataPoint[]>
+  > {
+  metaData?: any[];
+}
+
 interface line extends ChartsPropsInterface {
-  data?:
-    | ChartData<"line", CustomDataPoint[]>
-    | ChartData<"bar", CustomDataPoint[]>;
+  data?: ChartDataExtends;
   logaritmic?: boolean;
   omitDatalabelOnIndex?: number;
   linesHorizontal?: DrawHorizontalLineInterface[];
