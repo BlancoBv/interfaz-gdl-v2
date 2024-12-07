@@ -93,10 +93,13 @@ const Index: FC<line> = ({
         options={{
           onClick: (_event, element, chart) => {
             if (onClick) {
-              const dataset = chart.data.datasets[element[0].datasetIndex];
-              const indexElement = element[0].index;
-
-              onClick(dataset, indexElement);
+              try {
+                const dataset = chart.data.datasets[element[0].datasetIndex];
+                const indexElement = element[0].index;
+                onClick(dataset, indexElement);
+              } catch (err) {
+                console.log("Error al ubicar propiedades");
+              }
             }
           },
           maintainAspectRatio: false,
