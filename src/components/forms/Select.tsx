@@ -465,7 +465,7 @@ export const SelectIncumplimientos: FC<incumplimiento> = ({
 }) => {
   const { data, isError, isPending }: incumplimientoData = useGetData(
     "incumplimiento",
-    "departamentoData"
+    "incumplimientoData"
   );
 
   return (
@@ -524,6 +524,8 @@ const ReactSelect: FC<rSelectInterface> = (props) => {
     tabIndex,
     multiple,
   } = props;
+
+  console.log(options);
 
   const ref = useRef<any>();
   const value = useMemo(() => {
