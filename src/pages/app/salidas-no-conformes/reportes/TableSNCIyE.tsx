@@ -2,6 +2,7 @@ import { FC, useMemo } from "react";
 import { SNC } from "@assets/interfaces";
 import DinamicTable from "@components/TableClientRendering";
 import { ColumnDef } from "@tanstack/react-table";
+import { useNavigate } from "react-router-dom";
 
 interface columnsEmp {
   key: string;
@@ -14,6 +15,7 @@ const TableSNCIyE: FC<{
   data: SNC[];
   noDataMsg?: string;
 }> = ({ noDataMsg, siglasInc, empleadosSnc, data }) => {
+  const navigate = useNavigate();
   const contador = (data: columnsEmp, incumplimiento: string) => {
     return data.value.filter(
       (s) => s.incumplimiento.incumplimiento == incumplimiento
@@ -23,7 +25,11 @@ const TableSNCIyE: FC<{
   const columns = useMemo<ColumnDef<columnsEmp>[]>(
     () => [
       {
-        accessorFn: (row) => row.value[0].empleado.nombre_completo,
+        accessorFn: (row) => (
+          <span onClick={() => navigate(row.key)} className="cursor-pointer">
+            {row.value[0].empleado.nombre_completo}
+          </span>
+        ),
         id: "empleado",
         header: () => <span>Empleado</span>,
         cell: (info) => info.getValue(),

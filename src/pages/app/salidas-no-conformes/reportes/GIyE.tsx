@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useMemo, useReducer } from "react";
+import { FC, SyntheticEvent, useMemo, useReducer, useState } from "react";
 import moment from "moment";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import { SNC } from "@assets/interfaces";
@@ -14,14 +14,23 @@ import {
 } from "@components/forms/Select.tsx";
 import TableSNCIyE from "./TableSNCIyE.tsx";
 import Bar from "@components/charts/Bar.tsx";
+import Line from "@components/charts/Line.tsx";
 import agruparArr from "@assets/agruparArr.ts";
+import Modal from "@components/gui/Modal.tsx";
+import { useModal } from "@hooks/useModal.ts";
+import { ColumnDef } from "@tanstack/react-table";
+import DinamicTable from "@components/TableClientRendering";
+import BtnPdfSnc from "../archivos/components/BtnPdfSnc.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface reporte extends getDataInterface {
-  data: { response: SNC[] };
+  data: { response: SNC[]; puntajeMinimo: number };
 }
 
 const GIyE: FC = () => {
-  const cacheFiltros = sessionStorage.getItem("reporteSNCFiltros");
+  const [sncMInformation, setSncMInformation] = useState<SNC[]>([]);
+  const modalSNCInc = useModal("modalSNCInc");
+  const cacheFiltros = sessionStorage.getItem("reporteSNCFiltrosDataEmpleado");
   const parsedFiltros = cacheFiltros
     ? JSON.parse(cacheFiltros)
     : {
@@ -42,9 +51,14 @@ const GIyE: FC = () => {
     parsedFiltros
   );
 
+  const navigate = useNavigate();
+
   const handleFilter = (ev: SyntheticEvent) => {
     ev.preventDefault();
-    sessionStorage.setItem("reporteSNCFiltros", JSON.stringify(filtros));
+    sessionStorage.setItem(
+      "reporteSNCFiltrosDataEmpleado",
+      JSON.stringify(filtros)
+    );
     refetch();
   };
 
@@ -56,11 +70,16 @@ const GIyE: FC = () => {
     }&fechaI=${filtros.fechaI}&fechaF=${filtros.fechaF}&folio=${
       filtros.folio
     }&idDepartamento=${filtros.idDepartamento}`,
-    "reporteSNCData"
+    "reporteSNCDataChart"
   );
 
   const res = useMemo(
     () => (!isError && !isPending ? data.response : []),
+    [data, isPending, isError]
+  );
+
+  const PM = useMemo(
+    () => (!isError && !isPending ? data.puntajeMinimo : 0),
     [data, isPending, isError]
   );
 
@@ -147,28 +166,112 @@ const GIyE: FC = () => {
         />
       </div>
       <div>
-        <Bar
+        <Line
           data={{
-            labels: siglasInc.map((inc) => inc.sigla),
+            labels: siglasInc.map(
+              (inc) => `${inc.incumplimiento};${inc.sigla}`
+            ),
             datasets: [
               {
+                type: "bar",
                 data: siglasInc.map((inc) => inc.cantidad),
-                backgroundColor: "#ef4444",
+                metaData: incumplimientosSnc,
+                backgroundColor: "#0ea5e9",
                 label: "Cantidad",
               },
             ],
           }}
           title="Incumplimientos"
-          etiquetaX="Cantidad"
-          etiquetaY="Empleados"
-          omitDatalabelOnIndex={1}
-          onClick={(e, r, t, y) => {
-            console.log("hola", e, r, t, y);
+          etiquetaX="Incumplimientos"
+          etiquetaY="Cantidad"
+          linesHorizontal={[
+            {
+              y: PM,
+              color: "#b91c1c",
+              text: `SNC: ${PM}`,
+              dashed: true,
+            },
+          ]}
+          onClick={(element: any, index: number) => {
+            setSncMInformation(element.metaData[index].value);
+
+            modalSNCInc.show();
           }}
-          // ticksYCallback={(value) => "$" + value}
+        />
+        <Line
+          data={{
+            labels: empleadosSnc.map(
+              (emp) =>
+                emp.value[0].empleado.nombre +
+                " " +
+                emp.value[0].empleado.apellido_paterno.charAt(0) +
+                "."
+            ),
+            datasets: [
+              {
+                type: "bar",
+                data: empleadosSnc.map((emp) => emp.value.length),
+                metaData: empleadosSnc.map((emp) => emp.key),
+                backgroundColor: "#ef4444",
+                label: "Cantidad",
+              },
+            ],
+          }}
+          title="Empleados"
+          etiquetaX="Empleados"
+          etiquetaY="Cantidad"
+          onClick={(data, index) => {
+            navigate(data.metaData[index]);
+          }}
         />
       </div>
+      <ModalSnc data={sncMInformation} />
     </div>
+  );
+};
+
+export const ModalSnc: FC<{ data: SNC[] }> = ({ data }) => {
+  console.log(data);
+
+  const columns = useMemo<ColumnDef<SNC>[]>(
+    () => [
+      {
+        accessorFn: (row) => row.idsalida_noconforme,
+        id: "folio",
+        header: () => <span>Folio</span>,
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorFn: (row) => moment(row.fecha).format("DD/MM/YYYY"),
+        id: "fecha",
+        header: () => <span>Fecha</span>,
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorFn: (row) => row.empleado.nombre_completo,
+        id: "empleado",
+        header: () => <span>Empleado</span>,
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorFn: (row) => row.incumplimiento.incumplimiento,
+        id: "incumplimiento",
+        header: () => <span>Incumplimiento</span>,
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorFn: (row) => <BtnPdfSnc data={row} />,
+        id: "pdfsnc",
+        header: () => <span>Incumplimiento</span>,
+        cell: (info) => info.getValue(),
+      },
+    ],
+    []
+  );
+  return (
+    <Modal id="modalSNCInc" title="Salidas no conformes">
+      <DinamicTable columns={columns} data={data} noDataMsg={"Sin SNC"} />
+    </Modal>
   );
 };
 
