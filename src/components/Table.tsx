@@ -1,11 +1,4 @@
-import {
-  FC,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useReducer,
-  useState,
-} from "react";
+import { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import ContextualMenu, {
   contextItems,
   DEFAULT_ID,
@@ -66,6 +59,10 @@ const Table: FC<{
     );
   }, [currentPage, pagination, copyOfData]);
 
+  useEffect(() => {
+    setCopyOfData(data);
+  }, [data]);
+
   return (
     <>
       <ContextualMenu items={contextualMenuItems} />
@@ -83,9 +80,6 @@ const Table: FC<{
                 key={`col ${col.name}`}
                 onClick={() => {
                   const a = copyOfData.sort(col?.sortableValue);
-
-                  console.log(copyOfData, a, data);
-
                   if (copyOfData === a) {
                     setCopyOfData([...data]);
                   } else {

@@ -429,3 +429,8 @@ export interface liquidacionesPendientesInterface
     fechaliquidacion: string;
   };
 }
+
+export interface codigosUsoInterface {
+  idcodigo_uso: string;
+  descripcion: string;
+}

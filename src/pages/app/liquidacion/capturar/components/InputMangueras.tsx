@@ -37,6 +37,7 @@ const InputMangueras: FC<{
   const idMangueraGenerico = `${data.idgas}${posicion}`;
 
   const ID_MODAL = "modal-confirm-delete-lectura";
+
   const lecturaInicial =
     lecturasIniciales?.find((el) => el.idmanguera === idManguera)
       ?.lecturas_finales[0]?.lecturaf ?? 0;
@@ -49,7 +50,6 @@ const InputMangueras: FC<{
 
     const regExpOnlyNumber = new RegExp(/^\d+$/, "g");
 
-    const indexOfValue = body.findIndex((el) => el.idManguera === idManguera);
     const formatedValue = format.zFill(value);
 
     if (regExpOnlyNumber.test(value)) {
@@ -58,22 +58,24 @@ const InputMangueras: FC<{
       refInicial.current?.classList.remove("input-sucess", "input-error");
 
       const newValue: manguerasInterface = {
-        idManguera: idManguera,
-        [name]: formatedValue,
-        precioUnitario:
-          "22" /* precios[data.idgas as keyof preciosInterface] ?? "1" */,
+        [idManguera]: {
+          manguera: idManguera,
+          [name]: formatedValue,
+          precioUnitario: "22",
+        },
       };
 
-      if (indexOfValue < 0) {
+      console.log({ body, name });
+
+      if (body[idManguera] === undefined) {
         //verifica que existe el valor en el arreglo de las mangueras
-        setBody?.((prev: manguerasInterface[]) => [...prev, newValue]);
+        setBody?.((prev: manguerasInterface) => ({ ...prev, ...newValue }));
       } else {
         const actualValues = body;
 
-        actualValues[indexOfValue][name as keyof manguerasInterface] =
-          formatedValue; //cambia los valores en el indice que contenga al elemento
+        actualValues[idManguera].lecturaFinal = formatedValue; //cambia los valores en el indice que contenga al elemento
 
-        if (body[indexOfValue].hasOwnProperty("lecturaFinal")) {
+        if (body[idManguera].hasOwnProperty("lecturaFinal")) {
           refInicial.current?.classList.remove(
             "input-warning",
             "input-success"
@@ -81,7 +83,9 @@ const InputMangueras: FC<{
           refFinal.current?.classList.remove("input-warning", "input-success");
 
           const lecturaI = Number(lecturaInicial);
-          const lecturaF = Number(body[indexOfValue].lecturaFinal);
+          const lecturaF = Number(body[idManguera].lecturaFinal);
+
+          console.log({ lecturaF, lecturaI });
 
           if (lecturaF < lecturaI) {
             //refInicial.current?.classList.add("input-warning");
@@ -98,17 +102,16 @@ const InputMangueras: FC<{
               ? lecturaF - lecturaI
               : 9999999 - lecturaI + lecturaF + 1;
 
-          actualValues[indexOfValue]["litrosVendidos"] = litrosVendidos;
-          actualValues[indexOfValue]["lecturaInicial"] = lecturaInicial;
-          actualValues[indexOfValue]["idmangueraGenerico"] = idMangueraGenerico;
-          actualValues[indexOfValue]["manguera"] = idManguera;
-
-          actualValues[indexOfValue]["posicion"] = posicion;
-          actualValues[indexOfValue]["idisla"] = data.mangueras.idsla;
-          actualValues[indexOfValue]["combustible"] = data.nombre;
+          actualValues[idManguera]["litrosVendidos"] = litrosVendidos;
+          actualValues[idManguera]["lecturaInicial"] = String(lecturaInicial);
+          actualValues[idManguera]["idmangueraGenerico"] = idMangueraGenerico;
+          actualValues[idManguera]["manguera"] = idManguera;
+          actualValues[idManguera]["posicion"] = posicion;
+          actualValues[idManguera]["idisla"] = data.mangueras.idsla;
+          actualValues[idManguera]["combustible"] = data.nombre;
         } //verifica y realiza el calculo de litros vendidos
 
-        setBody?.([...actualValues]);
+        setBody?.({ ...actualValues });
       }
     } else {
       if (name === "lecturaInicial") {
@@ -119,57 +122,49 @@ const InputMangueras: FC<{
     }
   };
 
-  const { inicial, final } = useMemo(() => {
-    const indexOfValue = body.findIndex((el) => el.idManguera === idManguera);
-
-    if (indexOfValue >= 0) {
+  const { final } = useMemo(() => {
+    if (body[idManguera] !== undefined) {
       if (
-        body[indexOfValue].hasOwnProperty("lecturaInicial") &&
-        !body[indexOfValue].hasOwnProperty("lecturaFinal")
+        body[idManguera].hasOwnProperty("lecturaInicial") &&
+        !body[idManguera].hasOwnProperty("lecturaFinal")
       ) {
         return {
-          inicial: body[indexOfValue].lecturaInicial,
+          inicial: body[idManguera].lecturaInicial,
           final: "",
         } as const;
       }
 
       if (
-        body[indexOfValue].hasOwnProperty("lecturaFinal") &&
-        !body[indexOfValue].hasOwnProperty("lecturaInicial")
+        body[idManguera].hasOwnProperty("lecturaFinal") &&
+        !body[idManguera].hasOwnProperty("lecturaInicial")
       ) {
         return {
           inicial: "",
-          final: body[indexOfValue].lecturaFinal,
+          final: body[idManguera].lecturaFinal,
         } as const;
       }
 
       return {
-        inicial: body[indexOfValue].lecturaInicial,
-        final: body[indexOfValue].lecturaFinal,
+        inicial: body[idManguera].lecturaInicial,
+        final: body[idManguera].lecturaFinal,
       } as const;
     }
     return { inicial: "", final: "" } as const;
   }, [body]); //retorna los valores de cada input automaticamente
 
-  console.log(precios, data);
-
   useEffect(() => {
-    const indexOfValue = body.findIndex(
-      (el) => el.idManguera === data.mangueras.idmanguera
-    );
-
-    if (indexOfValue >= 0) {
+    if (body[idManguera] !== undefined) {
       if (
-        body[indexOfValue].hasOwnProperty("lecturaInicial") &&
-        !body[indexOfValue].hasOwnProperty("lecturaFinal")
+        body[idManguera].hasOwnProperty("lecturaInicial") &&
+        !body[idManguera].hasOwnProperty("lecturaFinal")
       ) {
         refFinal.current?.classList.add("input-error");
         refInicial.current?.classList.add("input-error");
       }
 
       if (
-        body[indexOfValue].hasOwnProperty("lecturaFinal") &&
-        body[indexOfValue].hasOwnProperty("lecturaInicial")
+        body[idManguera].hasOwnProperty("lecturaFinal") &&
+        body[idManguera].hasOwnProperty("lecturaInicial")
       ) {
         refFinal.current?.classList.add("input-success");
         refInicial.current?.classList.add("input-success");
@@ -186,7 +181,9 @@ const InputMangueras: FC<{
         <p className="text-center">
           <span className="flex gap-4 items-center justify-center">
             {idMangueraGenerico}
-            <span className="text-xs">{format.zFill(lecturaInicial)}</span>
+            {data.mangueras.tiene && (
+              <span className="text-xs">{format.zFill(lecturaInicial)}</span>
+            )}
           </span>
         </p>
         <div className="flex items-center gap-4 justify-evenly lg:justify-normal">
@@ -196,6 +193,7 @@ const InputMangueras: FC<{
             handleFn={handle}
             value={final}
             ref={refFinal}
+            disabled={!data.mangueras.tiene}
           />
         </div>
       </div>

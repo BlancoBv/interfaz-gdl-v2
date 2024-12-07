@@ -36,13 +36,12 @@ const LayoutLiquidacion: FC = () => {
   const CACHE_MANGUERAS = localStorage.getItem("manguerasLiq");
   const PARSED_MANGUERAS = CACHE_MANGUERAS ? JSON.parse(CACHE_MANGUERAS) : [];
   const [mangueras, setMangueras] =
-    useState<manguerasInterface[]>(PARSED_MANGUERAS);
+    useState<manguerasInterface>(PARSED_MANGUERAS);
   //efetivo
-  const CACHE_EFECTIVO = localStorage.getItem("efectivoPreliq");
-  const PARSED_EFECTIVO = CACHE_EFECTIVO
-    ? JSON.parse(CACHE_EFECTIVO)
-    : { type: "efectivo", cantidad: [] };
-  const [efectivo, setEfectivo] = useState<efectivoInterface>(PARSED_EFECTIVO);
+  const CACHE_EFECTIVO = localStorage.getItem("efectivoLiq");
+  const PARSED_EFECTIVO = CACHE_EFECTIVO ? JSON.parse(CACHE_EFECTIVO) : [];
+  const [efectivo, setEfectivo] =
+    useState<efectivoInterface[]>(PARSED_EFECTIVO);
   //vales
   const CACHE_VALES = localStorage.getItem("valesPreliq");
   const PARSED_VALES = CACHE_VALES
@@ -67,6 +66,7 @@ const LayoutLiquidacion: FC = () => {
     "islaSelectData",
     { fetchInURLChange: true }
   );
+
   const turnos = useGetData(
     "/administrativo/turnos/buscartodo",
     "turnoSelectData"
@@ -77,6 +77,11 @@ const LayoutLiquidacion: FC = () => {
     "lecturasIniciales"
   );
 
+  const codigosUso = useGetData(
+    "liquidacion/codigo-uso/obtener",
+    "codigosUsoData"
+  );
+
   const otherData = useMemo(() => {
     const values: {
       islas: any[];
@@ -84,12 +89,14 @@ const LayoutLiquidacion: FC = () => {
       turno: any;
       empleado: any;
       lecturasIniciales: any;
+      codigosUso: any;
     } = {
       islas: [],
       estacionServicio: "",
       turno: "",
       empleado: "",
       lecturasIniciales: [],
+      codigosUso: [],
     };
 
     if (!islas.isPending) {
@@ -140,6 +147,9 @@ const LayoutLiquidacion: FC = () => {
     if (!lecturasIniciales.isPending) {
       values.lecturasIniciales = lecturasIniciales.data.response;
     }
+    if (!codigosUso.isPending) {
+      values.codigosUso = codigosUso.data.response;
+    }
     return values;
   }, [islas, estacionServicio, turnos, empleados, lecturasIniciales]);
 
@@ -153,8 +163,8 @@ const LayoutLiquidacion: FC = () => {
       diferencia: "0",
     }; // sirve para almacenar los valores temporalmente
 
-    if (mangueras.length > 0) {
-      const sumatoriaImportes = mangueras
+    if (Object.values(mangueras).length > 0) {
+      const sumatoriaImportes = Object.values(mangueras)
         .map((el) => {
           if (
             el.litrosVendidos !== undefined &&
@@ -177,9 +187,10 @@ const LayoutLiquidacion: FC = () => {
       valores.totalVales = sumatoriaVales;
     }
 
-    if (efectivo.cantidad.length > 0) {
-      const sumatoriaEfectivo: number = efectivo.cantidad.reduce(
-        (a, b) => Number(new Decimal(Number(a)).add(Number(b)).toFixed(2)),
+    if (efectivo.length > 0) {
+      const sumatoriaEfectivo: number = efectivo.reduce(
+        (a, b) =>
+          Number(new Decimal(Number(a)).add(Number(b.monto)).toFixed(2)),
         0
       );
       valores.totalEfectivo = sumatoriaEfectivo;
@@ -192,8 +203,6 @@ const LayoutLiquidacion: FC = () => {
 
     return valores;
   }, [infoGeneral, mangueras, efectivo, vales]);
-
-  console.log(otherData);
 
   /*   useEffect(() => {
     const infoGralCache = localStorage.getItem("infoGeneralLiq");
@@ -213,12 +222,12 @@ const LayoutLiquidacion: FC = () => {
   const cleanAll = () => {
     setInfoGeneral({});
     setPrecios({});
-    setEfectivo({ type: "efectivo", cantidad: [] });
+    setEfectivo([]);
     setVales({ type: "vales", cantidad: [] });
-    setMangueras([]);
+    setMangueras({});
     setError(false);
 
-    localStorage.removeItem("efectivoPreliq");
+    localStorage.removeItem("efectivoLiq");
     localStorage.removeItem("infoGeneralPreliq");
     localStorage.removeItem("manguerasLiq");
     localStorage.removeItem("preciosPreliq");
@@ -227,8 +236,6 @@ const LayoutLiquidacion: FC = () => {
 
     navigate("/preliquidacion");
   };
-
-  console.log({ infoGeneral, lecturasIniciales, otherData });
 
   return (
     <ContextLiq.Provider
