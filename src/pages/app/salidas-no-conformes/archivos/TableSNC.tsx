@@ -8,6 +8,7 @@ import { useModal } from "@hooks/useModal";
 import BtnPdfSnc from "./components/BtnPdfSnc";
 import DataSNC from "./components/ProviderSNC";
 import BtnEliminar from "@components/forms/BtnEliminar";
+import { useSendData } from "@hooks/useSendData";
 
 const TableSNC: FC<{
   data: SNC[];
@@ -93,7 +94,7 @@ const TableSNC: FC<{
             >
               <Icon icon="pencil" />
             </button>
-            <BtnEliminar onClick={() => console.log("Eliminando elemento")} />
+            <ComponentDel id={row.idsalida_noconforme} />
             <BtnPdfSnc data={row} />
           </div>
         ),
@@ -115,5 +116,15 @@ const TableSNC: FC<{
       />
     </div>
   );
+};
+
+const ComponentDel: FC<{ id: number }> = ({ id }) => {
+  const delSNC = useSendData(`/salida-no-conforme/${id}`, {
+    method: "delete",
+    refetchFn: () => {
+      close();
+    },
+  });
+  return <BtnEliminar onClick={() => delSNC.mutateAsync({})} />;
 };
 export default TableSNC;
