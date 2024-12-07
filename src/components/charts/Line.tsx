@@ -113,12 +113,15 @@ const Index: FC<line> = ({
               title: { display: true, text: etiquetaX },
               ticks: {
                 callback(value) {
-                  const label = this.getLabelForValue(Number(value)).split(";");
-                  if (label.length > 1) {
-                    return label[1];
+                  const label = this.getLabelForValue(Number(value));
+                  if (typeof label === "string") {
+                    const labelSplit = label.split(";");
+                    if (labelSplit.length > 1) {
+                      return labelSplit[1];
+                    }
+                    return labelSplit[0];
                   }
-
-                  return label[0];
+                  return label;
                 },
               },
             },
