@@ -66,8 +66,6 @@ const TableClientRendering: FC<Props> = ({
     (table.getState().pagination.pageIndex + 1) *
     table.getState().pagination.pageSize;
 
-  console.log(table);
-
   return (
     <div>
       {data.length > 0 ? (

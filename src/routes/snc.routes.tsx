@@ -4,6 +4,7 @@ import Layout from "@layout/Layout";
 import RedactarSNC from "@pages/app/salidas-no-conformes/redactar/RedactarSNC";
 import Archivos from "@pages/app/salidas-no-conformes/archivos/Archivos";
 import GIyE from "@pages/app/salidas-no-conformes/reportes/GIyE";
+import GIyExID from "@pages/app/salidas-no-conformes/reportes/GIyExID";
 
 export default {
   path: "/app",
@@ -32,7 +33,10 @@ export default {
             { path: "archivos", element: <Archivos /> },
             {
               path: "reportes",
-              children: [{ path: "graficas", element: <GIyE /> }],
+              children: [
+                { path: "graficas", element: <GIyE /> },
+                { path: "graficas/:idEmpleado", element: <GIyExID /> },
+              ],
             },
           ],
         },

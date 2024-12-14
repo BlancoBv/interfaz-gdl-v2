@@ -3,8 +3,12 @@ import { ChartData } from "chart.js";
 import { FC, useEffect, useRef } from "react";
 import { Bar } from "react-chartjs-2";
 
+interface ChartDataExtends extends ChartData<"bar", CustomDataPoint[]> {
+  metaData?: any[];
+}
+
 interface bar extends ChartsPropsInterface {
-  data?: ChartData<"bar", CustomDataPoint[]>;
+  data?: ChartDataExtends;
   id?: string;
   adjustToContainer?: boolean;
   tootip?: boolean;

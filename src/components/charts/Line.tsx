@@ -1,12 +1,53 @@
 import { ChartsPropsInterface, type CustomDataPoint } from "@assets/interfaces";
-import { ChartData } from "chart.js";
+import { ChartData, ChartType } from "chart.js";
 import { FC, useEffect, useRef } from "react";
 import { Line } from "react-chartjs-2";
 
+interface DrawHorizontalLineInterface {
+  y?: number;
+  color?: string;
+  text?: string;
+  dashed?: boolean;
+}
+
+interface ChartDataExtends
+  extends ChartData<"line" | "bar", CustomDataPoint[]> {
+  metaData?: any[];
+}
+
 interface line extends ChartsPropsInterface {
-  data?: ChartData<"line", CustomDataPoint[]>;
+  data?: ChartDataExtends;
   logaritmic?: boolean;
   omitDatalabelOnIndex?: number;
+  linesHorizontal?: DrawHorizontalLineInterface[];
+}
+
+const PluginDrawLineHorizontal = {
+  id: "drawHorizontalLine",
+  afterDraw: (chart, _args, options) => {
+    for (let i = 0; i < options.length; i++) {
+      const { ctx, scales } = chart;
+      const yScale = scales["y"];
+      const element = options[i];
+      const yValue = yScale.getPixelForValue(element.y || 7);
+      ctx.beginPath();
+      ctx.lineWidth = 2;
+      if (element.dashed) ctx.setLineDash([5, 3]);
+      ctx.strokeStyle = element.color || "#b91c1c";
+      ctx.moveTo(0, yValue);
+      ctx.lineTo(chart.width, yValue);
+      ctx.stroke();
+
+      ctx.fillStyle = element.color || "#b91c1c";
+      ctx.fillText(element.text || "7 - PM", 0, yValue + 12);
+    }
+  },
+};
+
+declare module "chart.js" {
+  interface PluginOptionsByType<TType extends ChartType> {
+    drawHorizontalLine?: DrawHorizontalLineInterface[] | boolean;
+  }
 }
 
 const Index: FC<line> = ({
@@ -21,12 +62,12 @@ const Index: FC<line> = ({
   logaritmic,
   omitDatalabelOnIndex,
   id,
+  linesHorizontal,
 }) => {
   const ref = useRef<any>();
   useEffect(() => {
     if (ref.current) {
       if (ref.current?.chart) {
-        console.log(ref.current?.chart);
         ref.current.chart?.destroy();
       }
     }
@@ -35,6 +76,7 @@ const Index: FC<line> = ({
   return (
     <div className="h-96">
       <Line
+        plugins={[PluginDrawLineHorizontal]}
         id={id}
         ref={ref}
         data={
@@ -51,10 +93,13 @@ const Index: FC<line> = ({
         options={{
           onClick: (_event, element, chart) => {
             if (onClick) {
-              const dataset = chart.data.datasets[element[0].datasetIndex];
-              const indexElement = element[0].index;
-
-              onClick(dataset, indexElement);
+              try {
+                const dataset = chart.data.datasets[element[0].datasetIndex];
+                const indexElement = element[0].index;
+                onClick(dataset, indexElement);
+              } catch (err) {
+                console.log("Error al ubicar propiedades");
+              }
             }
           },
           maintainAspectRatio: false,
@@ -68,17 +113,21 @@ const Index: FC<line> = ({
               title: { display: true, text: etiquetaX },
               ticks: {
                 callback(value) {
-                  const label = this.getLabelForValue(Number(value)).split(";");
-                  if (label.length > 1) {
-                    return label[1];
+                  const label = this.getLabelForValue(Number(value));
+                  if (typeof label === "string") {
+                    const labelSplit = label.split(";");
+                    if (labelSplit.length > 1) {
+                      return labelSplit[1];
+                    }
+                    return labelSplit[0];
                   }
-
-                  return label[0];
+                  return label;
                 },
               },
             },
           },
           plugins: {
+            drawHorizontalLine: linesHorizontal || false,
             datalabels: {
               labels: {
                 title: {
