@@ -44,10 +44,8 @@ const LayoutLiquidacion: FC = () => {
     useState<efectivoInterface[]>(PARSED_EFECTIVO);
   //vales
   const CACHE_VALES = localStorage.getItem("valesPreliq");
-  const PARSED_VALES = CACHE_VALES
-    ? JSON.parse(CACHE_VALES)
-    : { type: "efectivo", cantidad: [] };
-  const [vales, setVales] = useState<valesInterface>(PARSED_VALES);
+  const PARSED_VALES = CACHE_VALES ? JSON.parse(CACHE_VALES) : [];
+  const [vales, setVales] = useState<valesInterface[]>(PARSED_VALES);
   //error de reinicio o lectura mal capturada
   const [error, setError] = useState<boolean>(false);
 
@@ -179,9 +177,10 @@ const LayoutLiquidacion: FC = () => {
       valores.totalEntregar = sumatoriaImportes;
     }
 
-    if (vales.cantidad.length > 0) {
-      const sumatoriaVales: number = vales.cantidad.reduce(
-        (a, b) => Number(new Decimal(Number(a)).add(Number(b)).toFixed(2)),
+    if (vales.length > 0) {
+      const sumatoriaVales: number = vales.reduce(
+        (a, b) =>
+          Number(new Decimal(Number(a)).add(Number(b.monto)).toFixed(2)),
         0
       );
       valores.totalVales = sumatoriaVales;
@@ -223,7 +222,7 @@ const LayoutLiquidacion: FC = () => {
     setInfoGeneral({});
     setPrecios({});
     setEfectivo([]);
-    setVales({ type: "vales", cantidad: [] });
+    setVales([]);
     setMangueras({});
     setError(false);
 
@@ -303,7 +302,7 @@ const LayoutLiquidacion: FC = () => {
           >
             {/*             <Header noShowBarMenu />
              */}
-            <div className="p-4">
+            <div className="p-4 pe-0">
               <div className="stats shadow w-full sticky top-0 bg-base-100/80 backdrop-blur-sm z-40 mb-4">
                 <div className="stat">
                   <div className="stat-figure text-secondary">

@@ -16,7 +16,7 @@ interface manguera {
     tiene: boolean;
     direccion: "dr" | "iz";
     idgas: string;
-    idsla: number;
+    idisla: number;
   };
 }
 
@@ -85,7 +85,7 @@ const InputMangueras: FC<{
           const lecturaI = Number(lecturaInicial);
           const lecturaF = Number(body[idManguera].lecturaFinal);
 
-          console.log({ lecturaF, lecturaI });
+          console.log(data);
 
           if (lecturaF < lecturaI) {
             //refInicial.current?.classList.add("input-warning");
@@ -107,8 +107,9 @@ const InputMangueras: FC<{
           actualValues[idManguera]["idmangueraGenerico"] = idMangueraGenerico;
           actualValues[idManguera]["manguera"] = idManguera;
           actualValues[idManguera]["posicion"] = posicion;
-          actualValues[idManguera]["idisla"] = data.mangueras.idsla;
+          actualValues[idManguera]["idisla"] = data.mangueras.idisla;
           actualValues[idManguera]["combustible"] = data.nombre;
+          actualValues[idManguera]["idgas"] = data.idgas;
         } //verifica y realiza el calculo de litros vendidos
 
         setBody?.({ ...actualValues });

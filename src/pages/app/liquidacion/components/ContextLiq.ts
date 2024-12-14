@@ -49,8 +49,10 @@ export interface efectivoInterface {
 }
 
 export interface valesInterface {
-  type: "vales";
-  cantidad: string[];
+  folio?: string;
+  monto?: string;
+  codigoUso?: string;
+  combustible?: string;
 }
 
 export interface lecturasInicialesInterface {
@@ -100,8 +102,8 @@ export const ContextLiq = createContext<{
     setBody?: Dispatch<SetStateAction<efectivoInterface[]>>;
   };
   vales: {
-    body: valesInterface;
-    setBody?: Dispatch<SetStateAction<valesInterface>>;
+    body: valesInterface[];
+    setBody?: Dispatch<SetStateAction<valesInterface[]>>;
   };
   error: { body: boolean; setBody?: Dispatch<SetStateAction<boolean>> };
   otherData: {
@@ -121,7 +123,7 @@ export const ContextLiq = createContext<{
   precios: { body: {} },
   mangueras: { body: {} },
   efectivo: { body: [] },
-  vales: { body: { type: "vales", cantidad: [] } },
+  vales: { body: [] },
   error: { body: false },
   otherData: { islas: [], codigosUso: [] },
   totales: {

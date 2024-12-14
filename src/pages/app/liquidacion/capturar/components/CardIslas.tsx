@@ -15,7 +15,7 @@ interface single {
       tiene: boolean;
       direccion: "dr" | "iz";
       idgas: string;
-      idsla: number;
+      idisla: number;
     };
   }[];
   dr: {
@@ -26,7 +26,7 @@ interface single {
       tiene: boolean;
       direccion: "dr" | "iz";
       idgas: string;
-      idsla: number;
+      idisla: number;
     };
   }[];
 }

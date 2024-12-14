@@ -6,6 +6,7 @@ import LiqPorCapturar from "@pages/app/liquidacion/por-capturar/Index";
 import LayoutLiquidacion from "@layout/LayoutLiquidacion";
 import CapturarLecturas from "@pages/app/liquidacion/capturar/Index";
 import CapturarEfectivo from "@pages/app/liquidacion/capturar/capturar-efectivo/Index";
+import CapturarVales from "@pages/app/liquidacion/capturar/capturar-vales/Index";
 
 export default {
   path: "liquidacion",
@@ -34,7 +35,7 @@ export default {
             { index: true, element: <CapturarLecturas /> },
             { path: "previsualizar-lecturas", element: "lecturas-prev" },
             { path: "capturar-efectivo", element: <CapturarEfectivo /> },
-            { path: "capturar-vales", element: "captura de vales" },
+            { path: "capturar-vales", element: <CapturarVales /> },
             { path: "previsualizar", element: "previsualizar" },
           ],
         },

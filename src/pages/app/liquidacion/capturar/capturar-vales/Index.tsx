@@ -5,8 +5,8 @@ import TablaEV from "./components/Table";
 import { ContextLiq } from "../../components/ContextLiq";
 import { toast } from "react-toastify";
 
-const CapturarEfectivo: FC = () => {
-  const { body, setBody } = useContext(ContextLiq).efectivo;
+const CapturarVales: FC = () => {
+  const { body, setBody } = useContext(ContextLiq).vales;
   const [relativeData, setRelativeData] = useState<{
     value?: string;
     index?: number;
@@ -22,20 +22,22 @@ const CapturarEfectivo: FC = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem("efectivoLiq", JSON.stringify(body));
+    localStorage.setItem("valesLiq", JSON.stringify(body));
   }, [body]);
+
+  console.log(body);
 
   return (
     <div className="w-full">
       <SectionTitle
-        titulo="Capturar efectivo"
+        titulo="Capturar vales"
         subtitulo="Liquidación"
         noBackButton
       />
       <div className="flex flex-col items-center">
         <Input label="Monto" setVariable={setBody} />
         <TablaEV
-          data={body.map?.((el, index) => ({
+          data={body?.map?.((el, index) => ({
             monto: el.monto ?? "",
             index: index,
           }))}
@@ -49,4 +51,4 @@ const CapturarEfectivo: FC = () => {
     </div>
   );
 };
-export default CapturarEfectivo;
+export default CapturarVales;
