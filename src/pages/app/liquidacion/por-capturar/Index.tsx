@@ -28,7 +28,7 @@ const LiqPorCapturar: FC = () => {
   const date = new Date(Date.now());
   const navigate = useNavigate();
   const cacheLiq = JSON.parse(localStorage.getItem("liqDatos") ?? "null");
-  const { sendJsonMessage } = socket();
+  const { sendJsonMessage, lastJsonMessage } = socket();
 
   const cacheFiltros = sessionStorage.getItem("liqPendFiltros");
   const parsedFiltros = cacheFiltros
@@ -46,8 +46,6 @@ const LiqPorCapturar: FC = () => {
   const [noPreliqData, setNoPreliqData] = useState<
     Partial<liquidacionesPendientesInterface>
   >({});
-
-  const { lastJsonMessage } = socket();
 
   const { data, refetch, isError, isPending }: liquidaciones = useGetData(
     `liquidacion/pendientes?fecha=${filtros.fecha}&idEstacion=${

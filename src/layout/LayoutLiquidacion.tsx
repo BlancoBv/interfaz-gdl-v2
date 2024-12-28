@@ -1,8 +1,7 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Icon from "@components/Icon";
 import ScrollToTop from "@assets/ScrollToTop";
-import Header from "@components/gui/Header";
 import { ModalConfirmNoMutate } from "@components/gui/Modal";
 import {
   ContextLiq,
@@ -16,6 +15,9 @@ import Decimal from "decimal.js-light";
 import format from "@assets/format";
 import { getDataInterface, useGetData } from "@hooks/useGetData";
 import { liquidacionesPendientesInterface } from "@assets/interfaces";
+import { useModal } from "@hooks/useModal";
+import { useSendData } from "@hooks/useSendData";
+import socket from "@pages/app/liquidacion/components/socket";
 
 interface lectInit extends getDataInterface {
   data: { response: lecturasInicialesInterface[] };
@@ -48,6 +50,8 @@ const LayoutLiquidacion: FC = () => {
   const [vales, setVales] = useState<valesInterface[]>(PARSED_VALES);
   //error de reinicio o lectura mal capturada
   const [error, setError] = useState<boolean>(false);
+  const modalConfirmCancel = useModal("confirm-cancelar-cap");
+  const { sendJsonMessage } = socket();
 
   const navigate = useNavigate();
 
@@ -78,6 +82,10 @@ const LayoutLiquidacion: FC = () => {
   const codigosUso = useGetData(
     "liquidacion/codigo-uso/obtener",
     "codigosUsoData"
+  );
+  const cancelarFolio = useSendData(
+    `/liquidacion/noreservar/${infoGeneral.idliquidacion}`,
+    { method: "delete", refetchFn: () => {} }
   );
 
   const otherData = useMemo(() => {
@@ -218,6 +226,7 @@ const LayoutLiquidacion: FC = () => {
     }
   }, []);
  */
+
   const cleanAll = () => {
     setInfoGeneral({});
     setPrecios({});
@@ -227,13 +236,35 @@ const LayoutLiquidacion: FC = () => {
     setError(false);
 
     localStorage.removeItem("efectivoLiq");
-    localStorage.removeItem("infoGeneralPreliq");
+    localStorage.removeItem("liqDatos");
     localStorage.removeItem("manguerasLiq");
     localStorage.removeItem("preciosPreliq");
     localStorage.removeItem("valesPreliq");
     localStorage.removeItem("errorPreliq");
 
     navigate("/preliquidacion");
+  };
+
+  const cancelCaptura = async () => {
+    console.log("asdasdsadsad");
+
+    try {
+      await cancelarFolio.mutateAsync({});
+      sendJsonMessage({
+        type: "closeLiquidacion",
+        idliquidacion: infoGeneral.idliquidacion,
+        escena: "usuarioCapturaOtraLiquidacion",
+        msg: `Un usuario dejo libre la liquidación con folio: ${infoGeneral.idliquidacion}`,
+      });
+      console.log("xd");
+
+      cleanAll();
+      navigate("/app/liquidacion/liquidaciones/por-capturar", {
+        replace: true,
+      });
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   return (
@@ -251,14 +282,14 @@ const LayoutLiquidacion: FC = () => {
       }}
     >
       <div className="w-full h-[calc(100vh-6rem)] flex">
-        {/*         <ModalConfirmNoMutate
-          action={cleanAll}
-          msg="Existen datos sin guardar, ¿desea recuperarlos?"
+        <ModalConfirmNoMutate
+          action={cancelCaptura}
+          msg="¿Realmente desea cancelar la captura actual?"
           title="Advertencia"
-          actionOnCloseButton
           confirmButtonText="Sí"
           closeButtonText="No"
-        /> */}
+          customID="confirm-cancelar-cap"
+        />
         <ul className="menu bg-base-300 rounded-box lg:w-1/6 h-full gap-2">
           {/* <NavButton
             to="/preliquidacion"
@@ -294,6 +325,13 @@ const LayoutLiquidacion: FC = () => {
             icon="eye"
             text="Previsualizar y enviar"
           />
+          <button
+            className="btn btn-error"
+            type="button"
+            onClick={() => modalConfirmCancel.show()}
+          >
+            Cancelar captura
+          </button>
         </ul>
         <ScrollToTop scrollAreaID="scroll-area">
           <div
