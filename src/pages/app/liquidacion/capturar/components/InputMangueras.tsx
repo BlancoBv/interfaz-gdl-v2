@@ -1,5 +1,13 @@
 import Icon from "@components/Icon";
-import { FC, useContext, useRef, ChangeEvent, useMemo, useEffect } from "react";
+import {
+  FC,
+  useContext,
+  useRef,
+  ChangeEvent,
+  useMemo,
+  useEffect,
+  act,
+} from "react";
 import format from "@assets/format";
 import {
   ContextLiq,
@@ -110,6 +118,8 @@ const InputMangueras: FC<{
           actualValues[idManguera]["idisla"] = data.mangueras.idisla;
           actualValues[idManguera]["combustible"] = data.nombre;
           actualValues[idManguera]["idgas"] = data.idgas;
+          actualValues[idManguera]["importe"] =
+            litrosVendidos * Number(actualValues[idManguera].precioUnitario);
         } //verifica y realiza el calculo de litros vendidos
 
         setBody?.({ ...actualValues });

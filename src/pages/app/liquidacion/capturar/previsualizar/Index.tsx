@@ -9,11 +9,16 @@ import Decimal from "decimal.js-light";
 import { ModalConfirmNoMutate } from "@components/gui/Modal";
 import { useSendData } from "@hooks/useSendData";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import SendingScreen from "./components/SendingScreen";
+import { getDataInterface, useGetData } from "@hooks/useGetData";
+
+interface preliquidacionExist extends getDataInterface {
+  data: { response: null | { vales: string[]; efectivo: string[] } };
+}
 
 const Previsualizar: FC = () => {
-  const date = new Date(Date.now());
+  //const date = new Date(Date.now());
 
   const { empleado, estacionServicio, turno } =
     useContext(ContextLiq).otherData;
@@ -25,12 +30,82 @@ const Previsualizar: FC = () => {
   const totales = useContext(ContextLiq).totales;
   const cleanAll = useContext(ContextLiq).cleanAll;
 
+  const preliquidacionExist: preliquidacionExist = useGetData(
+    `liquidacion/buscar-preliquidacion?idEmpleado=${infoGeneral.horario?.idempleado}&fechaTurno=${infoGeneral.horario?.fechaliquidacion}&idEstacionServicio=${infoGeneral.horario?.estacion_servicio.idestacion_servicio}&idTurno=${infoGeneral.horario?.turno.idturno}`,
+    "preliqExistenteData"
+  );
+
   //const navigate = useNavigate();
 
-  const confirmValues = (mangueras: manguerasInterface): boolean => {
-    return Object.values(mangueras).some(
-      (el) => !el.hasOwnProperty("lecturaFinal")
+  const confirmValues = async (
+    mangueras: manguerasInterface
+  ): Promise<boolean> => {
+    const response = await preliquidacionExist.refetch();
+    const {
+      vales: valesPreliq,
+      efectivo: efectivoPreliq,
+      lecturas: lecturasPreliq,
+    }: {
+      vales: string[];
+      efectivo: string[];
+      lecturas: { litrosVendidos: number; precioUnitario: string }[];
+    } = response.data?.response;
+
+    const totalValesPreq = valesPreliq.reduce(
+      (a, b) => new Decimal(Number(a)).add(Number(b)).toFixed(2),
+      "0"
     );
+    const totalEfectivoPreq = efectivoPreliq.reduce(
+      (a, b) => new Decimal(Number(a)).add(Number(b)).toFixed(2),
+      "0"
+    );
+
+    const totalValesLocal = vales.reduce(
+      (a, b) => new Decimal(Number(a)).add(Number(b.monto)).toFixed(2),
+      "0"
+    );
+    const totalEfectivoLocal = efectivo.reduce(
+      (a, b) => new Decimal(Number(a)).add(Number(b.monto)).toFixed(2),
+      "0"
+    );
+
+    const totalEntregadoPreliq = new Decimal(
+      Number(totalEfectivoPreq) + Number(totalValesPreq)
+    ).toFixed(2);
+
+    const totalEntregado = new Decimal(
+      Number(totalEfectivoLocal) + Number(totalValesLocal)
+    ).toFixed(2);
+
+    const totalCalculadoPreq = lecturasPreliq
+      .map((el) =>
+        new Decimal(el.litrosVendidos * Number(el.precioUnitario)).toFixed(2)
+      )
+      .reduce((a, b) => new Decimal(a).add(Number(b)).toFixed(2), "0");
+
+    const totalCalculado = Object.values(mangueras).reduce(
+      (a, b) => new Decimal(Number(a)).add(Number(b.importe)).toFixed(2),
+      "0"
+    );
+
+    console.log({
+      totalEntregado,
+      totalEntregadoPreliq,
+      totalCalculado,
+      totalCalculadoPreq,
+    });
+
+    if (
+      Number(totalEntregado) === Number(totalEntregadoPreliq) &&
+      Number(totalCalculado) === Number(totalCalculadoPreq)
+    ) {
+      return false;
+    }
+
+    return true;
+    /*     return Object.values(mangueras).some(
+      (el) => !el.hasOwnProperty("lecturaFinal")
+    ); */
   };
 
   const sendPreliq = useSendData("pdf/sendFile", {
@@ -39,10 +114,12 @@ const Previsualizar: FC = () => {
     refetchFn: () => {},
   });
 
-  const handleSend = () => {
+  const handleSend = async () => {
     handleSend: {
-      if (confirmValues(mangueras)) {
-        toast.error("Una o más lecturas estan sin capturar", {
+      console.log(await confirmValues(mangueras));
+
+      if (await confirmValues(mangueras)) {
+        toast.error("Las lecturas capturadas no coinciden.", {
           containerId: "global",
         });
         //navigate("/preliquidacion/capturar-lecturas");
@@ -81,7 +158,7 @@ const Previsualizar: FC = () => {
         action={handleSend}
         customID="confirm-enviar"
         msg="Asegurate de que todos los datos son correctos, ¿Deseas continuar?"
-        title="Confirmar guardar preliquidación"
+        title="Confirmar guardar liquidación"
         closeOnESC
       />
       <SectionTitle

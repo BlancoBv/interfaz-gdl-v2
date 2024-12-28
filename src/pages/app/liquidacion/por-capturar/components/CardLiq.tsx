@@ -1,9 +1,6 @@
-import {
-  liquidacionesPendientesInterface,
-  reportJsonLiqInterface,
-} from "@assets/interfaces";
+import { liquidacionesPendientesInterface } from "@assets/interfaces";
 import Icon from "@components/Icon";
-import { FC, ReactNode, useCallback } from "react";
+import { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import socket from "../../components/socket";
 import { useModal } from "@hooks/useModal";
@@ -17,9 +14,16 @@ const CardLiq: FC<{
   data: liquidacionesPendientesInterface;
   anteriores: [];
   setRecapValid: any;
+  setNoPreliqData: any;
   totalLiquidaciones: number;
   liquidacionesEnCaptura: number;
-}> = ({ data, setRecapValid, totalLiquidaciones, liquidacionesEnCaptura }) => {
+}> = ({
+  data,
+  setRecapValid,
+  totalLiquidaciones,
+  liquidacionesEnCaptura,
+  setNoPreliqData,
+}) => {
   const { sendJsonMessage } = socket();
   const credentials: { auth?: { idempleado: number } } = JSON.parse(
     localStorage.getItem("credentials") ?? "null"
@@ -79,6 +83,7 @@ const CardLiq: FC<{
       if (!data.capturado && !data.lecturas) {
         if (havePreliq) {
           modalNoPreliq.show();
+          setNoPreliqData({ ...data });
           break handleClick;
         }
         const bodyReserva: { total: number; numero: number } = {

@@ -13,6 +13,8 @@ import NoData from "@components/gui/NoData";
 import Icon from "@components/Icon";
 import Modal, { ModalConfirmNoMutate } from "@components/gui/Modal";
 import { Navigate, useNavigate } from "react-router-dom";
+import InputRFID from "../components/InputRFID";
+import { useSendData } from "@hooks/useSendData";
 
 interface liquidaciones extends getDataInterface {
   data: {
@@ -26,6 +28,7 @@ const LiqPorCapturar: FC = () => {
   const date = new Date(Date.now());
   const navigate = useNavigate();
   const cacheLiq = JSON.parse(localStorage.getItem("liqDatos") ?? "null");
+  const { sendJsonMessage } = socket();
 
   const cacheFiltros = sessionStorage.getItem("liqPendFiltros");
   const parsedFiltros = cacheFiltros
@@ -39,6 +42,11 @@ const LiqPorCapturar: FC = () => {
     fecha: string;
     idEstacion: number;
   }>(parsedFiltros);
+  const [tarjetaValida, setTarjetaValida] = useState<boolean>(false);
+  const [noPreliqData, setNoPreliqData] = useState<
+    Partial<liquidacionesPendientesInterface>
+  >({});
+
   const { lastJsonMessage } = socket();
 
   const { data, refetch, isError, isPending }: liquidaciones = useGetData(
@@ -47,12 +55,36 @@ const LiqPorCapturar: FC = () => {
     }`,
     "liqPendientesData"
   );
+  const reservar = useSendData(
+    `liquidacion/reservar/${noPreliqData?.idliquidacion}`
+  );
+
   const [recapValid, setRecapValid] = useState<{
     valid: boolean;
     idLiquidacion?: number;
   }>({
     valid: false,
   });
+
+  const continueLiq = async (idLiquidacion: number | undefined) => {
+    const bodyReserva: { total: number; numero: number } = {
+      total: data.totalLiquidaciones,
+      numero: data.response.filter((el) => el.capturado === true).length + 1,
+    };
+
+    await reservar.mutateAsync(bodyReserva);
+
+    sendJsonMessage({
+      type: "closeLiquidacion",
+      idliquidacion: idLiquidacion,
+      escena: "usuarioCapturaOtraLiquidacion",
+      msg: `Un usuario esta capturando una liquidación con folio: ${idLiquidacion} `,
+    });
+    localStorage.setItem("liqDatos", JSON.stringify(noPreliqData));
+    localStorage.setItem("hasReinicio", JSON.stringify(false));
+
+    navigate(`/app/liquidacion/liquidaciones/capturar/${idLiquidacion}`);
+  };
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
@@ -81,6 +113,14 @@ const LiqPorCapturar: FC = () => {
           Intenta de nuevo más tarde o espera a que el despachador realice su
           respectiva preliquidación.
         </p>
+        <div className="divider"></div>
+        <p>O Identificate para continuar de todos modos</p>
+        <InputRFID setValue={setTarjetaValida} />
+        {tarjetaValida && (
+          <button onClick={() => continueLiq(noPreliqData.idliquidacion)}>
+            Continuar de todos modos
+          </button>
+        )}
         <div className="modal-action">
           <form method="dialog">
             <button className="btn">Cerrar</button>
@@ -167,6 +207,7 @@ const LiqPorCapturar: FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {data.response.map((el) => (
               <CardLiq
+                setNoPreliqData={setNoPreliqData}
                 data={el}
                 key={el.idliquidacion}
                 anteriores={data.anteriores}
